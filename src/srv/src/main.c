@@ -5,22 +5,23 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Tue Jun 16 11:16:36 2015 Emmanuel Chambon
-** Last update Tue Jun 16 11:24:57 2015 Emmanuel Chambon
+** Last update Tue Jun 16 20:07:57 2015 Hugo Prenat
 */
 
 #include "zappy.h"
 
-int main(int __attribute((unused))ac, char __attribute((unused))**av)
+int	main(int __attribute((unused))ac, char __attribute((unused))**av)
 {
-  t_server	*server;
-  char		*port = "3031"; // Hard coded for now
+  t_all	content;	// I prefer declaring a strut and pass its pointer
+                        // everywhere (if you have a problem with that call me...)
+  char	*port = "3031"; // Hard coded for now
 
   // Init server for now
   // Intended to init all the zappy ressources
-  server = init_server(port);
-  idle_server(server);
+  init_server(&(content.server), port);
+  idle_server(&(content.server));
   // release server for now
   // Intended to free all the zappy ressources
-  release_server(server);
+  release_server(&(content.server));
   return (0);
 }
