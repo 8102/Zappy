@@ -5,26 +5,32 @@
 ##############################################################################
 ******************************************************************************
 
+#Deadline
+[Here](https://github.com/8102/Zappy/milestones)
+
 # Repartition des tâches:
 
 ## Serveur:
    - Génération & gestion et gestion du jeu:
-     - tran_0
      - prenat_h
 
    - Connection & Communication:
      - chambo_e      
 
+   - Reponses Serveur - Client
+     - tran_0
+     - milox_t
+
 ## Client:
   - Communication avec le serveur:
-
+    - gregoi_j / paasch_j
+    - chambo_e (si besoin)
+    
   - Interface Graphique:
     - paasch_j
     
   - Artificial Intelligence:
-    - milox_t
     - gregoi_j
-
 
 # Bonus
 
@@ -40,16 +46,14 @@
    - Interface d'accueil (QT || GTK )
      - prenat_h
 
-
 # Récapitulation des tâches par personne :
 
-- Chinois : Serveur - Creation & gestion
+- Chinois : Serveur - Réponses serveur > client
 - Jamais : Interface Graphique + Encryption communications
 - JB : IA 
 - Manu : Serveur - communications
-- Millox : IA
+- Millox : Serveur - Réponses serveur > client
 - Prenat : Serveur - Creation & gestion 
-
 
 # Correction :
 

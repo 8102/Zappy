@@ -36,3 +36,8 @@
 *.o
 #*#
 *~
+
+node_modules
+etc
+client
+server

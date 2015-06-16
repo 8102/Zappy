@@ -1,0 +1,13 @@
+{
+  "name": "Zappy",
+  "main": "client.js",
+  "private": "true",
+  "description": "Source files for an Epitech project.",
+  "dependencies": {
+    "electron-prebuilt": "^0.28.1",
+    "websocket": "^1.0.19"
+  },
+  "scripts": {
+    "start": "electron client.js"
+  }
+}
