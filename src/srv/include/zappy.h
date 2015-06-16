@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Tue Jun 16 11:35:49 2015 Emmanuel Chambon
-** Last update Tue Jun 16 20:01:33 2015 Hugo Prenat
+** Last update Tue Jun 16 20:18:10 2015 Emmanuel Chambon
 */
 
 #ifndef _ZAPPY_H_
@@ -20,5 +20,11 @@ typedef struct	s_all
 {
   t_server	server;
 }		t_all;
+
+/*
+**	zappy.c
+*/
+void		init_zappy(t_all *);
+void		release_zappy(t_all *);
 
 #endif /* !_ZAPPY_H_ */

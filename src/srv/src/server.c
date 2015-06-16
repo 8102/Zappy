@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Tue Jun 16 11:30:20 2015 Emmanuel Chambon
-** Last update Tue Jun 16 20:03:04 2015 Hugo Prenat
+** Last update Tue Jun 16 20:20:21 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
@@ -22,8 +22,6 @@ void			release_server(t_server *serv)
     free(serv->port);
   if (serv && serv->socket)
     close(serv->socket);
-  if (serv)
-    free(serv);
 }
 
 void			set_server(t_server *serv, char *port)
