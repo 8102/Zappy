@@ -5,7 +5,7 @@
 ## chambo_e  <chambon.emmanuel@gmail.com>
 ##
 ## Started on  Wed Apr  8 22:49:16 2015 Emmanuel Chambon
-## Last update Wed Jun 17 02:30:51 2015 Jean-Baptiste Grégoire
+## Last update Thu Jun 18 01:57:54 2015 Emmanuel Chambon
 ##
 
 EXE_CLIENT	:=	client
@@ -21,7 +21,7 @@ CLIENT		:=	src/cli
 all		:
 			make -C $(SERVER)
 			@cp $(SERVER)/$(EXE_SERVER) .
-			@cp save $(EXE_CLIENT) # i'm crook !
+			@cp .save $(EXE_CLIENT) # i'm crook !
 			@chmod 755 $(EXE_CLIENT)
 			@npm install --prefix $(CLIENT)
 

@@ -5,16 +5,15 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Tue Jun 16 20:14:21 2015 Emmanuel Chambon
-** Last update Wed Jun 17 18:39:30 2015 Hugo Prenat
+** Last update Wed Jun 17 21:34:25 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
 
 int		init_zappy(t_all *content, int ac, char **av)
 {
-
   if ((content->teams = malloc(sizeof(*content->teams) * 1)) == NULL)
-    return (-1);
+    error("malloc");
   content->teams[0].slot = -1;
   content->max_clients = 0;
   content->width = 0;

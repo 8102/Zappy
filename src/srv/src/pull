@@ -1,6 +1,0 @@
-#!/bin/sh
-
-while :
-do
-    git pull
-done

@@ -5,24 +5,47 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Tue Jun 16 11:35:49 2015 Emmanuel Chambon
-** Last update Wed Jun 17 21:13:38 2015 Hugo Prenat
+** Last update Thu Jun 18 01:57:08 2015 Emmanuel Chambon
 */
 
 #ifndef _ZAPPY_H_
 # define _ZAPPY_H_
 
-#include "misc.h"
-#include "server.h"
+typedef struct  s_client        t_client;
+typedef struct  s_team		t_team;
+typedef struct  s_all           t_all;
+typedef enum    Orientation     e_Orientation;
 
-bool	g_run;
+# include "misc.h"
+# include "server.h"
+# include "rb.h"
 
-typedef struct	s_team
+bool            g_run;
+
+enum            Orientation {
+  NORTH,
+  WEST,
+  SOUTH,
+  EAST
+};
+
+struct          s_client
+{
+  int           socket;
+  char          *ip;
+  t_ring_buffer *buffer;
+  e_Orientation orient;
+  t_client      *prev;
+  t_client      *next;
+};
+
+struct		s_team
 {
   char		*name;
   int		slot;
-}		t_team;
+};
 
-typedef struct	s_all
+struct		s_all
 {
   int		max_clients;
   int		width;
@@ -32,7 +55,7 @@ typedef struct	s_all
   t_server	server;
   t_team	*teams;
   t_client	*clients;
-}		t_all;
+};
 
 /*
 **	zappy.c
@@ -40,5 +63,12 @@ typedef struct	s_all
 int		init_zappy(t_all *content, int ac, char **av);
 void		release_zappy(t_all *);
 int		check_param(int ac, char **av, t_all *content);
-
+/*
+**	client.c
+*/
+void		push_client(t_client **, t_client *);
+void		pop_client(t_client **, t_client *);
+void		handle_new_connection(int *, t_all *);
+t_client	*get_client(int, t_all *);
+void		remove_connection(t_client *, t_all *);
 #endif /* !_ZAPPY_H_ */

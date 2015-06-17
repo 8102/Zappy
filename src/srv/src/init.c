@@ -5,62 +5,10 @@
 ** Login   <prenat_h@epitech.eu>
 **
 ** Started on  Wed Jun 17 18:04:44 2015 Hugo Prenat
-** Last update Wed Jun 17 21:25:39 2015 Hugo Prenat
+** Last update Thu Jun 18 01:32:17 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
-
-void		add_to_list(t_client **list, t_client *elem)
-{
-  t_client	*it;
-  t_client	*save;
-  bool		stop;
-
-  if (*list == NULL)
-    {
-      elem->next = *list;
-      *list = elem;
-      return ;
-    }
-  stop = true;
-  it = *list;
-  while (it && stop)
-    {
-      if (it->next)
-        it = it->next;
-      else
-        stop = false;
-    }
-  save = it->next;
-  it->next = elem;
-  elem->next = save;
-}
-
-void		delete_from_list(t_client **list, t_client *elem)
-{
-  t_client	*it;
-  t_client	*prev;
-
-  if (!(*list))
-    return ;
-  it = *list;
-  prev = it;
-  while (it)
-    {
-      if (it == elem)
-        {
-          if (prev != it)
-            prev->next = prev->next->next;
-          else
-            *list = (*list)->next;
-          it->next = NULL;
-          return ;
-        }
-      if (it != *list)
-        prev = prev->next;
-      it = it->next;
-    }
-}
 
 size_t		size_team(t_team *teams)
 {
@@ -102,7 +50,7 @@ int	add_team(char **av, int ac, t_all *content)
   int	i;
 
   i = optind - 1;
-  while(i < ac)
+  while (i < ac)
     {
       if (av[i][0] == '-')
 	{
