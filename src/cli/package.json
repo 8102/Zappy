@@ -5,6 +5,7 @@
   "description": "Source files for an Epitech project.",
   "dependencies": {
     "electron-prebuilt": "^0.28.1",
+    "socket.io": "^1.3.5",
     "websocket": "^1.0.19"
   },
   "scripts": {

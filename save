@@ -4,5 +4,5 @@ if [ $# != 4 ] && [ $# != 6 ]
 then
     echo "Usage: ${0} -n team_name -p port [-h hostname]"
 else
-    node ./src/cli/client.js $# $@
+    ./src/cli/node_modules/electron-prebuilt/dist/electron ./src/cli/client.js $# $@
 fi
