@@ -1,11 +1,11 @@
 ##
 ## Makefile for  in /home/chambo_e/epitech/PSU_2014_myirc
-## 
+##
 ## Made by Emmanuel Chambon
 ## chambo_e  <chambon.emmanuel@gmail.com>
-## 
+##
 ## Started on  Wed Apr  8 22:49:16 2015 Emmanuel Chambon
-## Last update Tue Jun 16 20:15:51 2015 Emmanuel Chambon
+## Last update Wed Jun 17 18:35:41 2015 Hugo Prenat
 ##
 
 CC		=	gcc
@@ -14,7 +14,7 @@ RM		=	rm -f
 
 INC		=	include
 
-CFLAGS		=	-std=c99 -W -Wall -Wextra -I$(INC) -D_POSIX_C_SOURCE=200809L
+CFLAGS		=	-std=c99 -W -Wall -Wextra -I$(INC) -D_POSIX_C_SOURCE=200809L -g3
 
 NAME_SERVER	=	server
 
@@ -24,7 +24,8 @@ SRC_SERVER	=	src/main.c		\
 			src/server_init.c	\
 			src/server_idle.c	\
 			src/socketutils.c	\
-			src/misc.c		
+			src/init.c		\
+			src/misc.c
 
 OBJS		=	$(SRC_SERVER:.c=.o)
 
