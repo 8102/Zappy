@@ -5,16 +5,17 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Tue Jun 16 11:16:36 2015 Emmanuel Chambon
-** Last update Tue Jun 16 20:21:08 2015 Emmanuel Chambon
+** Last update Wed Jun 17 17:58:52 2015 Hugo Prenat
 */
 
 #include "zappy.h"
 
-int	main(int __attribute((unused))ac, char __attribute((unused))**av)
+int	main(int ac, char **av)
 {
-  t_all	content;	// I prefer declaring a strut and pass its pointer
-                        // everywhere (if you have a problem with that call me...)
-  init_zappy(&content);
+  t_all	content;
+
+  if (init_zappy(&content, ac, av) == -1)
+    return (-1);
   idle_server(&content.server);
   release_zappy(&content);
   return (0);

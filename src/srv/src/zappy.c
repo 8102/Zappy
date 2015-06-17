@@ -5,17 +5,32 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Tue Jun 16 20:14:21 2015 Emmanuel Chambon
-** Last update Tue Jun 16 20:19:37 2015 Emmanuel Chambon
+** Last update Wed Jun 17 18:39:30 2015 Hugo Prenat
 */
 
 #include "zappy.h"
 
-void		init_zappy(t_all *content)
+int		init_zappy(t_all *content, int ac, char **av)
 {
-  char  *port = "3031"; // Hard coded for now
 
-
-  init_server(&(content->server), port);
+  if ((content->teams = malloc(sizeof(*content->teams) * 1)) == NULL)
+    return (-1);
+  content->teams[0].slot = -1;
+  content->max_clients = 0;
+  content->width = 0;
+  content->height = 0;
+  content->delay = 0;
+  content->clients = NULL;
+  if (check_param(ac, av, content) == -1)
+    {
+      fprintf(stderr,
+	      "Usage: %s [-p port] [-x world_x] [-y world_y]"
+	      " [-c max_clients] [-t speed] -n team_name_1 team_name_2 ...\n",
+	      av[0]);
+      return (-1);
+  }
+  init_server(&(content->server), content->port);
+  return (0);
 }
 
 void		release_zappy(t_all *content)
