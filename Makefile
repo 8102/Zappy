@@ -1,11 +1,11 @@
 ##
 ## Makefile for  in /home/chambo_e/epitech/PSU_2014_myirc
-## 
+##
 ## Made by Emmanuel Chambon
 ## chambo_e  <chambon.emmanuel@gmail.com>
-## 
+##
 ## Started on  Wed Apr  8 22:49:16 2015 Emmanuel Chambon
-## Last update Tue Jun 16 09:21:18 2015 Emmanuel Chambon
+## Last update Wed Jun 17 02:30:51 2015 Jean-Baptiste Grégoire
 ##
 
 EXE_CLIENT	:=	client
@@ -21,8 +21,7 @@ CLIENT		:=	src/cli
 all		:
 			make -C $(SERVER)
 			@cp $(SERVER)/$(EXE_SERVER) .
-			@echo '#! /bin/sh' > $(EXE_CLIENT)
-			@echo 'npm start --prefix ./src/cli' >> $(EXE_CLIENT)
+			@cp save $(EXE_CLIENT) # i'm crook !
 			@chmod 755 $(EXE_CLIENT)
 			@npm install --prefix $(CLIENT)
 
