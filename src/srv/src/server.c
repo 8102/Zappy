@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Tue Jun 16 11:30:20 2015 Emmanuel Chambon
-** Last update Tue Jun 16 11:43:58 2015 Emmanuel Chambon
+** Last update Tue Jun 16 20:20:21 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
@@ -22,8 +22,6 @@ void			release_server(t_server *serv)
     free(serv->port);
   if (serv && serv->socket)
     close(serv->socket);
-  if (serv)
-    free(serv);
 }
 
 void			set_server(t_server *serv, char *port)
@@ -35,13 +33,10 @@ void			set_server(t_server *serv, char *port)
   set_handler(serv);
 }
 
-t_server		*init_server(char *port)
+void			init_server(t_server *serv, char *port)
 {
-  t_server		*serv;
   struct sigaction	si;
 
-  if (!(serv = malloc(sizeof(t_server))))
-    error("malloc");
   set_server(serv, port);
   g_run = true;
   si.sa_handler = close_handler;
@@ -53,5 +48,4 @@ t_server		*init_server(char *port)
       fprintf(stderr, "Memory will not be freed and socket won't be close");
       fprintf(stderr, " at server close\n");
     }
-  return (serv);
 }

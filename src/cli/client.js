@@ -51,7 +51,7 @@ console.log('I commented the code so that\'s normal there is no window !');
 // // initialization and ready for creating browser windows.
 // app.on('ready', function() {
 //     // Create the browser window.
-//     mainWindow = new BrowserWindow({width: 800, height: 600});
+//    mainWindow = new BrowserWindow({width: 800, height: 600, 'auto-hide-menu-bar': true});
 
 //     // and load the index.html of the app.
 //     mainWindow.loadUrl('file://' + __dirname + '/index.html');

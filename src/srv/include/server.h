@@ -52,6 +52,6 @@ void                    idle_server(t_server *);
 void			close_handler(int);
 void			release_server(t_server *);
 void			set_server(t_server *, char *);
-t_server		*init_server(char *);
+void			init_server(t_server *, char *);
 
 #endif /* !_SERVER_H_ */

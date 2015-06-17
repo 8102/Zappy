@@ -5,7 +5,7 @@
 ## chambo_e  <chambon.emmanuel@gmail.com>
 ## 
 ## Started on  Wed Apr  8 22:49:16 2015 Emmanuel Chambon
-## Last update Tue Jun 16 12:01:16 2015 Emmanuel Chambon
+## Last update Tue Jun 16 20:15:51 2015 Emmanuel Chambon
 ##
 
 CC		=	gcc
@@ -19,6 +19,7 @@ CFLAGS		=	-std=c99 -W -Wall -Wextra -I$(INC) -D_POSIX_C_SOURCE=200809L
 NAME_SERVER	=	server
 
 SRC_SERVER	=	src/main.c		\
+			src/zappy.c		\
 			src/server.c		\
 			src/server_init.c	\
 			src/server_idle.c	\
