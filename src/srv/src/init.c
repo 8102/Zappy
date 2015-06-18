@@ -5,7 +5,7 @@
 ** Login   <prenat_h@epitech.eu>
 **
 ** Started on  Wed Jun 17 18:04:44 2015 Hugo Prenat
-** Last update Thu Jun 18 14:57:52 2015 Hugo Prenat
+** Last update Thu Jun 18 15:49:54 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
@@ -36,7 +36,7 @@ void		push_team(t_team **list, t_team *elem)
   elem->next = save;
 }
 
-int		add_one_team(char *team, t_all *content)
+int		add_one_team(char *team, t_master *content)
 {
   t_team	*new;
 
@@ -48,7 +48,7 @@ int		add_one_team(char *team, t_all *content)
   return (0);
 }
 
-int	add_team(char **av, int ac, t_all *content)
+int	add_team(char **av, int ac, t_master *content)
 {
   int	i;
 
@@ -66,7 +66,7 @@ int	add_team(char **av, int ac, t_all *content)
   return (0);
 }
 
-int	check_param(int ac, char **av, t_all *content)
+int	check_param(int ac, char **av, t_master *content)
 {
   int	opt;
   int	ret;

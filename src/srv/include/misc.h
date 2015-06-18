@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Tue Jun 16 11:36:38 2015 Emmanuel Chambon
-** Last update Tue Jun 16 12:09:21 2015 Emmanuel Chambon
+** Last update Thu Jun 18 16:32:28 2015 Emmanuel Chambon
 */
 
 #ifndef _MISC_H_
@@ -20,6 +20,7 @@
 # include <stdint.h>
 # include <errno.h>
 # include <sys/types.h>
+# include <stdarg.h>
 
 void		error(char *);
 

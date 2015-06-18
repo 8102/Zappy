@@ -13,7 +13,7 @@
 void			avance(bool __attribute__((unused))(*check)(char*),
 			       char __attribute__((unused))*params,
 			       t_client __attribute__((unused))*client,
-			       t_all __attribute__((unused))*content)
+			       t_master __attribute__((unused))*content)
 {
   printf("avance\n");
 }
@@ -21,7 +21,7 @@ void			avance(bool __attribute__((unused))(*check)(char*),
 void			droite(bool __attribute__((unused))(*check)(char*),
 			       char __attribute__((unused))*params,
 			       t_client __attribute__((unused))*client,
-			       t_all __attribute__((unused))*content)
+			       t_master __attribute__((unused))*content)
 {
 
 }
@@ -29,7 +29,7 @@ void			droite(bool __attribute__((unused))(*check)(char*),
 void			gauche(bool __attribute__((unused))(*check)(char*),
 			       char __attribute__((unused))*params,
 			       t_client __attribute__((unused))*client,
-			       t_all __attribute__((unused))*content)
+			       t_master __attribute__((unused))*content)
 {
 
 }
@@ -37,7 +37,7 @@ void			gauche(bool __attribute__((unused))(*check)(char*),
 void			voir(bool __attribute__((unused))(*check)(char*),
 			     char __attribute__((unused))*params,
 			     t_client __attribute__((unused))*client,
-			     t_all __attribute__((unused))*content)
+			     t_master __attribute__((unused))*content)
 {
 
 }
@@ -45,7 +45,7 @@ void			voir(bool __attribute__((unused))(*check)(char*),
 void			inventaire(bool __attribute__((unused))(*check)(char*),
 				   char __attribute__((unused))*params,
 				   t_client __attribute__((unused))*client,
-				   t_all __attribute__((unused))*content)
+				   t_master __attribute__((unused))*content)
 {
 
 }
@@ -53,7 +53,7 @@ void			inventaire(bool __attribute__((unused))(*check)(char*),
 void			prend(bool __attribute__((unused))(*check)(char*),
 			     char __attribute__((unused))*params,
 			     t_client __attribute__((unused))*client,
-			     t_all __attribute__((unused))*content)
+			     t_master __attribute__((unused))*content)
 {
 
 }
@@ -61,7 +61,7 @@ void			prend(bool __attribute__((unused))(*check)(char*),
 void			pose(bool __attribute__((unused))(*check)(char*),
 			     char __attribute__((unused))*params,
 			     t_client __attribute__((unused))*client,
-			     t_all __attribute__((unused))*content)
+			     t_master __attribute__((unused))*content)
 {
 
 }
@@ -69,7 +69,7 @@ void			pose(bool __attribute__((unused))(*check)(char*),
 void			expulse(bool __attribute__((unused))(*check)(char*),
 			     char __attribute__((unused))*params,
 			     t_client __attribute__((unused))*client,
-			     t_all __attribute__((unused))*content)
+			     t_master __attribute__((unused))*content)
 {
 
 }
@@ -77,7 +77,7 @@ void			expulse(bool __attribute__((unused))(*check)(char*),
 void			broadcast(bool __attribute__((unused))(*check)(char*),
 			     char __attribute__((unused))*params,
 			     t_client __attribute__((unused))*client,
-			     t_all __attribute__((unused))*content)
+			     t_master __attribute__((unused))*content)
 {
 
 }
@@ -85,7 +85,7 @@ void			broadcast(bool __attribute__((unused))(*check)(char*),
 void			incantation(bool __attribute__((unused))(*check)(char*),
 			     char __attribute__((unused))*params,
 			     t_client __attribute__((unused))*client,
-			     t_all __attribute__((unused))*content)
+			     t_master __attribute__((unused))*content)
 {
 
 }
@@ -93,7 +93,7 @@ void			incantation(bool __attribute__((unused))(*check)(char*),
 void			_fork(bool __attribute__((unused))(*check)(char*),
 			     char __attribute__((unused))*params,
 			     t_client __attribute__((unused))*client,
-			     t_all __attribute__((unused))*content)
+			     t_master __attribute__((unused))*content)
 {
 
 }
@@ -101,7 +101,7 @@ void			_fork(bool __attribute__((unused))(*check)(char*),
 void			connect_nbr(bool __attribute__((unused))(*check)(char*),
 			     char __attribute__((unused))*params,
 			     t_client __attribute__((unused))*client,
-			     t_all __attribute__((unused))*content)
+			     t_master __attribute__((unused))*content)
 {
 
 }
