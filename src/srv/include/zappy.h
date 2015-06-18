@@ -5,43 +5,25 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Tue Jun 16 11:35:49 2015 Emmanuel Chambon
-** Last update Thu Jun 18 18:09:00 2015 Hugo Prenat
+** Last update Thu Jun 18 21:46:07 2015 Hugo Prenat
 */
 
 #ifndef _ZAPPY_H_
 # define _ZAPPY_H_
 
-typedef struct	s_client	t_client;
-typedef struct	s_team		t_team;
+
+typedef struct  s_client        t_client;
+typedef struct  s_team		t_team;
+typedef struct  s_master	t_master;
 typedef struct	s_case		t_case;
-typedef struct	s_all		t_all;
-typedef enum	Orientation	e_Orientation;
+typedef enum    Orientation     e_Orientation;
 
 # include "misc.h"
 # include "server.h"
 # include "rb.h"
 # include "client.h"
 
-bool		g_run;
-
-enum		Orientation {
-  NORTH,
-  WEST,
-  SOUTH,
-  EAST
-};
-
-struct		s_client
-{
-  int		socket;
-  size_t	x;
-  size_t	y;
-  char		*ip;
-  t_ring_buffer	*buffer;
-  e_Orientation	orient;
-  t_client	*prev;
-  t_client	*next;
-};
+bool            g_run;
 
 struct		s_case
 {
@@ -49,7 +31,7 @@ struct		s_case
   size_t	y;
   t_case	*prev;
   t_case	*next;
-}
+};
 
 struct		s_team
 {
