@@ -13,146 +13,139 @@
 void			avance(bool (*check)(char*),
 			       char *params,
 			       t_client *client,
-			       t_all *content)
+			       __attribute__((unused)) t_master *content)
 {
   if (!check(params))
     {
-      if (send(client->socket, "suc\n", 5) < 0)
-	error(NULL);
+      ssend(client->socket, "suc\n");
     }
-  dprintf(client->socket, "ok\n");
+  ssend(client->socket, "ok\n");
 }
 
 void			droite(bool (*check)(char*),
 			       char *params,
 			       t_client *client,
-			       t_all *content)
+			       __attribute__((unused)) t_master *content)
 {
   if (!check(params))
     {
-      if (send(client->socket, "suc\n", 5) < 0)
-	error(NULL);
+      ssend(client->socket, "suc\n");
     }
-  dprintf(client->socket, "ok\n");
+  ssend(client->socket, "ok\n");
 }
 
 void			gauche(bool (*check)(char*),
 			       char *params,
 			       t_client *client,
-			       t_all *content)
+			       __attribute__((unused)) t_master *content)
 {
   if (!check(params))
     {
-      if (send(client->socket, "suc\n", 5) < 0)
-	error(NULL);
+      ssend(client->socket, "suc\n");
     }
-  dprintf(client->socket, "ok\n");
+  ssend(client->socket, "ok\n");
 }
 
 void			voir(bool (*check)(char*),
 			     char *params,
 			     t_client *client,
-			     t_all *content)
+			     __attribute__((unused)) t_master *content)
 {
   if (!check(params))
     {
-      if (send(client->socket, "suc\n", 5) < 0)
-	error(NULL);
+      ssend(client->socket, "suc\n");
     }
 }
 
 void			inventaire(bool (*check)(char*),
 				   char *params,
 				   t_client *client,
-				   t_all *content)
+				   __attribute__((unused)) t_master *content)
 {
   if (!check(params))
     {
-      if (send(client->socket, "suc\n", 5) < 0)
-	error(NULL);
+      ssend(client->socket, "suc\n");
     }
-  dprintf(client->socket, "linemate %d, deraumère %d, sibur %d, mendiane %d, phiras %d, thystame %d\n");
+  ssend(client->socket, "linemate %d, deraumère %d, sibur %d, mendiane %d, phiras %d, thystame %d\n", 0, 0, 0, 0, 0, 0);
 }
 
 void			prend(bool (*check)(char*),
 			     char *params,
 			     t_client *client,
-			     t_all *content)
+			     __attribute__((unused)) t_master *content)
 {
   if (!check(params))
     {
-      if (send(client->socket, "suc\n", 5) < 0)
-	error(NULL);
+      ssend(client->socket, "suc\n");
     }
 }
 
 void			pose(bool (*check)(char*),
 			     char *params,
 			     t_client *client,
-			     t_all *content)
+			     __attribute__((unused)) t_master *content)
 {
   if (!check(params))
     {
-      if (send(client->socket, "suc\n", 5) < 0)
-	error(NULL);
+      ssend(client->socket, "suc\n");
     }
 }
 
 void			expulse(bool (*check)(char*),
 			     char *params,
 			     t_client *client,
-			     t_all *content)
+			     __attribute__((unused)) t_master *content)
 {
   if (!check(params))
     {
-      if (send(client->socket, "suc\n", 5) < 0)
-	error(NULL);
+      ssend(client->socket, "suc\n");
     }
 }
 
 void			broadcast(bool (*check)(char*),
 			     char *params,
 			     t_client *client,
-			     t_all *content)
+			     __attribute__((unused)) t_master *content)
 {
   if (!check(params))
     {
-      if (send(client->socket, "suc\n", 5) < 0)
-	error(NULL);
+      ssend(client->socket, "suc\n");
     }
-  dprintf(client->socket, "ok\n");
+  ssend(client->socket, "ok\n");
 }
 
 void			incantation(bool (*check)(char*),
 			     char *params,
 			     t_client *client,
-			     t_all *content)
+			     __attribute__((unused)) t_master *content)
 {
   if (!check(params))
     {
-      if (send(client->socket, "suc\n", 5) < 0)
-	error(NULL);
+      ssend(client->socket, "suc\n");
     }
-  dprintf(client->socket, "elevation en cours\nniveau actuel : %d\n", 0);
+  ssend(client->socket, "elevation en cours\nniveau actuel : %d\n", 0);
 }
 
 void			_fork(bool (*check)(char*),
 			     char *params,
 			     t_client *client,
-			     t_all *content)
+			     __attribute__((unused)) t_master *content)
 {
-  dprintf(client->socket, "ok\n");
+  if (!check(params))
+    {
+      ssend(client->socket, "suc\n");
+    }
+  ssend(client->socket, "ok\n");
 }
 
 void			connect_nbr(bool (*check)(char*),
 			     char *params,
 			     t_client *client,
-			     t_all *content)
+			     __attribute__((unused)) t_master *content)
 {
   if (!check(params))
     {
-      if (send(client->socket, "suc\n", 5) < 0)
-	error(NULL);
+      ssend(client->socket, "suc\n");
     }
-  dprintf(client->socket, "%d\n", content->teams->slot);
+  ssend(client->socket, "%d\n", content->teams->slot);
 }
