@@ -18,6 +18,7 @@ int		init_zappy(t_master *content, int ac, char **av)
   content->delay = 0;
   content->teams = NULL;
   content->clients = NULL;
+  content->cases = NULL;
   if (check_param(ac, av, content) == -1)
     {
       fprintf(stderr,
@@ -26,6 +27,7 @@ int		init_zappy(t_master *content, int ac, char **av)
 	      av[0]);
       return (-1);
   }
+  create_map(content);
   init_server(&(content->server), content->port);
   return (0);
 }
@@ -47,9 +49,27 @@ void		del_team(t_team **list)
   return ;
 }
 
+void		del_case(t_case **list)
+{
+  t_case	*it;
+  t_case	*elem;
+
+  if (!(*list))
+    return ;
+  it = *list;
+  while (it != NULL)
+    {
+      elem = it;
+      it = it->next;
+      free(elem);
+    }
+  return ;
+}
+
 void		release_zappy(t_master *content)
 {
   release_clients(&(content->clients));
   release_server(&(content->server));
   del_team(&content->teams);
+  del_case(&content->cases);
 }

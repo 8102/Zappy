@@ -5,7 +5,7 @@
 ## chambo_e  <chambon.emmanuel@gmail.com>
 ## 
 ## Started on  Wed Apr  8 22:49:16 2015 Emmanuel Chambon
-## Last update Thu Jun 18 17:24:38 2015 Emmanuel Chambon
+## Last update Thu Jun 18 22:34:53 2015 Hugo Prenat
 ##
 
 CC		=	gcc -g
@@ -30,7 +30,8 @@ SRC_SERVER	=	src/main.c		\
 			src/server_idle.c	\
 			src/socketutils.c	\
 			src/rbinit.c		\
-			src/misc.c		
+			src/case.c		\
+			src/misc.c
 
 OBJS		=	$(SRC_SERVER:.c=.o)
 
