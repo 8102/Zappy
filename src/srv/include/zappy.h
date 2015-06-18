@@ -29,6 +29,13 @@ struct		s_case
 {
   size_t	x;
   size_t	y;
+  int		meal;
+  int		linemate;
+  int		deraumere;
+  int		sibur;
+  int		mendiane;
+  int		phiras;
+  int		thystame;
   t_case	*prev;
   t_case	*next;
 };
@@ -50,6 +57,7 @@ struct		s_master
   t_server	server;
   t_team	*teams;
   t_client	*clients;
+  t_case		*cases;
 };
 
 /*
@@ -58,5 +66,6 @@ struct		s_master
 int		init_zappy(t_master *, int, char **);
 void		release_zappy(t_master *);
 int		check_param(int, char **, t_master *);
+int		create_map(t_master *content);
 
 #endif /* !_ZAPPY_H_ */
