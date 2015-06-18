@@ -5,43 +5,46 @@
 ** Login   <prenat_h@epitech.eu>
 **
 ** Started on  Wed Jun 17 18:04:44 2015 Hugo Prenat
-** Last update Thu Jun 18 01:32:17 2015 Emmanuel Chambon
+** Last update Thu Jun 18 14:57:52 2015 Hugo Prenat
 */
 
 #include "zappy.h"
 
-size_t		size_team(t_team *teams)
+void		push_team(t_team **list, t_team *elem)
 {
-  size_t	i;
+  t_team	*it;
+  t_team	*save;
+  bool		stop;
 
-  i = 0;
-  if (teams[0].slot == -1)
-    return (0);
-  while (teams[i].slot != -1)
-    i++;
-  return (i);
+  if (*list == NULL)
+    {
+      elem->next = NULL;
+      *list = elem;
+      return ;
+    }
+  stop = true;
+  it = *list;
+  while (it && stop)
+    {
+      if (it->next)
+	it = it->next;
+      else
+	stop = false;
+    }
+  save = it->next;
+  it->next = elem;
+  elem->next = save;
 }
 
 int		add_one_team(char *team, t_all *content)
 {
-  t_team	*old;
-  size_t	i;
+  t_team	*new;
 
-  i = 0;
-  old = content->teams;
-  if ((content->teams = malloc(sizeof(*content->teams) *
-			       (size_team(old) + 2))) == NULL)
+  if ((new = malloc(sizeof(*new))) == NULL)
     return (-1);
-  while (i != size_team(old))
-    {
-      content->teams[i].name = old[i].name;
-      content->teams[i].slot = old[i].slot;
-      i++;
-    }
-  content->teams[i].name = team;
-  content->teams[i].slot = content->max_clients;
-  content->teams[i + 1].slot = -1;
-  free(old);
+  new->name = team;
+  new->slot = content->max_clients;
+  push_team(&content->teams, new);
   return (0);
 }
 

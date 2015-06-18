@@ -5,20 +5,18 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Tue Jun 16 20:14:21 2015 Emmanuel Chambon
-** Last update Wed Jun 17 21:34:25 2015 Emmanuel Chambon
+** Last update Thu Jun 18 14:50:11 2015 Hugo Prenat
 */
 
 #include "zappy.h"
 
 int		init_zappy(t_all *content, int ac, char **av)
 {
-  if ((content->teams = malloc(sizeof(*content->teams) * 1)) == NULL)
-    error("malloc");
-  content->teams[0].slot = -1;
   content->max_clients = 0;
   content->width = 0;
   content->height = 0;
   content->delay = 0;
+  content->teams = NULL;
   content->clients = NULL;
   if (check_param(ac, av, content) == -1)
     {
@@ -32,8 +30,25 @@ int		init_zappy(t_all *content, int ac, char **av)
   return (0);
 }
 
+void		del_team(t_team **list)
+{
+  t_team	*it;
+  t_team	*elem;
+
+  if (!(*list))
+    return ;
+  it = *list;
+  while (it != NULL)
+    {
+      elem = it;
+      it = it->next;
+      free(elem);
+    }
+  return ;
+}
+
 void		release_zappy(t_all *content)
 {
   release_server(&(content->server));
-  free(content->teams);
+  del_team(&content->teams);
 }

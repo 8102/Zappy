@@ -43,6 +43,7 @@ struct		s_team
 {
   char		*name;
   int		slot;
+  t_team	*next;
 };
 
 struct		s_all
