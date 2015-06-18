@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Tue Jun 16 11:27:54 2015 Emmanuel Chambon
-** Last update Wed Jun 17 22:05:20 2015 Emmanuel Chambon
+** Last update Thu Jun 18 17:23:17 2015 Emmanuel Chambon
 */
 
 #ifndef _SERVER_H_
@@ -28,13 +28,14 @@ struct                          s_server
   char                          *cmd[MAX_CMD];
   void                          (*cmd_handler[MAX_CMD])(bool (*)(char *),
 							char *, t_client *,
-							t_all *);
+							t_master *);
   void                          (*param_checker[MAX_CMD])(char *);
 };
 
 /*
 **      socketutils.c
 */
+void			ssend(int, char *, ...);
 void                    *ipvx(struct sockaddr *);
 int                     bind_local(struct addrinfo *, int *);
 int                     bind_port(char *);
@@ -45,9 +46,9 @@ void                    set_handler(t_server *);
 /*
 **      server_idle.c
 */
-void                    handle_new_connection(int *, t_all *);
-void                    watch_sockets(int *, int *, fd_set *, t_all *);
-void                    idle_server(t_all *);
+void                    handle_new_connection(int *, t_master *);
+void                    watch_sockets(int *, int *, fd_set *, t_master *);
+void                    idle_server(t_master *);
 /*
 **	server.c
 */
@@ -58,17 +59,17 @@ void			init_server(t_server *, char *);
 /*
 **	commands.c
 */
-void                    avance(bool (*)(char*), char *, t_client *, t_all *);
-void                    droite(bool (*)(char*), char *, t_client *, t_all *);
-void                    gauche(bool (*)(char*), char *, t_client *, t_all *);
-void                    voir(bool (*)(char*), char *, t_client *, t_all *);
-void                    inventaire(bool (*)(char*), char *, t_client *, t_all *);
-void                    prend(bool (*)(char*), char *, t_client *, t_all *);
-void                    pose(bool (*)(char*), char *, t_client *, t_all *);
-void                    expulse(bool (*)(char*), char *, t_client *, t_all *);
-void                    broadcast(bool (*)(char*), char *, t_client *, t_all *);
-void                    incantation(bool (*)(char*), char *, t_client *, t_all *);
-void                    _fork(bool (*)(char*), char *, t_client *, t_all *);
-void                    connect_nbr(bool (*)(char*), char *, t_client *, t_all *);
+void                    avance(bool (*)(char*), char *, t_client *, t_master *);
+void                    droite(bool (*)(char*), char *, t_client *, t_master *);
+void                    gauche(bool (*)(char*), char *, t_client *, t_master *);
+void                    voir(bool (*)(char*), char *, t_client *, t_master *);
+void                    inventaire(bool (*)(char*), char *, t_client *, t_master *);
+void                    prend(bool (*)(char*), char *, t_client *, t_master *);
+void                    pose(bool (*)(char*), char *, t_client *, t_master *);
+void                    expulse(bool (*)(char*), char *, t_client *, t_master *);
+void                    broadcast(bool (*)(char*), char *, t_client *, t_master *);
+void                    incantation(bool (*)(char*), char *, t_client *, t_master *);
+void                    _fork(bool (*)(char*), char *, t_client *, t_master *);
+void                    connect_nbr(bool (*)(char*), char *, t_client *, t_master *);
 
 #endif /* !_SERVER_H_ */

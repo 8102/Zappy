@@ -12,7 +12,7 @@
 
 int	main(int ac, char **av)
 {
-  t_all	content;
+  t_master	content;
 
   if (init_zappy(&content, ac, av) == -1)
     return (-1);

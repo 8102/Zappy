@@ -5,12 +5,12 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Tue Jun 16 20:14:21 2015 Emmanuel Chambon
-** Last update Thu Jun 18 14:50:11 2015 Hugo Prenat
+** Last update Thu Jun 18 15:53:05 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
 
-int		init_zappy(t_all *content, int ac, char **av)
+int		init_zappy(t_master *content, int ac, char **av)
 {
   content->max_clients = 0;
   content->width = 0;
@@ -47,8 +47,9 @@ void		del_team(t_team **list)
   return ;
 }
 
-void		release_zappy(t_all *content)
+void		release_zappy(t_master *content)
 {
+  release_clients(&(content->clients));
   release_server(&(content->server));
   del_team(&content->teams);
 }

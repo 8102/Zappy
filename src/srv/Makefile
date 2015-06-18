@@ -5,7 +5,7 @@
 ## chambo_e  <chambon.emmanuel@gmail.com>
 ## 
 ## Started on  Wed Apr  8 22:49:16 2015 Emmanuel Chambon
-## Last update Wed Jun 17 22:08:47 2015 Emmanuel Chambon
+## Last update Thu Jun 18 17:24:38 2015 Emmanuel Chambon
 ##
 
 CC		=	gcc -g
@@ -23,7 +23,9 @@ SRC_SERVER	=	src/main.c		\
 			src/init.c		\
 			src/server.c		\
 			src/client.c		\
+			src/client_handler.c	\
 			src/commands.c		\
+			src/auth.c		\
 			src/server_init.c	\
 			src/server_idle.c	\
 			src/socketutils.c	\
