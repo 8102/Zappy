@@ -32,7 +32,7 @@ for (var opt in options) {
 }
 
 require('./http_server.js')(options.port + 1);
-require('./tcp_client.js')(options.hostname, options.port);
+require('./tcp_client.js')(options.hostname, options.port, options.team_name);
 
 var app = require('app');  // Module to control application life.
 var BrowserWindow = require('browser-window');  // Module to create native browser window.

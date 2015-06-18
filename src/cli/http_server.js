@@ -7,6 +7,7 @@ module.exports = function (port) {
 	/*
 	** variable scope
 	*/
+
 	var server = http.createServer(function(req, res) {
 		console.log('HTTP server created !');
 	});
