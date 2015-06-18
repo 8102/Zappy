@@ -10,98 +10,149 @@
 
 #include "zappy.h"
 
-void			avance(bool __attribute__((unused))(*check)(char*),
-			       char __attribute__((unused))*params,
-			       t_client __attribute__((unused))*client,
-			       t_all __attribute__((unused))*content)
+void			avance(bool (*check)(char*),
+			       char *params,
+			       t_client *client,
+			       t_all *content)
 {
-  printf("avance\n");
+  if (!check(params))
+    {
+      if (send(client->socket, "suc\n", 5) < 0)
+	error(NULL);
+    }
+  dprintf(client->socket, "ok\n");
 }
 
-void			droite(bool __attribute__((unused))(*check)(char*),
-			       char __attribute__((unused))*params,
-			       t_client __attribute__((unused))*client,
-			       t_all __attribute__((unused))*content)
+void			droite(bool (*check)(char*),
+			       char *params,
+			       t_client *client,
+			       t_all *content)
 {
-
+  if (!check(params))
+    {
+      if (send(client->socket, "suc\n", 5) < 0)
+	error(NULL);
+    }
+  dprintf(client->socket, "ok\n");
 }
 
-void			gauche(bool __attribute__((unused))(*check)(char*),
-			       char __attribute__((unused))*params,
-			       t_client __attribute__((unused))*client,
-			       t_all __attribute__((unused))*content)
+void			gauche(bool (*check)(char*),
+			       char *params,
+			       t_client *client,
+			       t_all *content)
 {
-
+  if (!check(params))
+    {
+      if (send(client->socket, "suc\n", 5) < 0)
+	error(NULL);
+    }
+  dprintf(client->socket, "ok\n");
 }
 
-void			voir(bool __attribute__((unused))(*check)(char*),
-			     char __attribute__((unused))*params,
-			     t_client __attribute__((unused))*client,
-			     t_all __attribute__((unused))*content)
+void			voir(bool (*check)(char*),
+			     char *params,
+			     t_client *client,
+			     t_all *content)
 {
-
+  if (!check(params))
+    {
+      if (send(client->socket, "suc\n", 5) < 0)
+	error(NULL);
+    }
 }
 
-void			inventaire(bool __attribute__((unused))(*check)(char*),
-				   char __attribute__((unused))*params,
-				   t_client __attribute__((unused))*client,
-				   t_all __attribute__((unused))*content)
+void			inventaire(bool (*check)(char*),
+				   char *params,
+				   t_client *client,
+				   t_all *content)
 {
-
+  if (!check(params))
+    {
+      if (send(client->socket, "suc\n", 5) < 0)
+	error(NULL);
+    }
+  dprintf(client->socket, "linemate %d, deraumère %d, sibur %d, mendiane %d, phiras %d, thystame %d\n");
 }
 
-void			prend(bool __attribute__((unused))(*check)(char*),
-			     char __attribute__((unused))*params,
-			     t_client __attribute__((unused))*client,
-			     t_all __attribute__((unused))*content)
+void			prend(bool (*check)(char*),
+			     char *params,
+			     t_client *client,
+			     t_all *content)
 {
-
+  if (!check(params))
+    {
+      if (send(client->socket, "suc\n", 5) < 0)
+	error(NULL);
+    }
 }
 
-void			pose(bool __attribute__((unused))(*check)(char*),
-			     char __attribute__((unused))*params,
-			     t_client __attribute__((unused))*client,
-			     t_all __attribute__((unused))*content)
+void			pose(bool (*check)(char*),
+			     char *params,
+			     t_client *client,
+			     t_all *content)
 {
-
+  if (!check(params))
+    {
+      if (send(client->socket, "suc\n", 5) < 0)
+	error(NULL);
+    }
 }
 
-void			expulse(bool __attribute__((unused))(*check)(char*),
-			     char __attribute__((unused))*params,
-			     t_client __attribute__((unused))*client,
-			     t_all __attribute__((unused))*content)
+void			expulse(bool (*check)(char*),
+			     char *params,
+			     t_client *client,
+			     t_all *content)
 {
-
+  if (!check(params))
+    {
+      if (send(client->socket, "suc\n", 5) < 0)
+	error(NULL);
+    }
 }
 
-void			broadcast(bool __attribute__((unused))(*check)(char*),
-			     char __attribute__((unused))*params,
-			     t_client __attribute__((unused))*client,
-			     t_all __attribute__((unused))*content)
+void			broadcast(bool (*check)(char*),
+			     char *params,
+			     t_client *client,
+			     t_all *content)
 {
-
+  if (!check(params))
+    {
+      if (send(client->socket, "suc\n", 5) < 0)
+	error(NULL);
+    }
+  dprintf(client->socket, "ok\n");
 }
 
-void			incantation(bool __attribute__((unused))(*check)(char*),
-			     char __attribute__((unused))*params,
-			     t_client __attribute__((unused))*client,
-			     t_all __attribute__((unused))*content)
+void			incantation(bool (*check)(char*),
+			     char *params,
+			     t_client *client,
+			     t_all *content)
 {
-
+  if (!check(params))
+    {
+      if (send(client->socket, "suc\n", 5) < 0)
+	error(NULL);
+    }
+  dprintf(client->socket, "elevation en cours\nniveau actuel : %d\n", 0);
 }
 
-void			_fork(bool __attribute__((unused))(*check)(char*),
-			     char __attribute__((unused))*params,
-			     t_client __attribute__((unused))*client,
-			     t_all __attribute__((unused))*content)
+void			_fork(bool (*check)(char*),
+			     char *params,
+			     t_client *client,
+			     t_all *content)
 {
-
+  dprintf(client->socket, "ok\n");
 }
 
-void			connect_nbr(bool __attribute__((unused))(*check)(char*),
-			     char __attribute__((unused))*params,
-			     t_client __attribute__((unused))*client,
-			     t_all __attribute__((unused))*content)
+void			connect_nbr(bool (*check)(char*),
+			     char *params,
+			     t_client *client,
+			     t_all *content)
 {
-
+  if (!check(params))
+    {
+      if (send(client->socket, "suc\n", 5) < 0)
+	error(NULL);
+    }
+  dprintf(client->socket, "%d\n", content->teams->slot);
 }

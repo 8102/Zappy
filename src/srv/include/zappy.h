@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Tue Jun 16 11:35:49 2015 Emmanuel Chambon
-** Last update Thu Jun 18 16:34:53 2015 Hugo Prenat
+** Last update Thu Jun 18 18:09:00 2015 Hugo Prenat
 */
 
 #ifndef _ZAPPY_H_
@@ -20,6 +20,7 @@ typedef enum	Orientation	e_Orientation;
 # include "misc.h"
 # include "server.h"
 # include "rb.h"
+# include "client.h"
 
 bool		g_run;
 
@@ -57,7 +58,7 @@ struct		s_team
   t_team	*next;
 };
 
-struct		s_all
+struct		s_master
 {
   int		max_clients;
   int		width;
@@ -72,15 +73,8 @@ struct		s_all
 /*
 **	zappy.c
 */
-int		init_zappy(t_all *content, int ac, char **av);
-void		release_zappy(t_all *);
-int		check_param(int ac, char **av, t_all *content);
-/*
-**	client.c
-*/
-void		push_client(t_client **, t_client *);
-void		pop_client(t_client **, t_client *);
-void		handle_new_connection(int *, t_all *);
-t_client	*get_client(int, t_all *);
-void		remove_connection(t_client *, t_all *);
+int		init_zappy(t_master *, int, char **);
+void		release_zappy(t_master *);
+int		check_param(int, char **, t_master *);
+
 #endif /* !_ZAPPY_H_ */

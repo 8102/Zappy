@@ -5,50 +5,10 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Wed Jun 17 22:07:25 2015 Emmanuel Chambon
-** Last update Thu Jun 18 01:28:37 2015 Emmanuel Chambon
+** Last update Thu Jun 18 14:42:52 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
-
-void            handle_new_connection(int *max, t_all *content)
-{
-  t_server                      *serv;
-  struct sockaddr_storage       r;
-  socklen_t                     len;
-  char                          ip[INET6_ADDRSTRLEN];
-  t_client                      *client;
-
-  if (!(client = malloc(sizeof(t_client))))
-    error("malloc");
-  serv = &(content->server);
-  len = sizeof(r);
-  if ((client->socket = accept(serv->socket, (struct sockaddr *)&r,
-			       &len)) == -1)
-    error("accept");
-  FD_SET(client->socket, &serv->master);
-  if (client->socket > *max)
-    *max = client->socket;
-  client->ip = strdup(inet_ntop(r.ss_family, ipvx((struct sockaddr *)&r),
-				ip, INET6_ADDRSTRLEN));
-  client->orient = NORTH;
-  client->buffer = rb_init();
-  push_client(&content->clients, client);
-}
-
-t_client        *get_client(int socket, t_all *content)
-{
-  t_client      *tmp;
-
-  for (tmp = content->clients; tmp; tmp = tmp->next)
-    if (tmp->socket == socket)
-      return (tmp);
-  return (NULL);
-}
-
-void            remove_connection(t_client *client, t_all *content)
-{
-  pop_client(&content->clients, client);
-}
 
 void            push_client(t_client **list, t_client *elem)
 {
@@ -76,6 +36,18 @@ void            push_client(t_client **list, t_client *elem)
   elem->next = save;
 }
 
+void		delete_client(t_client *client)
+{
+  if (!client)
+    return ;
+  if (client->ip)
+    free(client->ip);
+  rb_free(client->buffer);
+  if (client->socket)
+    close(client->socket);
+  free(client);
+}
+
 void            pop_client(t_client **list, t_client *elem)
 {
   t_client      *it;
@@ -94,14 +66,29 @@ void            pop_client(t_client **list, t_client *elem)
 	  else
 	    *list = (*list)->next;
 	  it->next = NULL;
-	  if (elem->ip)
-	    free(elem->ip);
-	  rb_free(elem->buffer);
-	  free(elem);
+	  delete_client(elem);
 	  return ;
 	}
       if (it != *list)
 	prev = prev->next;
       it = it->next;
     }
+}
+
+void		release_clients(t_client **clients)
+{
+  t_client	*tmp;
+  t_client	*prv;
+
+  prv = NULL;
+  tmp = *clients;
+  while (tmp)
+    {
+      printf("%d\n", tmp->socket);
+      if (prv)
+	delete_client(prv);
+      prv = tmp;
+      tmp = tmp->next;
+    }
+  delete_client(prv);
 }

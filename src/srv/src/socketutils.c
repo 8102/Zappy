@@ -5,10 +5,20 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Tue Jun 16 11:46:03 2015 Emmanuel Chambon
-** Last update Tue Jun 16 12:03:35 2015 Emmanuel Chambon
+** Last update Thu Jun 18 17:22:35 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
+
+void		ssend(int socket, char *msg, ...)
+{
+  va_list	args;
+
+  va_start(args, msg);
+  if (!(vdprintf(socket, msg, args)))
+    error("dprintf");
+  va_end(args);
+}
 
 void            *ipvx(struct sockaddr *s)
 {
