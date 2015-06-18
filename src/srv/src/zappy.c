@@ -35,4 +35,5 @@ int		init_zappy(t_all *content, int ac, char **av)
 void		release_zappy(t_all *content)
 {
   release_server(&(content->server));
+  free(content->teams);
 }
