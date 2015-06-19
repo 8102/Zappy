@@ -5,147 +5,176 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Wed Jun 17 08:31:10 2015 Emmanuel Chambon
-** Last update Thu Jun 18 01:36:13 2015 Emmanuel Chambon
+** Last update Fri Jun 19 14:31:25 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
 
-void			avance(bool (*check)(char*),
-			       char *params,
+void			avance(char __attribute__((unused))*params,
 			       t_client *client,
 			       __attribute__((unused)) t_master *content)
 {
-  if (!check(params))
-    {
-      ssend(client->socket, "suc\n");
-    }
+  /* if (!check(params)) */
+  /*   { */					// NO Need to check parameters. There is none
+  /*     ssend(client->socket, "suc\n"); */
+  /*   } */
   ssend(client->socket, "ok\n");
 }
 
-void			droite(bool (*check)(char*),
-			       char *params,
+void			droite(char __attribute__((unused))*params,
 			       t_client *client,
 			       __attribute__((unused)) t_master *content)
 {
-  if (!check(params))
-    {
-      ssend(client->socket, "suc\n");
-    }
   ssend(client->socket, "ok\n");
 }
 
-void			gauche(bool (*check)(char*),
-			       char *params,
+void			gauche(char __attribute__((unused))*params,
 			       t_client *client,
 			       __attribute__((unused)) t_master *content)
 {
-  if (!check(params))
-    {
-      ssend(client->socket, "suc\n");
-    }
   ssend(client->socket, "ok\n");
 }
 
-void			voir(bool (*check)(char*),
-			     char *params,
+void			voir(char __attribute__((unused))*params,
 			     t_client *client,
 			     __attribute__((unused)) t_master *content)
 {
-  if (!check(params))
-    {
-      ssend(client->socket, "suc\n");
-    }
 }
 
-void			inventaire(bool (*check)(char*),
-				   char *params,
+void			inventaire(char __attribute__((unused))*params,
 				   t_client *client,
 				   __attribute__((unused)) t_master *content)
 {
-  if (!check(params))
-    {
-      ssend(client->socket, "suc\n");
-    }
   ssend(client->socket, "linemate %d, deraumère %d, sibur %d, mendiane %d, phiras %d, thystame %d\n", 0, 0, 0, 0, 0, 0);
 }
 
-void			prend(bool (*check)(char*),
-			     char *params,
-			     t_client *client,
-			     __attribute__((unused)) t_master *content)
+void			prend(char *params,
+			      t_client *client,
+			      __attribute__((unused)) t_master *content)
 {
-  if (!check(params))
+  if (!params)
     {
       ssend(client->socket, "suc\n");
+      return ;
     }
 }
 
-void			pose(bool (*check)(char*),
-			     char *params,
+void			pose(char *params,
 			     t_client *client,
 			     __attribute__((unused)) t_master *content)
 {
-  if (!check(params))
+  if (!params)
     {
       ssend(client->socket, "suc\n");
+      return ;
     }
 }
 
-void			expulse(bool (*check)(char*),
-			     char *params,
-			     t_client *client,
-			     __attribute__((unused)) t_master *content)
+void			expulse(char __attribute__((unused))*params,
+				t_client *client,
+				__attribute__((unused)) t_master *content)
 {
-  if (!check(params))
-    {
-      ssend(client->socket, "suc\n");
-    }
 }
 
-void			broadcast(bool (*check)(char*),
-			     char *params,
-			     t_client *client,
-			     __attribute__((unused)) t_master *content)
+void			broadcast(char *params,
+				  t_client *client,
+				  __attribute__((unused)) t_master *content)
 {
-  if (!check(params))
+  if (!params)
     {
       ssend(client->socket, "suc\n");
+      return ;
     }
   ssend(client->socket, "ok\n");
 }
 
-void			incantation(bool (*check)(char*),
-			     char *params,
-			     t_client *client,
-			     __attribute__((unused)) t_master *content)
+void			incantation(char __attribute__((unused))*params,
+				    t_client *client,
+				    __attribute__((unused)) t_master *content)
 {
-  if (!check(params))
-    {
-      ssend(client->socket, "suc\n");
-    }
   ssend(client->socket, "elevation en cours\nniveau actuel : %d\n", 0);
 }
 
-void			_fork(bool (*check)(char*),
-			     char *params,
-			     t_client *client,
-			     __attribute__((unused)) t_master *content)
+void			_fork(char __attribute__((unused))*params,
+			      t_client *client,
+			      __attribute__((unused)) t_master *content)
 {
-  if (!check(params))
-    {
-      ssend(client->socket, "suc\n");
-    }
   ssend(client->socket, "ok\n");
 }
 
-void			connect_nbr(bool (*check)(char*),
-			     char *params,
-			     t_client *client,
-			     __attribute__((unused)) t_master *content)
+void			connect_nbr(char __attribute__((unused))*params,
+				    t_client *client,
+				    __attribute__((unused)) t_master *content)
 {
-  if (!check(params))
-    {
-      ssend(client->socket, "suc\n");
-    }
-  ssend(client->socket, "%d\n", content->teams->slot);
+  ssend(client->socket, "%d\n", client->team->slot);
+}
+
+void			msz(char __attribute__((unused))*params,
+				    t_client __attribute__((unused))*client,
+				    __attribute__((unused)) t_master *content)
+{
+
+}
+
+void			bct(char __attribute__((unused))*params,
+				    t_client __attribute__((unused))*client,
+				    __attribute__((unused)) t_master *content)
+{
+
+}
+
+void			mct(char __attribute__((unused))*params,
+				    t_client __attribute__((unused))*client,
+				    __attribute__((unused)) t_master *content)
+{
+
+}
+
+void			tna(char __attribute__((unused))*params,
+				    t_client __attribute__((unused))*client,
+				    __attribute__((unused)) t_master *content)
+{
+
+}
+
+void			ppo(char __attribute__((unused))*params,
+				    t_client __attribute__((unused))*client,
+				    __attribute__((unused)) t_master *content)
+{
+
+}
+
+void			plv(char __attribute__((unused))*params,
+				    t_client __attribute__((unused))*client,
+				    __attribute__((unused)) t_master *content)
+{
+
+}
+
+void			pin(char __attribute__((unused))*params,
+				    t_client __attribute__((unused))*client,
+				    __attribute__((unused)) t_master *content)
+{
+
+}
+
+void			sgt(char __attribute__((unused))*params,
+				    t_client __attribute__((unused))*client,
+				    __attribute__((unused)) t_master *content)
+{
+
+}
+
+void			sst(char __attribute__((unused))*params,
+				    t_client __attribute__((unused))*client,
+				    __attribute__((unused)) t_master *content)
+{
+
+}
+
+void			graphic(char __attribute__((unused))*params,
+				    t_client *client,
+				    __attribute__((unused)) t_master *content)
+{
+  client->graphic = true;
 }

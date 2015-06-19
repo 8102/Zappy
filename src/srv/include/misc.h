@@ -5,9 +5,10 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Tue Jun 16 11:36:38 2015 Emmanuel Chambon
-** Last update Thu Jun 18 16:32:28 2015 Emmanuel Chambon
+** Last update Fri Jun 19 16:53:26 2015 Emmanuel Chambon
 */
 
+#pragma once
 #ifndef _MISC_H_
 # define _MISC_H_
 
@@ -23,5 +24,7 @@
 # include <stdarg.h>
 
 void		error(char *);
+char		*epur_str(char *);
+char		*str_replace(char *, char, char);
 
 #endif /* !_MISC_H_ */

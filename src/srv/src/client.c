@@ -5,16 +5,16 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Wed Jun 17 22:07:25 2015 Emmanuel Chambon
-** Last update Thu Jun 18 14:42:52 2015 Emmanuel Chambon
+** Last update Fri Jun 19 16:47:49 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
 
-void            push_client(t_client **list, t_client *elem)
+void		push_client(t_client **list, t_client *elem)
 {
-  t_client      *it;
-  t_client      *save;
-  bool          stop;
+  t_client	*it;
+  t_client	*save;
+  bool		stop;
 
   if (*list == NULL)
     {
@@ -42,16 +42,17 @@ void		delete_client(t_client *client)
     return ;
   if (client->ip)
     free(client->ip);
-  rb_free(client->buffer);
+  cb_free(client->buffer);
+  rb_free(client->recv);
   if (client->socket)
     close(client->socket);
   free(client);
 }
 
-void            pop_client(t_client **list, t_client *elem)
+void		pop_client(t_client **list, t_client *elem)
 {
-  t_client      *it;
-  t_client      *prev;
+  t_client	*it;
+  t_client	*prev;
 
   if (!(*list))
     return ;

@@ -5,17 +5,18 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Tue Jun 16 11:35:49 2015 Emmanuel Chambon
-** Last update Thu Jun 18 17:24:18 2015 Emmanuel Chambon
+** Last update Fri Jun 19 17:01:14 2015 Emmanuel Chambon
 */
 
+#pragma once
 #ifndef _CLIENT_H_
 # define _CLIENT_H_
 
 enum            Orientation {
   NORTH,
-  WEST,
+  EAST,
   SOUTH,
-  EAST
+  WEST
 };
 
 struct          s_client
@@ -23,7 +24,9 @@ struct          s_client
   int           socket;
   char          *ip;
   bool		auth;
-  t_ring_buffer *buffer;
+  bool		graphic;
+  t_cmd_buffer	*buffer;
+  t_ring_buffer *recv;
   e_Orientation orient;
   t_team	*team;
   t_client      *prev;
@@ -37,16 +40,14 @@ void		push_client(t_client **, t_client *);
 void		pop_client(t_client **, t_client *);
 void		delete_client(t_client *);
 void		release_clients(t_client **);
-
 /*
 **	client_handler.c
 */
 void		handle_new_connection(int *, t_master *);
 t_client	*get_client(int, t_client **);
-void		remove_connection(t_client *, t_master *);
+void		remove_connection(t_client *, t_master *, int);
 void		input_interpret(t_client *client, t_master *);
 void		handle_io_connection(t_client *, t_master *);
-
 /*
 **	auth.c
 */

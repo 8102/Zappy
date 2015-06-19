@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Tue Jun 16 11:46:03 2015 Emmanuel Chambon
-** Last update Thu Jun 18 17:22:35 2015 Emmanuel Chambon
+** Last update Fri Jun 19 16:52:29 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
@@ -20,16 +20,16 @@ void		ssend(int socket, char *msg, ...)
   va_end(args);
 }
 
-void            *ipvx(struct sockaddr *s)
+void		*ipvx(struct sockaddr *s)
 {
   if (s->sa_family == AF_INET)
     return &(((struct sockaddr_in*)s)->sin_addr);
   return &(((struct sockaddr_in6*)s)->sin6_addr);
 }
 
-int			bind_local(struct addrinfo *i, int *sock)
+int		bind_local(struct addrinfo *i, int *sock)
 {
-  int			trigger;
+  int		trigger;
 
   trigger = 1;
   if ((*sock = socket(i->ai_family, i->ai_socktype, i->ai_protocol)) == -1)

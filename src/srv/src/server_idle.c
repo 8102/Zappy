@@ -5,12 +5,12 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Tue Jun 16 11:48:27 2015 Emmanuel Chambon
-** Last update Thu Jun 18 17:30:16 2015 Emmanuel Chambon
+** Last update Fri Jun 19 16:51:41 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
 
-void            watch_sockets(int *i, int *max, fd_set *catch,
+void		watch_sockets(int *i, int *max, fd_set *catch,
 			      t_master *content)
 {
   if (FD_ISSET(*i, catch))
@@ -22,12 +22,12 @@ void            watch_sockets(int *i, int *max, fd_set *catch,
     }
 }
 
-void            idle_server(t_master *content)
+void		idle_server(t_master *content)
 {
   t_server	*serv;
-  fd_set        catch;
-  int           max;
-  int           i;
+  fd_set	catch;
+  int		max;
+  int		i;
 
   serv = &(content->server);
   max = serv->socket;

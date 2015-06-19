@@ -5,9 +5,10 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Thu Apr  9 04:36:36 2015 Emmanuel Chambon
-** Last update Tue Jun 16 12:09:04 2015 Emmanuel Chambon
+** Last update Fri Jun 19 16:53:36 2015 Emmanuel Chambon
 */
 
+#pragma once
 #ifndef _NETWORK_H_
 # define _NETWORK_H_
 
