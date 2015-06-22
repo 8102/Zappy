@@ -22,9 +22,18 @@ enum            Orientation {
 struct          s_client
 {
   int           socket;
+  size_t	x;
+  size_t	y;
   char          *ip;
   bool		auth;
   bool		graphic;
+  int		meal;
+  int		linemate;
+  int		deraumere;
+  int		sibur;
+  int		mendiane;
+  int		phiras;
+  int		thystame;
   t_cmd_buffer	*buffer;
   t_ring_buffer *recv;
   e_Orientation orient;
@@ -40,6 +49,7 @@ void		push_client(t_client **, t_client *);
 void		pop_client(t_client **, t_client *);
 void		delete_client(t_client *);
 void		release_clients(t_client **);
+void		init_client(t_master *, t_client *);
 /*
 **	client_handler.c
 */

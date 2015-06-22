@@ -21,6 +21,7 @@ void				handle_new_connection(int *max,
 
   if (!(client = malloc(sizeof(t_client))))
     error("malloc");
+  memset(client, 0, sizeof(*client));
   serv = &(content->server);
   len = sizeof(r);
   if ((client->socket = accept(serv->socket, (struct sockaddr *)&r,
@@ -31,11 +32,7 @@ void				handle_new_connection(int *max,
     *max = client->socket;
   client->ip = strdup(inet_ntop(r.ss_family, ipvx((struct sockaddr *)&r),
 				ip, INET6_ADDRSTRLEN));
-  client->orient = NORTH;
-  client->buffer = cb_init();
-  client->recv = rb_init();
-  client->auth = false;
-  client->graphic = false;
+  init_client(content, client);
   push_client(&(content->clients), client);
   ssend(client->socket, "BIENVENUE\n");
 }

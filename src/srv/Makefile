@@ -5,7 +5,7 @@
 ## chambo_e  <chambon.emmanuel@gmail.com>
 ## 
 ## Started on  Wed Apr  8 22:49:16 2015 Emmanuel Chambon
-## Last update Fri Jun 19 14:39:00 2015 Emmanuel Chambon
+## Last update Mon Jun 22 22:59:09 2015 Hugo Prenat
 ##
 
 CC		=	gcc -g
@@ -34,6 +34,7 @@ SRC_SERVER	=	src/main.c		\
 			src/rbutils.c		\
 			src/case.c		\
 			src/epur_str.c		\
+			src/client_init.c	\
 			src/misc.c
 
 OBJS		=	$(SRC_SERVER:.c=.o)
