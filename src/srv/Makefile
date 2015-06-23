@@ -5,7 +5,7 @@
 ## chambo_e  <chambon.emmanuel@gmail.com>
 ## 
 ## Started on  Wed Apr  8 22:49:16 2015 Emmanuel Chambon
-## Last update Tue Jun 23 19:18:48 2015 Hugo Prenat
+## Last update Tue Jun 23 19:33:07 2015 Hugo Prenat
 ##
 
 CC		=	gcc -g
@@ -52,8 +52,8 @@ $(OBJ_DIR)%.o	:	$(patsubst %.c, ${SRC_DIR}%.c, %.c)
 $(NAME_SERVER)	:	$(OBJS)
 			$(CC) $(OBJS) -o $(NAME_SERVER)
 
-all		:	$(NAME_SERVER)
-##			@$(MAKE) --no-print-directory $(NAME_SERVER)
+all		:
+			@$(MAKE) --no-print-directory $(NAME_SERVER)
 
 clean		:
 			$(RM) $(OBJS) $(OBJ_DIR)
