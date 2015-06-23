@@ -5,7 +5,7 @@
 ** Login   <prenat_h@epitech.eu>
 **
 ** Started on  Tue Jun 23 18:04:19 2015 Hugo Prenat
-** Last update Tue Jun 23 19:21:52 2015 Hugo Prenat
+** Last update Tue Jun 23 19:57:15 2015 Hugo Prenat
 */
 
 #include "zappy.h"
@@ -63,7 +63,7 @@ void		pop_egg(t_egg **list, t_egg *elem)
     }
 }
 
-void	add_egg(t_team *team, size_t x, size_t y, int id)
+void	add_egg(t_team *team, size_t x, size_t y)
 {
   t_egg	*egg;
 
@@ -71,6 +71,5 @@ void	add_egg(t_team *team, size_t x, size_t y, int id)
     error("malloc");
   egg->pos[0] = x;
   egg->pos[1] = y;
-  egg->id_player = id;
   push_egg(&team->eggs, egg);
 }

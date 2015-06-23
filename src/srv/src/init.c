@@ -5,7 +5,7 @@
 ** Login   <prenat_h@epitech.eu>
 **
 ** Started on  Wed Jun 17 18:04:44 2015 Hugo Prenat
-** Last update Tue Jun 23 19:21:25 2015 Hugo Prenat
+** Last update Tue Jun 23 20:05:14 2015 Hugo Prenat
 */
 
 #include "zappy.h"
@@ -39,12 +39,19 @@ void		push_team(t_team **list, t_team *elem)
 int		add_one_team(char *team, t_master *content)
 {
   t_team	*new;
+  int		i;
 
+  i = 0;
   if ((new = malloc(sizeof(*new))) == NULL)
     return (-1);
   new->name = team;
   new->slot = content->max_clients;
   new->eggs = NULL;
+  while (i != content->max_clients)
+    {
+      add_egg(new, rand() % content->width, rand() % content->height);
+      i++;
+    }
   push_team(&content->teams, new);
   return (0);
 }

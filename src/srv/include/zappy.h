@@ -28,7 +28,6 @@ bool            g_run;
 struct		s_egg
 {
   size_t	pos[2];
-  int		id_player;
   t_egg		*next;
   t_egg		*prev;
 };
@@ -76,5 +75,9 @@ int		init_zappy(t_master *, int, char **);
 void		release_zappy(t_master *);
 int		check_param(int, char **, t_master *);
 int		create_map(t_master *content);
+/*
+**	egg.c
+*/
+void	add_egg(t_team *team, size_t x, size_t y);
 
 #endif /* !_ZAPPY_H_ */
