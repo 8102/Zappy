@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Thu Jun 18 14:42:29 2015 Emmanuel Chambon
-** Last update Tue Jun 23 14:31:32 2015 Emmanuel Chambon
+** Last update Tue Jun 23 14:56:14 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
@@ -32,7 +32,7 @@ void				handle_new_connection(int *max,
     *max = client->socket;
   client->ip = strdup(inet_ntop(r.ss_family, ipvx((struct sockaddr *)&r),
 				ip, INET6_ADDRSTRLEN));
-  init_client(content, client);
+  init_client(client);
   push_client(&(content->clients), client);
   ssend(client->socket, "BIENVENUE\n");
 }

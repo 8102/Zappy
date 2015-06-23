@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Tue Jun 16 11:35:49 2015 Emmanuel Chambon
-** Last update Tue Jun 23 14:29:41 2015 Emmanuel Chambon
+** Last update Tue Jun 23 14:57:24 2015 Emmanuel Chambon
 */
 
 #pragma once
@@ -53,7 +53,7 @@ void		push_client(t_client **, t_client *);
 void		pop_client(t_client **, t_client *);
 void		delete_client(t_client *);
 void		release_clients(t_client **);
-void		init_client(t_master *, t_client *);
+void		init_client(t_client *);
 /*
 **	client_handler.c
 */
@@ -67,5 +67,6 @@ void		handle_io_connection(t_client *, t_master *);
 */
 t_team		*find_team(char *, t_master *);
 void		select_team(char *, t_client *, t_master *);
+void		place_player(t_master *, t_client *);
 
 #endif /* !_CLIENT_H_ */
