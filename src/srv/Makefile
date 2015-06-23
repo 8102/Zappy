@@ -5,50 +5,60 @@
 ## chambo_e  <chambon.emmanuel@gmail.com>
 ## 
 ## Started on  Wed Apr  8 22:49:16 2015 Emmanuel Chambon
-## Last update Mon Jun 22 22:59:09 2015 Hugo Prenat
+## Last update Tue Jun 23 19:18:48 2015 Hugo Prenat
 ##
 
 CC		=	gcc -g
 
-RM		=	rm -f
-
-INC		=	include
-
-CFLAGS		=	-W -Wall -Wextra -I$(INC)
+RM		=	rm -fr
 
 NAME_SERVER	=	server
 
-SRC_SERVER	=	src/main.c		\
-			src/zappy.c		\
-			src/init.c		\
-			src/server.c		\
-			src/client.c		\
-			src/client_handler.c	\
-			src/commands.c		\
-			src/auth.c		\
-			src/server_init.c	\
-			src/server_idle.c	\
-			src/socketutils.c	\
-			src/cbinit.c		\
-			src/rbinit.c		\
-			src/rbutils.c		\
-			src/case.c		\
-			src/epur_str.c		\
-			src/client_init.c	\
-			src/misc.c
+SRC_SERVER	=	main.c			\
+			zappy.c			\
+			init.c			\
+			server.c		\
+			client.c		\
+			client_handler.c	\
+			commands.c		\
+			auth.c			\
+			server_init.c		\
+			server_idle.c		\
+			socketutils.c		\
+			cbinit.c		\
+			rbinit.c		\
+			rbutils.c		\
+			case.c			\
+			epur_str.c		\
+			client_init.c		\
+			egg.c			\
+			misc.c
 
-OBJS		=	$(SRC_SERVER:.c=.o)
+OBJ_DIR		=	obj/
 
-all		:
-			@$(MAKE) --no-print-directory $(NAME_SERVER)
+SRC_DIR		=	src/
 
-server		:	$(OBJS)
-			$(CC) $(CFLAGS) $(OBJS) -o $(NAME_SERVER)
+INC_DIR		=	include/
+
+CFLAGS		=	-W -Wall -Wextra -I$(INC_DIR)
+
+OBJS		=	$(patsubst %.c,${OBJ_DIR}%.o, $(SRC_SERVER))
+
+FIRST		:=	$(shell test -d $(OBJ_DIR) || mkdir $(OBJ_DIR))
+
+$(OBJ_DIR)%.o	:	$(patsubst %.c, ${SRC_DIR}%.c, %.c)
+			$(CC) $(CFLAGS) -c $< -o $@
+
+$(NAME_SERVER)	:	$(OBJS)
+			$(CC) $(OBJS) -o $(NAME_SERVER)
+
+all		:	$(NAME_SERVER)
+##			@$(MAKE) --no-print-directory $(NAME_SERVER)
 
 clean		:
-			$(RM) $(OBJS)
+			$(RM) $(OBJS) $(OBJ_DIR)
 
 fclean		:	clean
-			$(RM) $(NAME_SERVER) $(NAME_CLIENT)
+			$(RM) $(NAME_SERVER)
 
 re		:	fclean all

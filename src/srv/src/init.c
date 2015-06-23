@@ -5,7 +5,7 @@
 ** Login   <prenat_h@epitech.eu>
 **
 ** Started on  Wed Jun 17 18:04:44 2015 Hugo Prenat
-** Last update Thu Jun 18 15:49:54 2015 Emmanuel Chambon
+** Last update Tue Jun 23 19:21:25 2015 Hugo Prenat
 */
 
 #include "zappy.h"
@@ -44,6 +44,7 @@ int		add_one_team(char *team, t_master *content)
     return (-1);
   new->name = team;
   new->slot = content->max_clients;
+  new->eggs = NULL;
   push_team(&content->teams, new);
   return (0);
 }

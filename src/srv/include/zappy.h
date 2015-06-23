@@ -15,6 +15,7 @@ typedef struct  s_client        t_client;
 typedef struct  s_team		t_team;
 typedef struct  s_master	t_master;
 typedef struct	s_case		t_case;
+typedef struct	s_egg		t_egg;
 typedef enum    Orientation     e_Orientation;
 
 # include "misc.h"
@@ -23,6 +24,14 @@ typedef enum    Orientation     e_Orientation;
 # include "client.h"
 
 bool            g_run;
+
+struct		s_egg
+{
+  size_t	pos[2];
+  int		id_player;
+  t_egg		*next;
+  t_egg		*prev;
+};
 
 struct		s_case
 {
@@ -43,6 +52,7 @@ struct		s_team
 {
   char		*name;
   int		slot;
+  t_egg	*eggs;
   t_team	*next;
 };
 
