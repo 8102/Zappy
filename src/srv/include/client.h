@@ -5,14 +5,26 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Tue Jun 16 11:35:49 2015 Emmanuel Chambon
-** Last update Fri Jun 19 17:01:14 2015 Emmanuel Chambon
+** Last update Tue Jun 23 14:29:41 2015 Emmanuel Chambon
 */
 
 #pragma once
 #ifndef _CLIENT_H_
 # define _CLIENT_H_
 
-enum            Orientation {
+# define	LINEMATE	0
+# define	DERAUMERE	1
+# define	SIBUR		2
+# define	MENDIANE	3
+# define	PHIRAS		4
+# define	THYSTAME	5
+# define	MEAL		6
+# define	AUTH		0
+# define	GRAPHIC		1
+# define	X		0
+# define	Y		0
+
+enum		Orientation {
   NORTH,
   EAST,
   SOUTH,
@@ -22,18 +34,10 @@ enum            Orientation {
 struct          s_client
 {
   int           socket;
-  size_t	x;
-  size_t	y;
+  size_t	pos[2];
   char          *ip;
-  bool		auth;
-  bool		graphic;
-  int		meal;
-  int		linemate;
-  int		deraumere;
-  int		sibur;
-  int		mendiane;
-  int		phiras;
-  int		thystame;
+  bool		trigger[2];
+  int		resources[7];
   t_cmd_buffer	*buffer;
   t_ring_buffer *recv;
   e_Orientation orient;

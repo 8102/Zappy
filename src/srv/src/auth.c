@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Thu Jun 18 15:01:28 2015 Emmanuel Chambon
-** Last update Thu Jun 18 17:15:33 2015 Emmanuel Chambon
+** Last update Tue Jun 23 14:39:31 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
@@ -36,7 +36,8 @@ void		select_team(char *team, t_client *client, t_master *content)
 	{
 	  ssend(client->socket, "%d\n", tm->slot);
 	  client->team = tm;
-	  client->auth = true;
+	  place_player(content, client);
+	  printf("%d - %d\n", client->pos[X], client->pos[Y]);
 	  client->team->slot--;
 	}
     }

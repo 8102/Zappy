@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Thu Jun 18 14:42:29 2015 Emmanuel Chambon
-** Last update Fri Jun 19 17:00:44 2015 Emmanuel Chambon
+** Last update Tue Jun 23 14:31:32 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
@@ -63,14 +63,14 @@ void		input_interpret(t_client *client, t_master *content)
   printf("[%s]\n", input);
   for (i = 0; i < MAX_CMD - 1; i++)
     {
-      if (!client->auth)
+      if (!client->trigger[AUTH])
 	continue ;
       if (!(strncmp(content->server.cmd[i],
 		    input, strlen(content->server.cmd[i]))))
 	content->server.cmd_handler[i](epur_str(strchr(input, ' ')),
 				       client, content);
     }
-  if (i == MAX_CMD - 1 && !client->auth)
+  if (i == MAX_CMD - 1 && !client->trigger[AUTH])
     select_team(input, client, content);
   free(input);
 }

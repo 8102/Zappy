@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Wed Jun 17 08:31:10 2015 Emmanuel Chambon
-** Last update Fri Jun 19 14:31:25 2015 Emmanuel Chambon
+** Last update Tue Jun 23 14:31:54 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
@@ -176,5 +176,5 @@ void			graphic(char __attribute__((unused))*params,
 				    t_client *client,
 				    __attribute__((unused)) t_master *content)
 {
-  client->graphic = true;
+  client->trigger[GRAPHIC] = true;
 }

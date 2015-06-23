@@ -5,7 +5,7 @@
 ** Login   <prenat_h@epitech.eu>
 **
 ** Started on  Mon Jun 22 22:25:56 2015 Hugo Prenat
-** Last update Mon Jun 22 23:00:43 2015 Hugo Prenat
+** Last update Tue Jun 23 14:43:38 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
@@ -17,7 +17,8 @@ bool		place_pos(t_master *content, size_t x, size_t y)
   tmp = content->clients;
   while (tmp)
     {
-      if (tmp->x == x && tmp->y == y)
+      printf("hello\n");
+      if (tmp->pos[X] == x && tmp->pos[Y] == y)
 	return (false);
       tmp = tmp->next;
     }
@@ -36,6 +37,16 @@ void		place_player(t_master *content, t_client *client)
       x = rand() % content->width;
       y = rand() % content->height;
     }
+  client->pos[X] = x;
+  client->pos[y] = y;
+  client->resources[MEAL] = 0;
+  client->resources[LINEMATE] = 0;
+  client->resources[DERAUMERE] = 0;
+  client->resources[SIBUR] = 0;
+  client->resources[MENDIANE] = 0;
+  client->resources[PHIRAS] = 0;
+  client->resources[THYSTAME] = 0;
+  client->trigger[AUTH] = true;
 }
 
 void	init_client(t_master *content, t_client *client)
@@ -43,14 +54,7 @@ void	init_client(t_master *content, t_client *client)
   client->orient = NORTH;
   client->buffer = cb_init();
   client->recv = rb_init();
-  client->auth = false;
-  client->graphic = false;
-  client->meal = 0;
-  client->linemate = 0;
-  client->deraumere = 0;
-  client->sibur = 0;
-  client->mendiane = 0;
-  client->phiras = 0;
-  client->thystame = 0;
-  place_player(content, client);
+  client->trigger[AUTH] = false;
+  client->trigger[GRAPHIC] = false;
+  client->team = NULL;
 }
