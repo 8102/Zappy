@@ -28,6 +28,8 @@ bool            g_run;
 struct		s_egg
 {
   size_t	pos[2];
+  size_t	nbr;
+  int	id;
   t_egg		*next;
   t_egg		*prev;
 };
@@ -61,6 +63,8 @@ struct		s_master
   int		width;
   int		height;
   int		delay;
+  size_t	nbr_player;
+  size_t	nbr_egg;
   char		*port;
   t_server	server;
   t_team	*teams;
@@ -78,6 +82,6 @@ int		create_map(t_master *content);
 /*
 **	egg.c
 */
-void		add_egg(t_team *team, size_t x, size_t y);
+void		add_egg(t_team *team, t_master *content, size_t pos[2], int id);
 void		pop_egg(t_egg **, t_egg *);
 #endif /* !_ZAPPY_H_ */

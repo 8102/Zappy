@@ -16,6 +16,8 @@ int		init_zappy(t_master *content, int ac, char **av)
   content->width = 0;
   content->height = 0;
   content->delay = 0;
+  content->nbr_egg = 0;
+  content->nbr_player = 0;
   content->teams = NULL;
   content->clients = NULL;
   content->cases = NULL;

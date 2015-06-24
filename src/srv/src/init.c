@@ -5,7 +5,7 @@
 ** Login   <prenat_h@epitech.eu>
 **
 ** Started on  Wed Jun 17 18:04:44 2015 Hugo Prenat
-** Last update Tue Jun 23 20:05:14 2015 Hugo Prenat
+** Last update Wed Jun 24 17:27:30 2015 Hugo Prenat
 */
 
 #include "zappy.h"
@@ -40,6 +40,7 @@ int		add_one_team(char *team, t_master *content)
 {
   t_team	*new;
   int		i;
+  size_t	pos[2];
 
   i = 0;
   if ((new = malloc(sizeof(*new))) == NULL)
@@ -49,7 +50,9 @@ int		add_one_team(char *team, t_master *content)
   new->eggs = NULL;
   while (i != content->max_clients)
     {
-      add_egg(new, rand() % content->width, rand() % content->height);
+      pos[0] = rand() % content->width;
+      pos[1] = rand() % content->height;
+      add_egg(new, content, pos, -1);
       i++;
     }
   push_team(&content->teams, new);

@@ -25,7 +25,7 @@
 # define	Y		0
 
 enum		Orientation {
-  NORTH,
+  NORTH = 1,
   EAST,
   SOUTH,
   WEST
@@ -37,6 +37,7 @@ struct          s_client
   bool		trigger[2];
   int		resources[7];
   int		level;
+  int		id;
 
   char          *ip;
   int           socket;
@@ -55,7 +56,7 @@ void		push_client(t_client **, t_client *);
 void		pop_client(t_client **, t_client *);
 void		delete_client(t_client *);
 void		release_clients(t_client **);
-void		init_client(t_client *);
+void		init_client(t_client *, t_master *);
 /*
 **	client_handler.c
 */

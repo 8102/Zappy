@@ -5,7 +5,7 @@
 ** Login   <prenat_h@epitech.eu>
 **
 ** Started on  Mon Jun 22 22:25:56 2015 Hugo Prenat
-** Last update Wed Jun 24 13:32:49 2015 Emmanuel Chambon
+** Last update Wed Jun 24 17:29:55 2015 Hugo Prenat
 */
 
 #include "zappy.h"
@@ -36,8 +36,10 @@ void		place_player(t_client *client, t_team *team)
   client->level = 1;
 }
 
-void	init_client(t_client *client)
+void	init_client(t_client *client, t_master *content)
 {
+  content->nbr_player++;
+  client->id = content->nbr_player;
   client->orient = NORTH;
   client->buffer = cb_init();
   client->recv = rb_init();

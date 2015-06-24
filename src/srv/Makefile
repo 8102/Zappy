@@ -5,7 +5,7 @@
 ## chambo_e  <chambon.emmanuel@gmail.com>
 ##
 ## Started on  Wed Apr  8 22:49:16 2015 Emmanuel Chambon
-## Last update Wed Jun 24 11:51:31 2015 Hugo Prenat
+## Last update Wed Jun 24 17:45:22 2015 Hugo Prenat
 ##
 
 CC		=	gcc -g
@@ -32,6 +32,7 @@ SRC_SERVER	=	main.c			\
 			epur_str.c		\
 			client_init.c		\
 			egg.c			\
+			graphic.c		\
 			misc.c
 
 OBJ_DIR		=	obj/
@@ -49,7 +50,7 @@ OBJS		=	$(patsubst %.c,${OBJ_DIR}%.o, $(SRC_SERVER))
 FIRST		:=	$(shell test -d $(OBJ_DIR) || mkdir $(OBJ_DIR))
 
 $(OBJ_DIR)%.o	:	$(patsubst %.c, ${SRC_DIR}%.c, %.c)
-	@echo -e "$(BUILD_PRINT)" && $(CC) $(CFLAGS) -c $< -o $@
+			@echo -e "$(BUILD_PRINT)" && $(CC) $(CFLAGS) -c $< -o $@
 
 $(NAME_SERVER)	:	$(OBJS)
 			$(CC) $(OBJS) -o $(NAME_SERVER)

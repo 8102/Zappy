@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Wed Jun 17 08:31:10 2015 Emmanuel Chambon
-** Last update Wed Jun 24 13:34:28 2015 Emmanuel Chambon
+** Last update Wed Jun 24 15:26:13 2015 Hugo Prenat
 */
 
 #include "zappy.h"
@@ -36,7 +36,7 @@ void			gauche(char __attribute__((unused))*params,
 }
 
 void			voir(char __attribute__((unused))*params,
-			     __attribute__((unused)) t_client *client,
+			     t_client *client,
 			     __attribute__((unused)) t_master *content)
 {
 }
@@ -71,7 +71,7 @@ void			pose(char *params,
 }
 
 void			expulse(char __attribute__((unused))*params,
-				__attribute__((unused)) t_client *client,
+				t_client *client,
 				__attribute__((unused)) t_master *content)
 {
 }
@@ -170,11 +170,4 @@ void			sst(char __attribute__((unused))*params,
 				    __attribute__((unused)) t_master *content)
 {
 
-}
-
-void			graphic(char __attribute__((unused))*params,
-				    t_client *client,
-				    __attribute__((unused)) t_master *content)
-{
-  client->trigger[GRAPHIC] = true;
 }

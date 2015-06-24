@@ -84,6 +84,9 @@ void		plv(char *, t_client *, t_master *);
 void		pin(char *, t_client *, t_master *);
 void		sgt(char *, t_client *, t_master *);
 void		sst(char *, t_client *, t_master *);
+/*
+**	graphic.h
+*/
 void		graphic(char *, t_client *, t_master *);
 
 #endif /* !_SERVER_H_ */

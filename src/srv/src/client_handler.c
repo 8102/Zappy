@@ -32,7 +32,7 @@ void				handle_new_connection(int *max,
     *max = client->socket;
   client->ip = strdup(inet_ntop(r.ss_family, ipvx((struct sockaddr *)&r),
 				ip, INET6_ADDRSTRLEN));
-  init_client(client);
+  init_client(client, content);
   push_client(&(content->clients), client);
   ssend(client->socket, "BIENVENUE\n");
 }
