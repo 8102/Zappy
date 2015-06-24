@@ -5,10 +5,12 @@
 ## chambo_e  <chambon.emmanuel@gmail.com>
 ##
 ## Started on  Wed Apr  8 22:49:16 2015 Emmanuel Chambon
-## Last update Wed Jun 24 17:54:30 2015 Hugo Prenat
+## Last update Wed Jun 24 17:58:33 2015 Hugo Prenat
 ##
 
-CC		=	gcc -g
+DEBUG		=	yes
+
+CC		=	gcc
 
 RM		=	rm -fr
 
@@ -42,6 +44,16 @@ SRC_DIR		=	src/
 INC_DIR		=	include/
 
 CFLAGS		=	-W -Wall -Wextra -I$(INC_DIR)
+
+ifeq ($(DEBUG),yes)
+
+CFLAGS 		+= 	-g3
+
+else
+
+CFLAGS		+= 	-O3
+
+endif
 
 BUILD_PRINT	=	\e[1;34mBuilding\e[0m \e[1;33m$<\e[0m
 
