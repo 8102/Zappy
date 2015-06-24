@@ -5,7 +5,7 @@
 ** Login   <prenat_h@epitech.eu>
 **
 ** Started on  Wed Jun 24 17:11:21 2015 Hugo Prenat
-** Last update Wed Jun 24 17:41:21 2015 Hugo Prenat
+** Last update Thu Jun 25 00:24:15 2015 Hugo Prenat
 */
 
 #include "zappy.h"
@@ -64,7 +64,7 @@ void	send_egg(t_client *client, t_master *content)
   // }
 }
 
-void		graphic(char __attribute__((unused))*params,
+void		graphic(char UNUSED*params,
 			t_client *client, t_master *content)
 {
   client->trigger[GRAPHIC] = true;

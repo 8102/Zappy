@@ -19,6 +19,7 @@ typedef struct	s_server	t_server;
 # define	MAX_CMD		22 + 1
 # define	BACKLOG		5
 # define	RECV_SIZE	4096
+# define	UNUSED		__attribute__((unused))
 
 struct		s_server
 {

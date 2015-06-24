@@ -5,7 +5,7 @@
 ** Login   <prenat_h@epitech.eu>
 **
 ** Started on  Wed Jun 24 19:02:16 2015 Hugo Prenat
-** Last update Wed Jun 24 23:44:23 2015 Hugo Prenat
+** Last update Thu Jun 25 00:24:22 2015 Hugo Prenat
 */
 
 #include "zappy.h"
@@ -48,7 +48,7 @@ void	change_pos(t_master *content, t_client *client)
     go_east_west(content, client);
 }
 
-void	avance(char __attribute__((unused))*params,
+void	avance(char UNUSED*params,
 	       t_client *client,
 	       t_master *content)
 {
@@ -62,9 +62,9 @@ void	avance(char __attribute__((unused))*params,
     ssend(client->socket, "ok\n");
 }
 
-void	droite(char __attribute__((unused))*params,
+void	droite(char UNUSED*params,
 	       t_client *client,
-	       __attribute__((unused)) t_master *content)
+	       UNUSED t_master *content)
 {
   if (client->trigger[GRAPHIC] == true)
     {
@@ -80,9 +80,9 @@ void	droite(char __attribute__((unused))*params,
 
 }
 
-void	gauche(char __attribute__((unused))*params,
+void	gauche(char UNUSED*params,
 	       t_client *client,
-	       __attribute__((unused)) t_master *content)
+	       UNUSED t_master *content)
 {
   if (client->trigger[GRAPHIC] == true)
     {
