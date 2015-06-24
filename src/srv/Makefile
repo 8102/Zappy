@@ -5,7 +5,7 @@
 ## chambo_e  <chambon.emmanuel@gmail.com>
 ##
 ## Started on  Wed Apr  8 22:49:16 2015 Emmanuel Chambon
-## Last update Wed Jun 24 17:45:22 2015 Hugo Prenat
+## Last update Wed Jun 24 17:54:30 2015 Hugo Prenat
 ##
 
 CC		=	gcc -g
@@ -43,7 +43,7 @@ INC_DIR		=	include/
 
 CFLAGS		=	-W -Wall -Wextra -I$(INC_DIR)
 
-BUILD_PRINT = \e[1;34mBuilding $<\e[0m
+BUILD_PRINT	=	\e[1;34mBuilding\e[0m \e[1;33m$<\e[0m
 
 OBJS		=	$(patsubst %.c,${OBJ_DIR}%.o, $(SRC_SERVER))
 
