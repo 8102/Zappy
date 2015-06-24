@@ -63,9 +63,6 @@ char		*check_params(char *);
 /*
 **	commands.c
 */
-void		avance(char *, t_client *, t_master *);
-void		droite(char *, t_client *, t_master *);
-void		gauche(char *, t_client *, t_master *);
 void		voir(char *, t_client *, t_master *);
 void		inventaire(char *, t_client *, t_master *);
 void		prend(char *, t_client *, t_master *);
@@ -88,5 +85,10 @@ void		sst(char *, t_client *, t_master *);
 **	graphic.h
 */
 void		graphic(char *, t_client *, t_master *);
-
+/*
+**	direction.c
+*/
+void		avance(char *, t_client *, t_master *);
+void		droite(char *, t_client *, t_master *);
+void		gauche(char *, t_client *, t_master *);
 #endif /* !_SERVER_H_ */

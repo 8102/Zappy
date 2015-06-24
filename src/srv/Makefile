@@ -5,7 +5,7 @@
 ## chambo_e  <chambon.emmanuel@gmail.com>
 ##
 ## Started on  Wed Apr  8 22:49:16 2015 Emmanuel Chambon
-## Last update Wed Jun 24 17:58:33 2015 Hugo Prenat
+## Last update Wed Jun 24 22:16:12 2015 Hugo Prenat
 ##
 
 DEBUG		=	yes
@@ -35,6 +35,7 @@ SRC_SERVER	=	main.c			\
 			client_init.c		\
 			egg.c			\
 			graphic.c		\
+			direction.c		\
 			misc.c
 
 OBJ_DIR		=	obj/

@@ -10,31 +10,6 @@
 
 #include "zappy.h"
 
-void			avance(char __attribute__((unused))*params,
-			       t_client *client,
-			       __attribute__((unused)) t_master *content)
-{
-  /* if (!check(params)) */
-  /*   { */					// NO Need to check parameters. There is none
-  /*     ssend(client->socket, "suc\n"); */
-  /*   } */
-  ssend(client->socket, "ok\n");
-}
-
-void			droite(char __attribute__((unused))*params,
-			       t_client *client,
-			       __attribute__((unused)) t_master *content)
-{
-  ssend(client->socket, "ok\n");
-}
-
-void			gauche(char __attribute__((unused))*params,
-			       t_client *client,
-			       __attribute__((unused)) t_master *content)
-{
-  ssend(client->socket, "ok\n");
-}
-
 void			voir(char __attribute__((unused))*params,
 			     t_client *client,
 			     __attribute__((unused)) t_master *content)
