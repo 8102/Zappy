@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Tue Jun 16 11:35:49 2015 Emmanuel Chambon
-** Last update Fri Jun 19 16:57:56 2015 Emmanuel Chambon
+** Last update Wed Jun 24 13:33:44 2015 Emmanuel Chambon
 */
 
 #ifndef _ZAPPY_H_
@@ -78,6 +78,6 @@ int		create_map(t_master *content);
 /*
 **	egg.c
 */
-void	add_egg(t_team *team, size_t x, size_t y);
-
+void		add_egg(t_team *team, size_t x, size_t y);
+void		pop_egg(t_egg **, t_egg *);
 #endif /* !_ZAPPY_H_ */

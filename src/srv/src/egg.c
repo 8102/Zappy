@@ -5,7 +5,7 @@
 ** Login   <prenat_h@epitech.eu>
 **
 ** Started on  Tue Jun 23 18:04:19 2015 Hugo Prenat
-** Last update Tue Jun 23 19:57:15 2015 Hugo Prenat
+** Last update Wed Jun 24 13:30:17 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
@@ -54,8 +54,8 @@ void		pop_egg(t_egg **list, t_egg *elem)
 	  else
 	    *list = (*list)->next;
 	  it->next = NULL;
-    free(elem);
-    return ;
+	  free(elem);
+	  return ;
 	}
       if (it != *list)
 	prev = prev->next;

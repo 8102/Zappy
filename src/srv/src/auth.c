@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Thu Jun 18 15:01:28 2015 Emmanuel Chambon
-** Last update Tue Jun 23 14:54:35 2015 Emmanuel Chambon
+** Last update Wed Jun 24 14:01:08 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
@@ -16,7 +16,8 @@ t_team		*find_team(char *team_name, t_master *content)
 
   for (tmp = content->teams; tmp; tmp = tmp->next)
     {
-      if (!(strncmp(tmp->name, team_name, strlen(tmp->name))))
+      if (!(strncmp(tmp->name, team_name, strlen(tmp->name)))
+	  && strlen(team_name) == strlen(tmp->name))
 	return (tmp);
     }
   return (NULL);
@@ -36,7 +37,7 @@ void		select_team(char *team, t_client *client, t_master *content)
 	{
 	  ssend(client->socket, "%d\n", tm->slot);
 	  client->team = tm;
-	  place_player(content, client);
+	  place_player(client, client->team);
 	  client->team->slot--;
 	}
     }

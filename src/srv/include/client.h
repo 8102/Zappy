@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Tue Jun 16 11:35:49 2015 Emmanuel Chambon
-** Last update Tue Jun 23 14:57:24 2015 Emmanuel Chambon
+** Last update Wed Jun 24 13:32:24 2015 Emmanuel Chambon
 */
 
 #pragma once
@@ -33,11 +33,13 @@ enum		Orientation {
 
 struct          s_client
 {
-  int           socket;
   size_t	pos[2];
-  char          *ip;
   bool		trigger[2];
   int		resources[7];
+  int		level;
+
+  char          *ip;
+  int           socket;
   t_cmd_buffer	*buffer;
   t_ring_buffer *recv;
   e_Orientation orient;
@@ -67,6 +69,6 @@ void		handle_io_connection(t_client *, t_master *);
 */
 t_team		*find_team(char *, t_master *);
 void		select_team(char *, t_client *, t_master *);
-void		place_player(t_master *, t_client *);
+void		place_player(t_client *, t_team *);
 
 #endif /* !_CLIENT_H_ */
