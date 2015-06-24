@@ -1,11 +1,11 @@
 ##
 ## Makefile for  in /home/chambo_e/epitech/PSU_2014_myirc
-## 
+##
 ## Made by Emmanuel Chambon
 ## chambo_e  <chambon.emmanuel@gmail.com>
-## 
+##
 ## Started on  Wed Apr  8 22:49:16 2015 Emmanuel Chambon
-## Last update Tue Jun 23 19:33:07 2015 Hugo Prenat
+## Last update Wed Jun 24 11:51:31 2015 Hugo Prenat
 ##
 
 CC		=	gcc -g
@@ -42,12 +42,14 @@ INC_DIR		=	include/
 
 CFLAGS		=	-W -Wall -Wextra -I$(INC_DIR)
 
+BUILD_PRINT = \e[1;34mBuilding $<\e[0m
+
 OBJS		=	$(patsubst %.c,${OBJ_DIR}%.o, $(SRC_SERVER))
 
 FIRST		:=	$(shell test -d $(OBJ_DIR) || mkdir $(OBJ_DIR))
 
 $(OBJ_DIR)%.o	:	$(patsubst %.c, ${SRC_DIR}%.c, %.c)
-			$(CC) $(CFLAGS) -c $< -o $@
+	@echo -e "$(BUILD_PRINT)" && $(CC) $(CFLAGS) -c $< -o $@
 
 $(NAME_SERVER)	:	$(OBJS)
 			$(CC) $(OBJS) -o $(NAME_SERVER)
