@@ -6,19 +6,32 @@ var server = require('./http_server.js').Server;
 var io = require('socket.io').listen(server);
 
 /*
+** debug
+*/
+var debug = true;
+
+/*
 ** variable scope
 */
 var client = new net.Socket();
 var queue = [];
 var graphicCmd = ['msz', 'bct', 'tna', 'pnw', 'ppo', 'plv', 'pin', 'pex', 'pbc', 'pic', 'pie',
 'pfk', 'pdr', 'pgt', 'pdi', 'enw', 'eht', 'ebo', 'edi', 'sgt', 'seg', 'smg', 'suc', 'sbp', 'tna',
-'pnw'];
-var mapSize = [];
-var launchIA = 0;
+'pnw', 'BIE'];
+var mapSize = {
+		x: 0,
+		y: 0
+	};
+var availPlaces = 0;
+var isAuth = false;
 var graphicSocket = undefined;
 
+function isNumber(n) {
+  return !isNaN(parseFloat(n)) && isFinite(n);
+}
+
 /*
-** Init (I'm gonna rethink and clean this function)
+** Init
 */
 module.exports = function(addr, port, team_name) {
 	console.log('connecting to ' + addr + ':' + port + '...')
@@ -31,49 +44,33 @@ module.exports = function(addr, port, team_name) {
 		console.log('Connection closed');
 	});
 	client.on('data', function(data) {
-		console.log(data.toString(undefined, 0, data.length - 1));
-		if (graphicCmd.indexOf(data.slice(0, 3)) > -1) {
-			socket.emit('message', data);
-		} else {
-			data = data.toString().split('\n');
-
-			if (data == "BIENVENUE\n") {
-				client.write(team_name + '\n');
-			} else if (launchIA == 0) {
-				data = data.toString().split('\n');
-				if (data[0] > 0) {
-					launchIA = 1;
-					if (data[1]) {
-						data = data[1].split(' ');
-						if (data.length != 2) {
-							console.log('Bad size map !');
-							client.destroy();
-							process.exit(1);
-						}
-						mapSize = data;
+		if (debug) {
+			console.log(data.toString(undefined, 0, data.length - 1));
+		}
+		var res = data.toString().split('\n');
+		if (!isAuth) {
+			for (var i = 0; i < res.length; i++) {
+				if (res[i] == 'BIENVENUE') {
+					client.write(team_name + '\n');
+				} else if (isNumber(res[i])) {
+					availPlaces = res[i];
+				} else if (res[i].split(' ').length == 2) {
+					var tmp = res[i].split(' ');
+					if (isNumber(tmp[0]) && isNumber(tmp[1])) {
+						isAuth = true;
+						mapSize.x = tmp[0];
+						mapSize.y = tmp[1];
+						console.log('Authentification succeed !');
 					} else {
-						launchIA = 2;
+						console.error('Bad map size !');
 					}
 				}
-			} else if (launchIA == 2) {
-				data = data.toString().split(' ');
-				if (data.length != 2) {
-					console.log('Bad size map !');
-					client.destroy();
-					process.exit(1);
-				}
-				mapSize = data;
-				launchIA = 1;
-			} else {
-				// command from server to IA
-				data = data.toString().split('\n');
 			}
+		} else if (graphicCmd.indexOf(data.slice(0, 3)) > -1) {
+			socket.emit('message', data);
+		} else {
+			// command from server to IA
 		}
-		if (mapSize.length > 0) {
-			console.log("Initialization succeed !");
-			console.log("Map size: x = " + mapSize[0] + " y = " + mapSize[1]);
-		}
-		queue.shift();
 	});
 
 	/*
