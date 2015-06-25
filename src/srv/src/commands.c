@@ -91,18 +91,31 @@ void			msz(char UNUSED*params,
 
 }
 
-void			bct(char UNUSED*params,
-				    t_client UNUSED*client,
-				    UNUSED t_master *content)
+void		bct(char *params,
+				    t_client *client,
+				    t_master *content)
 {
-
+//   char	*tmp;
+//   int		i;
+//
+//   i = 0;
+//   tmp = params;
+//   while ((tmp = index(tmp, ' ')) != NULL)
+//     i++;
+// printf("params === {%s} %d\n", params, i);
+  // if (!params)
+	// 	{
+	// 		ssend(client->socket, "suc\n");
+	// 		return ;
+	// 	}
+	// ssend(client->socket, "ok\n");
 }
 
 void			mct(char UNUSED*params,
-				    t_client UNUSED*client,
-				    UNUSED t_master *content)
+				    t_client *client,
+				    t_master *content)
 {
-
+  send_map(client, content);
 }
 
 void			tna(char UNUSED*params,

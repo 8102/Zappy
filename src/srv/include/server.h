@@ -86,6 +86,7 @@ void		sst(char *, t_client *, t_master *);
 **	graphic.h
 */
 void		graphic(char *, t_client *, t_master *);
+void		send_map(t_client *, t_master *);
 /*
 **	direction.c
 */
