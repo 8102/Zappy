@@ -39,5 +39,5 @@
 
 node_modules
 etc
-client
-server
+zappy_server
+zappy_ai
