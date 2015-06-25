@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Tue Jun 16 11:35:49 2015 Emmanuel Chambon
-** Last update Fri Jun 19 16:57:56 2015 Emmanuel Chambon
+** Last update Wed Jun 24 13:33:44 2015 Emmanuel Chambon
 */
 
 #ifndef _ZAPPY_H_
@@ -15,6 +15,7 @@ typedef struct  s_client        t_client;
 typedef struct  s_team		t_team;
 typedef struct  s_master	t_master;
 typedef struct	s_case		t_case;
+typedef struct	s_egg		t_egg;
 typedef enum    Orientation     e_Orientation;
 
 # include "misc.h"
@@ -23,6 +24,15 @@ typedef enum    Orientation     e_Orientation;
 # include "client.h"
 
 bool            g_run;
+
+struct		s_egg
+{
+  size_t	pos[2];
+  size_t	nbr;
+  int	id;
+  t_egg		*next;
+  t_egg		*prev;
+};
 
 struct		s_case
 {
@@ -43,6 +53,7 @@ struct		s_team
 {
   char		*name;
   int		slot;
+  t_egg	*eggs;
   t_team	*next;
 };
 
@@ -52,6 +63,8 @@ struct		s_master
   int		width;
   int		height;
   int		delay;
+  size_t	nbr_player;
+  size_t	nbr_egg;
   char		*port;
   t_server	server;
   t_team	*teams;
@@ -66,5 +79,9 @@ int		init_zappy(t_master *, int, char **);
 void		release_zappy(t_master *);
 int		check_param(int, char **, t_master *);
 int		create_map(t_master *content);
-
+/*
+**	egg.c
+*/
+void		add_egg(t_team *team, t_master *content, size_t pos[2], int id);
+void		pop_egg(t_egg **, t_egg *);
 #endif /* !_ZAPPY_H_ */

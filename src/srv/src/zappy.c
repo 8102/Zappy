@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Tue Jun 16 20:14:21 2015 Emmanuel Chambon
-** Last update Thu Jun 18 15:53:05 2015 Emmanuel Chambon
+** Last update Wed Jun 24 13:43:36 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
@@ -16,6 +16,8 @@ int		init_zappy(t_master *content, int ac, char **av)
   content->width = 0;
   content->height = 0;
   content->delay = 0;
+  content->nbr_egg = 0;
+  content->nbr_player = 0;
   content->teams = NULL;
   content->clients = NULL;
   content->cases = NULL;
@@ -32,6 +34,22 @@ int		init_zappy(t_master *content, int ac, char **av)
   return (0);
 }
 
+void		release_eggs(t_egg **list)
+{
+  t_egg		*it;
+  t_egg		*elem;
+
+  if (!(*list))
+    return ;
+  it = *list;
+  while (it != NULL)
+    {
+      elem = it;
+      it = it->next;
+      free(elem);
+    }
+}
+
 void		del_team(t_team **list)
 {
   t_team	*it;
@@ -44,9 +62,9 @@ void		del_team(t_team **list)
     {
       elem = it;
       it = it->next;
+      release_eggs(&elem->eggs);
       free(elem);
     }
-  return ;
 }
 
 void		del_case(t_case **list)
@@ -63,7 +81,6 @@ void		del_case(t_case **list)
       it = it->next;
       free(elem);
     }
-  return ;
 }
 
 void		release_zappy(t_master *content)

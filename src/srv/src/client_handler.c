@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Thu Jun 18 14:42:29 2015 Emmanuel Chambon
-** Last update Fri Jun 19 17:00:44 2015 Emmanuel Chambon
+** Last update Tue Jun 23 14:56:14 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
@@ -21,6 +21,7 @@ void				handle_new_connection(int *max,
 
   if (!(client = malloc(sizeof(t_client))))
     error("malloc");
+  memset(client, 0, sizeof(*client));
   serv = &(content->server);
   len = sizeof(r);
   if ((client->socket = accept(serv->socket, (struct sockaddr *)&r,
@@ -31,11 +32,7 @@ void				handle_new_connection(int *max,
     *max = client->socket;
   client->ip = strdup(inet_ntop(r.ss_family, ipvx((struct sockaddr *)&r),
 				ip, INET6_ADDRSTRLEN));
-  client->orient = NORTH;
-  client->buffer = cb_init();
-  client->recv = rb_init();
-  client->auth = false;
-  client->graphic = false;
+  init_client(client, content);
   push_client(&(content->clients), client);
   ssend(client->socket, "BIENVENUE\n");
 }
@@ -66,14 +63,14 @@ void		input_interpret(t_client *client, t_master *content)
   printf("[%s]\n", input);
   for (i = 0; i < MAX_CMD - 1; i++)
     {
-      if (!client->auth)
+      if (!client->trigger[AUTH])
 	continue ;
       if (!(strncmp(content->server.cmd[i],
 		    input, strlen(content->server.cmd[i]))))
 	content->server.cmd_handler[i](epur_str(strchr(input, ' ')),
 				       client, content);
     }
-  if (i == MAX_CMD - 1 && !client->auth)
+  if (i == MAX_CMD - 1 && !client->trigger[AUTH])
     select_team(input, client, content);
   free(input);
 }

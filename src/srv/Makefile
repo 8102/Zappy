@@ -1,53 +1,80 @@
 ##
 ## Makefile for  in /home/chambo_e/epitech/PSU_2014_myirc
-## 
+##
 ## Made by Emmanuel Chambon
 ## chambo_e  <chambon.emmanuel@gmail.com>
-## 
+##
 ## Started on  Wed Apr  8 22:49:16 2015 Emmanuel Chambon
-## Last update Fri Jun 19 14:39:00 2015 Emmanuel Chambon
+## Last update Wed Jun 24 22:16:12 2015 Hugo Prenat
 ##
 
-CC		=	gcc -g
+DEBUG		=	yes
 
-RM		=	rm -f
+CC		=	gcc
 
-INC		=	include
-
-CFLAGS		=	-W -Wall -Wextra -I$(INC)
+RM		=	rm -fr
 
 NAME_SERVER	=	server
 
-SRC_SERVER	=	src/main.c		\
-			src/zappy.c		\
-			src/init.c		\
-			src/server.c		\
-			src/client.c		\
-			src/client_handler.c	\
-			src/commands.c		\
-			src/auth.c		\
-			src/server_init.c	\
-			src/server_idle.c	\
-			src/socketutils.c	\
-			src/cbinit.c		\
-			src/rbinit.c		\
-			src/rbutils.c		\
-			src/case.c		\
-			src/epur_str.c		\
-			src/misc.c
+SRC_SERVER	=	main.c			\
+			zappy.c			\
+			init.c			\
+			server.c		\
+			client.c		\
+			client_handler.c	\
+			commands.c		\
+			auth.c			\
+			server_init.c		\
+			server_idle.c		\
+			socketutils.c		\
+			cbinit.c		\
+			rbinit.c		\
+			rbutils.c		\
+			case.c			\
+			epur_str.c		\
+			client_init.c		\
+			egg.c			\
+			graphic.c		\
+			direction.c		\
+			misc.c
 
-OBJS		=	$(SRC_SERVER:.c=.o)
+OBJ_DIR		=	obj/
+
+SRC_DIR		=	src/
+
+INC_DIR		=	include/
+
+CFLAGS		=	-W -Wall -Wextra -I$(INC_DIR)
+
+ifeq ($(DEBUG),yes)
+
+CFLAGS 		+= 	-g3
+
+else
+
+CFLAGS		+= 	-O3
+
+endif
+
+BUILD_PRINT	=	\e[1;34mBuilding\e[0m \e[1;33m$<\e[0m
+
+OBJS		=	$(patsubst %.c,${OBJ_DIR}%.o, $(SRC_SERVER))
+
+FIRST		:=	$(shell test -d $(OBJ_DIR) || mkdir $(OBJ_DIR))
+
+$(OBJ_DIR)%.o	:	$(patsubst %.c, ${SRC_DIR}%.c, %.c)
+			@echo -e "$(BUILD_PRINT)" && $(CC) $(CFLAGS) -c $< -o $@
+
+$(NAME_SERVER)	:	$(OBJS)
+			$(CC) $(OBJS) -o $(NAME_SERVER)
 
 all		:
 			@$(MAKE) --no-print-directory $(NAME_SERVER)
 
-server		:	$(OBJS)
-			$(CC) $(CFLAGS) $(OBJS) -o $(NAME_SERVER)
-
 clean		:
-			$(RM) $(OBJS)
+			$(RM) $(OBJS) $(OBJ_DIR)
 
 fclean		:	clean
-			$(RM) $(NAME_SERVER) $(NAME_CLIENT)
+			$(RM) $(NAME_SERVER)
 
 re		:	fclean all
