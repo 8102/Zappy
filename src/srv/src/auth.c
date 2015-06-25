@@ -16,9 +16,8 @@ t_team		*find_team(char *team_name, t_master *content)
 
   for (tmp = content->teams; tmp; tmp = tmp->next)
     {
-      if (!(strncmp(tmp->name, team_name, strlen(tmp->name)))
-	  && strlen(team_name) == strlen(tmp->name))
-	return (tmp);
+      if (!strcmp(tmp->name, team_name))
+         return (tmp);
     }
   return (NULL);
 }
