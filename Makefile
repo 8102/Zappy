@@ -5,12 +5,12 @@
 ## chambo_e  <chambon.emmanuel@gmail.com>
 ##
 ## Started on  Wed Apr  8 22:49:16 2015 Emmanuel Chambon
-## Last update Thu Jun 18 01:57:54 2015 Emmanuel Chambon
+## Last update Thu Jun 25 17:34:42 2015 Jean-Baptiste Grégoire
 ##
 
-EXE_CLIENT	:=	client
+EXE_CLIENT	:=	zappy_ai
 
-EXE_SERVER	:=	server
+EXE_SERVER	:=	zappy_server
 
 RM		:=	rm -f
 

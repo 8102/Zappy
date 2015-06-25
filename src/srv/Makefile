@@ -5,7 +5,7 @@
 ## chambo_e  <chambon.emmanuel@gmail.com>
 ##
 ## Started on  Wed Apr  8 22:49:16 2015 Emmanuel Chambon
-## Last update Wed Jun 24 22:16:12 2015 Hugo Prenat
+## Last update Thu Jun 25 17:43:11 2015 Jean-Baptiste Grégoire
 ##
 
 DEBUG		=	yes
@@ -14,7 +14,7 @@ CC		=	gcc
 
 RM		=	rm -fr
 
-NAME_SERVER	=	server
+NAME_SERVER	=	zappy_server
 
 SRC_SERVER	=	main.c			\
 			zappy.c			\
