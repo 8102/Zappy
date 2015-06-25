@@ -9,7 +9,7 @@ var io = require('socket.io').listen(server);
 ** variable scope
 */
 var client = new net.Socket();
-var queue = new Array();
+var queue = [];
 var graphicCmd = ['msz', 'bct', 'tna', 'pnw', 'ppo', 'plv', 'pin', 'pex', 'pbc', 'pic', 'pie',
 'pfk', 'pdr', 'pgt', 'pdi', 'enw', 'eht', 'ebo', 'edi', 'sgt', 'seg', 'smg', 'suc', 'sbp', 'tna',
 'pnw'];
@@ -18,7 +18,7 @@ var launchIA = 0;
 var graphicSocket = undefined;
 
 /*
-** Init
+** Init (I'm gonna rethink and clean this function)
 */
 module.exports = function(addr, port, team_name) {
 	console.log('connecting to ' + addr + ':' + port + '...')
@@ -33,8 +33,10 @@ module.exports = function(addr, port, team_name) {
 	client.on('data', function(data) {
 		console.log(data.toString(undefined, 0, data.length - 1));
 		if (graphicCmd.indexOf(data.slice(0, 3)) > -1) {
-			socket.emit('message', data);	
+			socket.emit('message', data);
 		} else {
+			data = data.toString().split('\n');
+
 			if (data == "BIENVENUE\n") {
 				client.write(team_name + '\n');
 			} else if (launchIA == 0) {
@@ -50,7 +52,7 @@ module.exports = function(addr, port, team_name) {
 						}
 						mapSize = data;
 					} else {
-						launchIA = 2;							
+						launchIA = 2;
 					}
 				}
 			} else if (launchIA == 2) {
@@ -64,6 +66,7 @@ module.exports = function(addr, port, team_name) {
 				launchIA = 1;
 			} else {
 				// command from server to IA
+				data = data.toString().split('\n');
 			}
 		}
 		if (mapSize.length > 0) {
@@ -90,90 +93,96 @@ module.exports = function(addr, port, team_name) {
 ** Action class: do the communication between the server and the AI
 */
 
-var Action  = function () {
+var Action  = function() {
 
 };
 
-Action.prototype.forward = function () {
+Action.prototype.forward = function() {
 	if (queue.length < 10) {
 		client.write('avance\n');
-		queue.push('avance');
+		queue.push({command: 'avance', state: undefined});
 	}
 };
 
-Action.prototype.left = function () {
+Action.prototype.left = function() {
 	if (queue.length < 10) {
 		client.write('gauche\n');
-		queue.push('gauche');
+		queue.push({command: 'gauche', state: undefined});
 	}
 };
 
-Action.prototype.right = function () {
+Action.prototype.right = function() {
 	if (queue.length < 10) {
 		client.write('droite\n');
-		queue.push('droite');
+		queue.push({command: 'droite', state: undefined});
 	}
 };
 
-Action.prototype.see = function () {
+Action.prototype.see = function() {
 	if (queue.length < 10) {
-	client.write('voir\n');
-	queue.push('voir');
+		client.write('voir\n');
+		queue.push({command: 'voir', state: undefined});
+		return (true);
 	}
+	return (false);
 };
 
-Action.prototype.inventory = function () {
+Action.prototype.inventory = function() {
 	if (queue.length < 10) {
 		client.write('inventaire\n');
-		queue.push('inventaire');
+		queue.push({command: 'inventaire', state: undefined});
+		return (true);
 	}
+	return (false);
 };
 
-Action.prototype.takeItem = function () {
+Action.prototype.takeItem = function(obj) {
 	if (queue.length < 10) {
-		client.write('prendre objet\n');
-		queue.push('prendre objet');
+		client.write('prendre ' + obj + '\n');
+		queue.push({command: 'prendre objet', state: undefined});
 	}
 };
 
-Action.prototype.dropItem = function () {
+Action.prototype.dropItem = function(obj) {
 	if (queue.length < 10) {
-		client.write('pose objet\n');
-		queue.push('pose objet');
+		client.write('pose ' + obj +'\n');
+		queue.push({command: 'pose objet', state: undefined});
 	}
 };
 
-Action.prototype.kickOut = function () {
+Action.prototype.kickOut = function() {
 	if (queue.length < 10) {
 		client.write('expulse\n');
-		queue.push('expulse');
+		queue.push({command: 'expulse', state: undefined});
 	}
 };
 
-Action.prototype.sayToEveryone = function () {
+Action.prototype.sayToEveryone = function(message) {
 	if (queue.length < 10) {
 		client.write('broadcast texte\n');
-		queue.push('broadcast texte');
+		queue.push({command: 'broadcast texte', state: undefined});
 	}
 };
 
-Action.prototype.incantation = function () {
+Action.prototype.incantation = function() {
 	if (queue.length < 10) {
 		client.write('incantation\n');
-		queue.push('incantation');
+		queue.push({command: 'incantation', state: undefined});
 	}
 };
 
-Action.prototype.layEgg = function () {
+Action.prototype.layEgg = function() {
 	if (queue.length < 10) {
 		client.write('fork\n');
-		queue.push('fork');
+		queue.push({command: 'fork', state: undefined});
 	}
 };
 
-Action.prototype.getFreeSlot = function () {
+Action.prototype.getFreeSlot = function() {
 	if (queue.length < 10) {
 		client.write('connect_nbr\n');
-		queue.push('connect_nbr');
+		queue.push({command: 'connect_nbr', state: undefined});
 	}
 };
+
+module.exports.actions = Action;
