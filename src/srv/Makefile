@@ -36,7 +36,9 @@ SRC_SERVER	=	main.c			\
 			egg.c			\
 			graphic.c		\
 			direction.c		\
-			misc.c
+			misc.c			\
+			voir.c			\
+			voir_misc.c		\
 
 OBJ_DIR		=	obj/
 

@@ -84,4 +84,10 @@ int		create_map(t_master *content);
 */
 void		add_egg(t_team *team, t_master *content, size_t pos[2], int id);
 void		pop_egg(t_egg **, t_egg *);
+/*
+**	voir.c
+*/
+t_case		*getCaseInMap(int, int, t_case *, t_master *);
+char		*fillStringCase(t_case *, char *);
+
 #endif /* !_ZAPPY_H_ */

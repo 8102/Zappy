@@ -12,15 +12,19 @@
 
 void			voir(char UNUSED*params,
 			     t_client *client,
-			     UNUSED t_master *content)
+			     t_master *content)
 {
+  select_position_watch(client, content);
 }
 
 void			inventaire(char UNUSED*params,
 				   t_client *client,
 				   UNUSED t_master *content)
 {
-  ssend(client->socket, "linemate %d, deraumère %d, sibur %d, mendiane %d, phiras %d, thystame %d\n", 0, 0, 0, 0, 0, 0);
+  ssend(client->socket, "linemate %d, deraumère %d, sibur %d, mendiane %d,\
+ phiras %d, thystame %d\n", client->resources[0], client->resources[1],
+	client->resources[2], client->resources[3], client->resources[4],
+	client->resources[5]);
 }
 
 void			prend(char *params,
@@ -53,14 +57,19 @@ void			expulse(char UNUSED*params,
 
 void			broadcast(char *params,
 				  t_client *client,
-				  UNUSED t_master *content)
+				  t_master *content)
 {
-  if (!params)
-    {
-      ssend(client->socket, "suc\n");
-      return ;
-    }
+  t_client		*parsing;
+
+  parsing = content->clients;
   ssend(client->socket, "ok\n");
+  while (parsing)
+    {
+      if (parsing->id != client->id)
+	ssend(parsing->socket, "message %d, %s", client->pos[1] *
+	      content->width + client->pos[0], params);
+      parsing = parsing->next;
+    }
 }
 
 void			incantation(char UNUSED*params,
