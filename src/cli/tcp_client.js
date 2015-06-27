@@ -4,6 +4,7 @@
 var net = require('net');
 var server = require('./http_server.js').Server;
 var io = require('socket.io').listen(server);
+var EventEmitter = require('events').EventEmitter;
 
 /*
 ** debug
@@ -13,8 +14,9 @@ var debug = true;
 /*
 ** variable scope
 */
+var IA = new EventEmitter();
 var client = new net.Socket();
-var queue = [];
+var cmdQueue = [];
 var graphicCmd = ['msz', 'bct', 'tna', 'pnw', 'ppo', 'plv', 'pin', 'pex', 'pbc', 'pic', 'pie',
 'pfk', 'pdr', 'pgt', 'pdi', 'enw', 'eht', 'ebo', 'edi', 'sgt', 'seg', 'smg', 'suc', 'sbp', 'tna',
 'pnw', 'BIE'];
@@ -26,8 +28,36 @@ var availPlaces = 0;
 var isAuth = false;
 var graphicSocket = undefined;
 
+require('./ia.js')(Action, IA, cmdQueue);
+
+/*
+** Utils functions
+*/
 function isNumber(n) {
   return !isNaN(parseFloat(n)) && isFinite(n);
+}
+
+function updateQueue(cmd) {
+	for (var i = 0; i = cmdQueue.length; i++) {
+		if (cmdQueue[i].state == undefined) {
+			cmdQueue[i].state = cmd;
+		}
+	}
+}
+
+function treatQueue() {
+	if (cmdQueue[0] && (cmdQueue[0].state == 'ok' || cmdQueue[0].state == 'ko')) {
+		cmdQueue.shift();
+	} else if (cmdQueue[0] && cmdQueue[0].command == 'voir' && cmdQueue[0].state) {
+		IA.emit('saw', cmdQueue[0].state);
+		cmdQueue.shift();
+	} else if (cmdQueue[0] && cmdQueue[0].command == 'inventaire' && cmdQueue[0].state) {
+		IA.emit('inventory');
+		cmdQueue.shift();
+	} else {
+		console.log('Command not taken into account: ' + cmdQueue[0].command);
+		cmdQueue.shift();
+	}
 }
 
 /*
@@ -61,15 +91,27 @@ module.exports = function(addr, port, team_name) {
 						mapSize.x = tmp[0];
 						mapSize.y = tmp[1];
 						console.log('Authentification succeed !');
+						IA.emit('launch');
 					} else {
 						console.error('Bad map size !');
 					}
 				}
 			}
 		} else if (graphicCmd.indexOf(data.slice(0, 3)) > -1) {
-			socket.emit('message', data);
+			for (var i = 0; i < res.length; i++) {
+				socket.emit('message', res[i] + '\n');
+			}
 		} else {
 			// command from server to IA
+			for (var i = 0; i < res.length; i++) {
+				if (res[i].search('deplacement') != -1) {
+					IA.emit('bump');
+				} else if (res[i].search('message') != -1) {
+					IA.emit('notification', res[i].substring(res[i].indexOf('message'), res[i].length));
+				} else {
+					updateQueue(res[i]);
+				}
+			}
 		}
 	});
 
@@ -90,96 +132,95 @@ module.exports = function(addr, port, team_name) {
 ** Action class: do the communication between the server and the AI
 */
 
-var Action  = function() {
+function Action() {
+if (typeof Action.initialized == 'undefined') {
+	Action.prototype.forward = function() {
+		if (cmdQueue.length < 10) {
+			client.write('avance\n');
+			cmdQueue.push({command: 'avance', state: undefined});
+		}
+	};
 
-};
+	Action.prototype.left = function() {
+		if (cmdQueue.length < 10) {
+			client.write('gauche\n');
+			cmdQueue.push({command: 'gauche', state: undefined});
+		}
+	};
 
-Action.prototype.forward = function() {
-	if (queue.length < 10) {
-		client.write('avance\n');
-		queue.push({command: 'avance', state: undefined});
-	}
-};
+	Action.prototype.right = function() {
+		if (cmdQueue.length < 10) {
+			client.write('droite\n');
+			cmdQueue.push({command: 'droite', state: undefined});
+		}
+	};
 
-Action.prototype.left = function() {
-	if (queue.length < 10) {
-		client.write('gauche\n');
-		queue.push({command: 'gauche', state: undefined});
-	}
-};
+	Action.prototype.see = function() {
+		if (cmdQueue.length < 10) {
+			client.write('voir\n');
+			cmdQueue.push({command: 'voir', state: undefined});
+			return (true);
+		}
+		return (false);
+	};
 
-Action.prototype.right = function() {
-	if (queue.length < 10) {
-		client.write('droite\n');
-		queue.push({command: 'droite', state: undefined});
-	}
-};
+	Action.prototype.inventory = function() {
+		if (cmdQueue.length < 10) {
+			client.write('inventaire\n');
+			cmdQueue.push({command: 'inventaire', state: undefined});
+			return (true);
+		}
+		return (false);
+	};
 
-Action.prototype.see = function() {
-	if (queue.length < 10) {
-		client.write('voir\n');
-		queue.push({command: 'voir', state: undefined});
-		return (true);
-	}
-	return (false);
-};
+	Action.prototype.takeItem = function(obj) {
+		if (cmdQueue.length < 10) {
+			client.write('prendre ' + obj + '\n');
+			cmdQueue.push({command: 'prendre objet', state: undefined});
+		}
+	};
 
-Action.prototype.inventory = function() {
-	if (queue.length < 10) {
-		client.write('inventaire\n');
-		queue.push({command: 'inventaire', state: undefined});
-		return (true);
-	}
-	return (false);
-};
+	Action.prototype.dropItem = function(obj) {
+		if (cmdQueue.length < 10) {
+			client.write('pose ' + obj +'\n');
+			cmdQueue.push({command: 'pose objet', state: undefined});
+		}
+	};
 
-Action.prototype.takeItem = function(obj) {
-	if (queue.length < 10) {
-		client.write('prendre ' + obj + '\n');
-		queue.push({command: 'prendre objet', state: undefined});
-	}
-};
+	Action.prototype.kickOut = function() {
+		if (cmdQueue.length < 10) {
+			client.write('expulse\n');
+			cmdQueue.push({command: 'expulse', state: undefined});
+		}
+	};
 
-Action.prototype.dropItem = function(obj) {
-	if (queue.length < 10) {
-		client.write('pose ' + obj +'\n');
-		queue.push({command: 'pose objet', state: undefined});
-	}
-};
+	Action.prototype.sayToEveryone = function(message) {
+		if (cmdQueue.length < 10) {
+			client.write('broadcast texte\n');
+			cmdQueue.push({command: 'broadcast texte', state: undefined});
+		}
+	};
 
-Action.prototype.kickOut = function() {
-	if (queue.length < 10) {
-		client.write('expulse\n');
-		queue.push({command: 'expulse', state: undefined});
-	}
-};
+	Action.prototype.incantation = function() {
+		if (cmdQueue.length < 10) {
+			client.write('incantation\n');
+			cmdQueue.push({command: 'incantation', state: undefined});
+		}
+	};
 
-Action.prototype.sayToEveryone = function(message) {
-	if (queue.length < 10) {
-		client.write('broadcast texte\n');
-		queue.push({command: 'broadcast texte', state: undefined});
-	}
-};
+	Action.prototype.layEgg = function() {
+		if (cmdQueue.length < 10) {
+			client.write('fork\n');
+			cmdQueue.push({command: 'fork', state: undefined});
+		}
+	};
 
-Action.prototype.incantation = function() {
-	if (queue.length < 10) {
-		client.write('incantation\n');
-		queue.push({command: 'incantation', state: undefined});
-	}
-};
-
-Action.prototype.layEgg = function() {
-	if (queue.length < 10) {
-		client.write('fork\n');
-		queue.push({command: 'fork', state: undefined});
-	}
-};
-
-Action.prototype.getFreeSlot = function() {
-	if (queue.length < 10) {
-		client.write('connect_nbr\n');
-		queue.push({command: 'connect_nbr', state: undefined});
-	}
-};
-
-module.exports.actions = Action;
+	Action.prototype.getFreeSlot = function() {
+		if (cmdQueue.length < 10) {
+			client.write('connect_nbr\n');
+			cmdQueue.push({command: 'connect_nbr', state: undefined});
+		}
+	};
+	Action.initialized = true;
+}
+}

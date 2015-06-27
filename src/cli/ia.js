@@ -1,16 +1,28 @@
-var EventEmitter = require('events').EventEmitter;
-var sleep = require('sleep');
+module.exports = function (Actions, Ia, Queue) {
+// var sleep = require('sleep');
 var spellbook = require('./spellbook.json');
-var actions = require('./tcp_client.js').actions;
 
-var IA = new EventEmitter();
+/*
+** debug
+*/
+var debug = true;
+
+var actions = Actions;
+var IA = Ia;
+var cmdQueue = Queue;
+
+var action = new actions();
 
 var goal = {
 	NONE: 0,
 	TAKE: 1,
 	MOVE: 2,
 	FIGHT: 3,
-	CAST: 4
+	CAST: 4,
+	SEARCH: 5,
+	WAIT: 6,
+	CALL: 7,
+	EAT: 8
 };
 
 var brain = {
@@ -28,10 +40,11 @@ var brain = {
 		x: 0,
 		y: 0
 	},
-	objectif: goal.NONE,
+	objective: goal.NONE,
 	obj: undefined,
 	visualCapacity: 1,
-	level: 1
+	level: 1,
+	direction: 0
 };
 
 var entity = {
@@ -59,34 +72,51 @@ function calcCoord(pos, to) {
 }
 
 function findResource(resource) {
-	for (var turn = 0; turn < 3; turn++) {
+	if (brain.direction == 4) {
+		for (var i = 0; i < Math.floor((Math.random() * 15) + 1); i++) {
+			if (i % (brain.visualCapacity + 1) == 0) {
+				IA.emit('updateFov');
+			}
+			for (var i = 0; i < brain.fov.length; i++) {
+				if (fov[i].indexOf(resource) > -1) {
+					calcCoord(i, brain.to);
+					brain.objective = goal.TAKE;
+					brain.obj = resource;
+					IA.emit('move');
+					return (true);
+				}
+			}
+			action.forward();
+		}
+		brain.direction = 0;
+	} else {
 		for (var i = 0; i < brain.fov.length; i++) {
 			if (fov[i].indexOf(resource) > -1) {
 				calcCoord(i, brain.to);
-				brain.objectif = goal.TAKE;
+				brain.objective = goal.TAKE;
 				brain.obj = resource;
 				IA.emit('move');
-				return;
+				return (true);
 			}
 		}
 		action.right();
 		IA.emit('updateFov');
+		brain.direction += 1;
 	}
-	for (var i = 0; i < Math.floor((Math.random() * 15) + 1); i++) {
-		if (i % (visualCapacity + 1) == 0) {
-			IA.emit('updateFov');
+	return (false);
+}
+
+/*
+** This function returns the quantity of the element passed in parameter
+*/
+function inInventory(stoneName) {
+	var quantity = 0;
+	for (var i = 0; i < inventory.length; i++) {
+		if (inventory[i][0] == stoneName) {
+			quantity += inventory[i][1];
 		}
-		for (var i = 0; i < brain.fov.length; i++) {
-			if (fov[i].indexOf(resource) > -1) {
-				calcCoord(i, brain.to);
-				brain.objectif = goal.TAKE;
-				brain.obj = resource;
-				IA.emit('move');
-				return;
-			}
-		}
-		action.forward();
 	}
+	return (quantity);
 }
 
 function findGoal() {
@@ -96,128 +126,161 @@ function findGoal() {
 		if (compo == 'nbPlayer') {
 			continue;
 		}
-		if (compos[compo] > 0) {
-			for (var i = 0; i < compos[compo]; i++) {
-				findResource(compo);
-			}
+		if (compos[compo] > 0 && inventory(compo) < compos[compo]) {
+			brain.objective = goal.SEARCH;
+			brain.obj = compo;
+			return (false);
 		}
 	}
 	if (compos.nbPlayer > 1) {
-		IA.emit('CallTeam', compos.nbPlayer);
+		brain.objective = goal.CALL;
+		IA.emit('callTeam', compos.nbPlayer);
 	}
+	return (true);
 }
 
-function run() {
-	while (brain.level != 8) {
-		if (hp < 20) {
-			IA.emit('starving');
-		}
-		findGoal();
-	}
-}
+IA.on('levelUp', function() {
+	if (debug) console.log('I level ' + (brain.level + 1) + 'now madafaka !');
+	brain.level += 1;
+	brain.visualCapacity += 1;
+	brain.objective = goal.NONE;
+});
 
-IA.on('CallTeam', function(playersRequired) {
+IA.on('callTeam', function(playersRequired) {
 	var levelUp = false;
 	var currentCase = brain.fov[0];
 	var nbPlayer = 0;
 
-	while (!levelUp) {
-		for (var i = 0; i < currentCase.length; i++) {
-			if (currentCase[i] == 'player') {
-				nbPlayer += 1;
-			}
+	for (var i = 0; i < currentCase.length; i++) {
+		if (currentCase[i] == 'player') {
+			nbPlayer += 1;
 		}
-		if (nbPlayer >= playersRequired) {
-			action.incantation();
-			brain.level += 1;
-			brain.visualCapacity += 1;
-		} else {
-			action.sayToEveryone('incantation-' + brain.level);
-		}		
+	}
+	if (nbPlayer >= playersRequired) {
+		brain.objective = goal.CALL;
+		action.incantation();
+	} else {
+		action.sayToEveryone('incantation-' + brain.level);
+	}
+});
+
+IA.on('notification', function(msg) {
+	console.log('I\'m earing a sound: [' + msg + ']');
+});
+
+IA.on('saw', function(cmd) {
+	cmd = cmd.replace('{', '');
+	cmd = cmd.replace('}', '');
+	brain.fov.length = 0;
+	tmp = cmd.split(',');
+	for (var j = 0; j < tmp.length; j++) {
+		brain.fov.push(tmp[j].split(' '));
 	}
 });
 
 IA.on('updateFov', function() {
-	var updated = false;
-	while (action.see() == false) {
-		sleep.usleep(50000);
-	}
-	while (!updated) {
-		for (var i = 0; i < queue.length; i++) {
-			if (queue[i].command == 'voir' && queue[i].state) {
-				queue[i].state = queue[i].replace('{', '');
-				queue[i].state = queue[i].replace('}', '');
-				brain.fov.length = 0;
-				tmp = queue[i].state.split(',');
-				for (var j = 0; j < tmp.length; j++) {
-					brain.fov.push(tmp[j].split(' '));
-				}
-				queue.splice(i, 1);
-				updated = true;
-				break;
-			}
-		}
-		sleep.usleep(50000);
-	}
+	action.see();
 });
 
-IA.on('updateInventory', function() {
-	var updated = false;
-	while (action.inventory() == false) {
-		sleep.usleep(50000);
-	}
-	while (!updated) {
-		for (var i = 0; i < queue.length; i++) {
-			if (queue[i].command == 'inventaire' && queue[i].state) {
-				brain.fov.length = 0;
-				queue[i].state = queue[i].replace('{', '');
-				queue[i].state = queue[i].replace('}', '');
-				tmp = queue[i].state.split(',');
-				for (var j = 0; j < tmp.length; j++) {
-					brain.inventory.push(tmp[j].split(' '));
-				}
-				queue.splice(i, 1);
-				updated = true;
-				break;
-			}
-		}
-		sleep.usleep(50000);
+IA.on('inventory', function() {
+	brain.inventory.length = 0;
+	cmd.state = cmd.replace('{', '');
+	cmd.state = cmd.replace('}', '');
+	tmp = cmd.state.split(',');
+	for (var j = 0; j < tmp.length; j++) {
+		brain.inventory.push(tmp[j].split(' '));
 	}
 	brain.hp = brain.inventory[0][1];
 });
 
+IA.on('updateInventory', function() {
+	action.inventory();
+});
+
+IA.on('bump', function() {
+	IA.emit('updateFov');
+	IA.emit('updateInventory');
+});
+
 IA.on('move', function() {
-	while (brain.pos.y != brain.to.y) {
+	if (brain.pos.y != brain.to.y) {
 		action.forward();
 		brain.pos.y += 1;
+		return (true);
 	}
 	if (brain.to.x < 0) {
 		action.left;
+		return (true);
 	} else {
 		action.right;
+		return (true);
 	}
-	while (brain.pos.x != brain.to.x) {
+	if (brain.pos.x != brain.to.x) {
 		action.forward();
 		if (brain.to.x < 0) {
 			brain.pos.x -= 1;
 		} else {
 			brain.pos.x += 1;
 		}
+		return (true);
 	}
 	action.takeItem(brain.obj);
-	brain.objectif = goal.NONE;
+	brain.objective = goal.NONE;
 	brain.obj = undefined;
 });
 
 IA.on('starving', function() {
-	while (brain.hp < 20) {
-		findResource(entity.FOOD);		
-	}
+	findResource(entity.FOOD);		
 });
 
+IA.on('launch', function() {
+	run();
+});
+
+function brainManagement() {
+	if (brain.objective == goal.NONE && brain.hp < 20) {
+		brain.objective = goal.EAT;
+	}
+	if (brain.objective == goal.EAT && brain.hp > 20) {
+		brain.objective = goal.SEARCH;
+	}
+	switch (brain.objective) {
+		case goal.TAKE:
+			IA.emit('move');
+			break;
+		case goal.EAT:
+			IA.emit('starving');
+			break;
+		case goal.MOVE:
+			IA.emit('move');
+			break;
+		case goal.FIGHT:
+			//IA.emit('');
+			break;
+		case goal.SEARCH:
+			findGoal();
+			break;
+		case goal.WAIT:
+			//IA.emit('');
+			break;
+		case goal.CALL:
+			IA.emit('callTeam');
+			break;
+		default:
+			console.log('im waiting');
+	}
+}
+
+function run() {
+	if (debug) console.log('Here we gooo !');
+	IA.emit('updateFov');
+	var intervall = setInterval(brainManagement, 50);
+}
+
+};
+
 /*
-**		 Todo: 
-**			- rethink the communication between client and IA
+**		 Todo:
 **			- error management (if a command fail)
 **			- improve IA (chief, take resources more efficiently)
 */

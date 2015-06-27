@@ -13,6 +13,5 @@ module.exports = function (port) {
 	});
 
 	server.listen(port);
-
 	module.exports.Server = server;
 }
