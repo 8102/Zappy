@@ -41,6 +41,7 @@ var brain = {
 		y: 0
 	},
 	objective: goal.NONE,
+	prevObjective: goal.NONE,
 	obj: undefined,
 	visualCapacity: 1,
 	level: 1,
@@ -235,6 +236,16 @@ IA.on('starving', function() {
 
 IA.on('launch', function() {
 	run();
+});
+
+IA.on('wait', function() {
+	brain.prevObjective = brain.objective;
+	brain.objective = goal.wait;
+});
+
+IA.on('wakeUp', function() {
+	brain.objective = brain.prevObjective;
+	brain.prevObjective = goal.NONE;
 });
 
 function brainManagement() {
