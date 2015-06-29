@@ -68,7 +68,6 @@ void		voir(char *, t_client *, t_master *);
 void		inventaire(char *, t_client *, t_master *);
 void		prend(char *, t_client *, t_master *);
 void		pose(char *, t_client *, t_master *);
-void		expulse(char *, t_client *, t_master *);
 void		broadcast(char *, t_client *, t_master *);
 void		incantation(char *, t_client *, t_master *);
 void		_fork(char *, t_client *, t_master *);
@@ -93,4 +92,10 @@ void		send_map(t_client *, t_master *);
 void		avance(char *, t_client *, t_master *);
 void		droite(char *, t_client *, t_master *);
 void		gauche(char *, t_client *, t_master *);
+void		change_pos(t_master *, t_client *, e_Orientation);
+/*
+**	expulse.c
+*/
+void		expulse(char *, t_client *, t_master *);
+
 #endif /* !_SERVER_H_ */

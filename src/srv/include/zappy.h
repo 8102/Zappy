@@ -45,6 +45,7 @@ struct		s_case
   int		mendiane;
   int		phiras;
   int		thystame;
+  int		nbr_player;
   t_case	*prev;
   t_case	*next;
 };
@@ -80,6 +81,10 @@ void		release_zappy(t_master *);
 int		check_param(int, char **, t_master *);
 int		create_map(t_master *content);
 /*
+**	pos.c
+*/
+void		set_pos(t_master *, t_client *, size_t , size_t);
+/*
 **	egg.c
 */
 void		add_egg(t_team *team, t_master *content, size_t pos[2], int id);
@@ -89,5 +94,6 @@ void		pop_egg(t_egg **, t_egg *);
 */
 t_case		*getCaseInMap(int, int, t_case *, t_master *);
 char		*fillStringCase(t_case *, char *);
+void	select_position_watch(t_client *client, t_master *all);
 
 #endif /* !_ZAPPY_H_ */

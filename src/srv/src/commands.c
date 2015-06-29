@@ -49,12 +49,6 @@ void			pose(char *params,
     }
 }
 
-void			expulse(char UNUSED*params,
-				t_client *client,
-				UNUSED t_master *content)
-{
-}
-
 void			broadcast(char *params,
 				  t_client *client,
 				  t_master *content)
