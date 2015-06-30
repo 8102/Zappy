@@ -89,5 +89,15 @@ void		pop_egg(t_egg **, t_egg *);
 */
 t_case		*getCaseInMap(int, int, t_case *, t_master *);
 char		*fillStringCase(t_case *, char *);
+char		*fillFirstTime();
+/*
+**	broadcast.c
+*/
+float		calculateDistance(int, int, int, int);
+void		translateMapUp(int *, int *, t_master *);
+void		translateMapRight(int *, int *, t_master *);
+int		checkBasicYAxis(t_client *, t_client *, t_master *);
+int		multipleCases(t_client *, t_client *, t_master *);
+int		calculateOrientation(int, int, int, int);
 
 #endif /* !_ZAPPY_H_ */

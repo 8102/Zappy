@@ -39,6 +39,10 @@ SRC_SERVER	=	main.c			\
 			misc.c			\
 			voir.c			\
 			voir_misc.c		\
+			prend.c			\
+			pose.c			\
+			broadcast.c		\
+			broadcast_orient.c
 
 OBJ_DIR		=	obj/
 
@@ -46,7 +50,7 @@ SRC_DIR		=	src/
 
 INC_DIR		=	include/
 
-CFLAGS		=	-W -Wall -Wextra -I$(INC_DIR)
+CFLAGS		=	-W -Wall -Wextra -I$(INC_DIR) -lm
 
 ifeq ($(DEBUG),yes)
 
@@ -68,7 +72,7 @@ $(OBJ_DIR)%.o	:	$(patsubst %.c, ${SRC_DIR}%.c, %.c)
 			@echo -e "$(BUILD_PRINT)" && $(CC) $(CFLAGS) -c $< -o $@
 
 $(NAME_SERVER)	:	$(OBJS)
-			$(CC) $(OBJS) -o $(NAME_SERVER)
+			$(CC) $(OBJS) -o $(NAME_SERVER) -lm
 
 all		:
 			@$(MAKE) --no-print-directory $(NAME_SERVER)
