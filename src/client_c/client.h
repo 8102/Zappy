@@ -5,12 +5,13 @@
 ** Login   <milox_t@epitech.eu>
 **
 ** Started on  Sat Jun 27 20:42:45 2015 TommyStarK
-** Last update Sun Jun 28 00:17:41 2015 TommyStarK
+** Last update Tue Jun 30 23:43:29 2015 TommyStarK
 */
 
 #ifndef _CLIENT_H_
 # define _CLIENT_H_
 
+# include <time.h>
 # include <errno.h>
 # include <stdio.h>
 # include <netdb.h>
@@ -44,27 +45,35 @@ typedef struct			s_socket
 
 typedef struct			s_client
 {
+  int				size;
   int				status;
   int				*fdmax;
   char 				*team;
-  char 				*machine;
+  char                          **ia;
   fd_set			*rfds;
   t_socket			*client;
 }				t_client;
 
 /*
-** client.c
+** init.c
 */
 t_socket			*init_client(t_client *, char **);
+char				**init_ia();
+void				init_time_handler();
+
+/*
+** client.c
+*/
+void				ia(t_client *);
 void 				run_client(t_client *);
 int 				make_coffe(t_client *);
-void 				disconnect(t_client *);
 
 /*
 ** network.c
 */
 void				*ipvx(struct sockaddr *);
 int				co_serv(t_socket *, const char *, const char *);
+void 				disconnect(t_client *);
 
 /*
 ** utils.c
@@ -72,5 +81,6 @@ int				co_serv(t_socket *, const char *, const char *);
 void				error(char *);
 void				snd(char *, int *, int);
 void 				ssend(int, char *);
+int				get_array_size(char **);
 
 #endif /* end of include guard: _CLIENT_H_ */
