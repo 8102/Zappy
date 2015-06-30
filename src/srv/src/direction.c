@@ -5,12 +5,12 @@
 ** Login   <prenat_h@epitech.eu>
 **
 ** Started on  Wed Jun 24 19:02:16 2015 Hugo Prenat
-** Last update Mon Jun 29 19:02:03 2015 Hugo Prenat
+** Last update Tue Jun 30 17:36:47 2015 Hugo Prenat
 */
 
 #include "zappy.h"
 
-void	go_east_west(t_master *content, t_client *client, e_Orientation orient)
+void	go_south_west(t_master *content, t_client *client, e_Orientation orient)
 {
   if (orient == SOUTH)
     {
@@ -45,16 +45,16 @@ void	change_pos(t_master *content, t_client *client, e_Orientation orient)
 	set_pos(content, client, client->pos[X] + 1, client->pos[Y]);
     }
   else
-    go_east_west(content, client, orient);
+    go_south_west(content, client, orient);
 }
 
 void	avance(char UNUSED*params,
 	       t_client *client,
 	       t_master *content)
 {
+  change_pos(content, client, client->orient);
   if (client->trigger[GRAPHIC] == true)
     {
-      change_pos(content, client, client->orient);
       ssend(client->socket, "ppo %d %d %d %d\n", client->id, client->pos[0],
 	    client->pos[1], client->orient);
     }
@@ -66,12 +66,12 @@ void	droite(char UNUSED*params,
 	       t_client *client,
 	       UNUSED t_master *content)
 {
+  if (client->orient != WEST)
+    client->orient++;
+  else
+    client->orient = NORTH;
   if (client->trigger[GRAPHIC] == true)
     {
-      if (client->orient != WEST)
-	client->orient++;
-      else
-	client->orient = NORTH;
       ssend(client->socket, "ppo %d %d %d %d\n", client->id, client->pos[0],
 	    client->pos[1], client->orient);
     }
@@ -83,12 +83,12 @@ void	gauche(char UNUSED*params,
 	       t_client *client,
 	       UNUSED t_master *content)
 {
+  if (client->orient != NORTH)
+    client->orient--;
+  else
+    client->orient = WEST;
   if (client->trigger[GRAPHIC] == true)
     {
-      if (client->orient != NORTH)
-	client->orient--;
-      else
-	client->orient = WEST;
       ssend(client->socket, "ppo %d %d %d %d\n", client->id, client->pos[0],
 	    client->pos[1], client->orient);
     }
