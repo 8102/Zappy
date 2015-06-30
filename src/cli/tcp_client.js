@@ -84,7 +84,7 @@ module.exports = function(addr, port, team_name) {
 		if (debug) {
 			console.log(data.toString(undefined, 0, data.length - 1));
 		}
-		console.log('>>> ' + graphicCmd.indexOf(data.toString().slice(0, 3)));
+		// console.log('>>> ' + graphicCmd.indexOf(data.toString().slice(0, 3)));
 
 		var res = data.toString().split('\n');
 		if (!isAuth) {
@@ -108,7 +108,10 @@ module.exports = function(addr, port, team_name) {
 			}
 		} else if (graphicCmd.indexOf(data.toString().slice(0, 3)) > -1) {
 			for (var i = 0; i < res.length; i++) {
-				graphicSocket.emit('message', res[i] + '\n');
+				if (res[i].length > 0) {
+					// console.log('Et jenvoie ça: ' + res[i]);
+					graphicSocket.emit('message', res[i] + '\n');
+				}
 			}
 		} else {
 			// command from server to IA
@@ -131,7 +134,7 @@ module.exports = function(addr, port, team_name) {
 		console.log('Graphical interface well connected !');
 		graphicSocket = socket;
 
-		socket.on('message', function(message) {
+		socket.on('answer', function(message) {
 			client.write(message);
 		});
 	});

@@ -67,6 +67,7 @@
                 var socket  = io('http://localhost:1081');
                 socket.on('message', function(data) {
                     manager.treatMessage(data);
+                    socket.emit('answer', 'Hey bonsoir !');
                 });
                 animate();
             };
