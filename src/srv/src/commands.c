@@ -91,13 +91,6 @@ void	incantation(char UNUSED*params,
 	client->level);
 }
 
-void	_fork(char UNUSED*params,
-	      t_client *client,
-	      UNUSED t_master *content)
-{
-  ssend(client->socket, "ok\n");
-}
-
 void	connect_nbr(char UNUSED*params,
 		    t_client *client,
 		    UNUSED t_master *content)
@@ -144,35 +137,6 @@ void	tna(char UNUSED*params,
 	    UNUSED t_master *content)
 {
 
-}
-
-void		ppo(char *params,
-		    t_client *client,
-		    t_master *content)
-{
-  int		id;
-  t_client	*tmp;
-
-  if (!params)
-    {
-      ssend(client->socket, "sbp\n");
-      return ;
-    }
-  id = atoi(params);
-  tmp = content->clients;
-  while (tmp)
-    {
-      if (tmp->id == id)
-	break ;
-      tmp = tmp->next;
-    }
-  if (!tmp || tmp->id != id)
-    {
-      ssend(client->socket, "sbp\n");
-      return ;
-    }
-  ssend(client->socket, "ppo %d %d %d %d\n", tmp->id,
-	tmp->pos[X], tmp->pos[Y], tmp->orient);
 }
 
 void	plv(char UNUSED*params,

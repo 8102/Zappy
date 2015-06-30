@@ -5,7 +5,7 @@
 ** Login   <prenat_h@epitech.eu>
 **
 ** Started on  Wed Jun 24 19:02:16 2015 Hugo Prenat
-** Last update Tue Jun 30 17:36:47 2015 Hugo Prenat
+** Last update Tue Jun 30 20:40:48 2015 Hugo Prenat
 */
 
 #include "zappy.h"
@@ -14,7 +14,7 @@ void	go_south_west(t_master *content, t_client *client, e_Orientation orient)
 {
   if (orient == SOUTH)
     {
-      if (client->pos[1] == (size_t)content->height)
+      if (client->pos[1] == (size_t)content->height - 1)
 	set_pos(content, client, client->pos[X], 0);
       else
 	set_pos(content, client, client->pos[X], client->pos[Y] + 1);
@@ -39,7 +39,7 @@ void	change_pos(t_master *content, t_client *client, e_Orientation orient)
     }
   else if (orient == EAST)
     {
-      if (client->pos[0] == (size_t)content->width)
+      if (client->pos[0] == (size_t)content->width - 1)
 	set_pos(content, client, 0, client->pos[Y]);
       else
 	set_pos(content, client, client->pos[X] + 1, client->pos[Y]);

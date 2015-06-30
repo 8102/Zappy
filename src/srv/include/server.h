@@ -76,7 +76,6 @@ void		msz(char *, t_client *, t_master *);
 void		bct(char *, t_client *, t_master *);
 void		mct(char *, t_client *, t_master *);
 void		tna(char *, t_client *, t_master *);
-void		ppo(char *, t_client *, t_master *);
 void		plv(char *, t_client *, t_master *);
 void		pin(char *, t_client *, t_master *);
 void		sgt(char *, t_client *, t_master *);
@@ -97,5 +96,9 @@ void		change_pos(t_master *, t_client *, e_Orientation);
 **	expulse.c
 */
 void		expulse(char *, t_client *, t_master *);
+/*
+**	ppo.c
+*/
+void		ppo(char *, t_client *, t_master *);
 
 #endif /* !_SERVER_H_ */
