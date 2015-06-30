@@ -15,7 +15,7 @@ t_case		*getCaseInMap(int x, int y, t_case *tmp, t_master *all)
   t_case	*parse;
 
   if (y < 0 || y > all->height || x < 0 || x > all->width)
-    return (tmp);
+    return (NULL);
   parse = (tmp) ? tmp : all->cases;
   while (parse->x != (size_t)x || parse->y != (size_t)y)
     parse = parse->next;
@@ -27,6 +27,8 @@ int		countHowMany(t_case *tmp)
   int		count;
 
   count = 0;
+  if (tmp->nbr_player > 0)
+    count += 8;
   if (tmp->meal > 0)
     count += 11;
   if (tmp->linemate > 0)
@@ -47,6 +49,8 @@ int		countHowMany(t_case *tmp)
 char		*fillStringCase(t_case *tmp, char *str)
 {
   str = realloc(str, countHowMany(tmp) + 3);
+  if (tmp->nbr_player > 0)
+    strcat(str, " joueur");
   if (tmp->meal > 0)
     strcat(str, " nourriture");
   if (tmp->linemate > 0)
