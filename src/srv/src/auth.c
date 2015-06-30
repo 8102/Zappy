@@ -36,7 +36,7 @@ void		select_team(char *team, t_client *client, t_master *content)
 	{
 	  ssend(client->socket, "%d\n", tm->slot);
 	  client->team = tm;
-	  place_player(client, client->team);
+	  place_player(content, client, client->team);
 	  client->team->slot--;
 	}
     }

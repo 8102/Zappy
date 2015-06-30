@@ -5,47 +5,47 @@
 ** Login   <prenat_h@epitech.eu>
 **
 ** Started on  Wed Jun 24 19:02:16 2015 Hugo Prenat
-** Last update Thu Jun 25 00:24:22 2015 Hugo Prenat
+** Last update Mon Jun 29 19:02:03 2015 Hugo Prenat
 */
 
 #include "zappy.h"
 
-void	go_east_west(t_master *content, t_client *client)
+void	go_east_west(t_master *content, t_client *client, e_Orientation orient)
 {
-  if (client->orient == SOUTH)
+  if (orient == SOUTH)
     {
       if (client->pos[1] == (size_t)content->height)
-	client->pos[1] = 0;
+	set_pos(content, client, client->pos[X], 0);
       else
-	client->pos[1] += 1;
+	set_pos(content, client, client->pos[X], client->pos[Y] + 1);
     }
   else
     {
       if (client->pos[0] == 0)
-	client->pos[0] = content->width;
+	set_pos(content, client, content->width, client->pos[Y]);
       else
-	client->pos[0] -= 1;
+	set_pos(content, client, client->pos[X] - 1, client->pos[Y]);
     }
 }
 
-void	change_pos(t_master *content, t_client *client)
+void	change_pos(t_master *content, t_client *client, e_Orientation orient)
 {
-  if (client->orient == NORTH)
+  if (orient == NORTH)
     {
       if (client->pos[1] == 0)
-	client->pos[1] = content->height;
+	set_pos(content, client, client->pos[X], content->height);
       else
-	client->pos[1] -= 1;
+	set_pos(content, client, client->pos[X], client->pos[Y] - 1);
     }
-  else if (client->orient == EAST)
+  else if (orient == EAST)
     {
       if (client->pos[0] == (size_t)content->width)
-	client->pos[0] = 0;
+	set_pos(content, client, 0, client->pos[Y]);
       else
-	client->pos[0] += 1;
+	set_pos(content, client, client->pos[X] + 1, client->pos[Y]);
     }
   else
-    go_east_west(content, client);
+    go_east_west(content, client, orient);
 }
 
 void	avance(char UNUSED*params,
@@ -54,7 +54,7 @@ void	avance(char UNUSED*params,
 {
   if (client->trigger[GRAPHIC] == true)
     {
-      change_pos(content, client);
+      change_pos(content, client, client->orient);
       ssend(client->socket, "ppo %d %d %d %d\n", client->id, client->pos[0],
 	    client->pos[1], client->orient);
     }
@@ -76,8 +76,7 @@ void	droite(char UNUSED*params,
 	    client->pos[1], client->orient);
     }
   else
-  ssend(client->socket, "ok\n");
-
+    ssend(client->socket, "ok\n");
 }
 
 void	gauche(char UNUSED*params,
@@ -94,5 +93,5 @@ void	gauche(char UNUSED*params,
 	    client->pos[1], client->orient);
     }
   else
-  ssend(client->socket, "ok\n");
+    ssend(client->socket, "ok\n");
 }

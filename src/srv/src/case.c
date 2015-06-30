@@ -5,7 +5,7 @@
 ** Login   <prenat_h@epitech.eu>
 **
 ** Started on  Thu Jun 18 22:08:05 2015 Hugo Prenat
-** Last update Thu Jun 18 23:41:28 2015 Hugo Prenat
+** Last update Mon Jun 29 17:12:39 2015 Hugo Prenat
 */
 
 #include "zappy.h"
@@ -53,6 +53,7 @@ int		add_one_case(t_master *content, size_t x, size_t y)
   new->mendiane = rand() % 2;
   new->phiras = rand() % 2;
   new->thystame = rand() % 2;
+  new->nbr_player = 0;
   push_case(&content->cases, new);
   return (0);
 }

@@ -5,7 +5,7 @@
 ## chambo_e  <chambon.emmanuel@gmail.com>
 ##
 ## Started on  Wed Apr  8 22:49:16 2015 Emmanuel Chambon
-## Last update Thu Jun 25 17:43:11 2015 Jean-Baptiste Grégoire
+## Last update Mon Jun 29 17:55:48 2015 Hugo Prenat
 ##
 
 DEBUG		=	yes
@@ -36,6 +36,8 @@ SRC_SERVER	=	main.c			\
 			egg.c			\
 			graphic.c		\
 			direction.c		\
+			expulse.c		\
+			pos.c			\
 			misc.c			\
 			voir.c			\
 			voir_misc.c		\

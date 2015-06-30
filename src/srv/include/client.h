@@ -22,7 +22,7 @@
 # define	AUTH		0
 # define	GRAPHIC		1
 # define	X		0
-# define	Y		0
+# define	Y		1
 
 enum		Orientation {
   NORTH = 1,
@@ -70,6 +70,6 @@ void		handle_io_connection(t_client *, t_master *);
 */
 t_team		*find_team(char *, t_master *);
 void		select_team(char *, t_client *, t_master *);
-void		place_player(t_client *, t_team *);
+void		place_player(t_master *, t_client *, t_team *);
 
 #endif /* !_CLIENT_H_ */

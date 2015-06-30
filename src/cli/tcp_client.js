@@ -38,7 +38,7 @@ function isNumber(n) {
 }
 
 function updateQueue(cmd) {
-	for (var i = 0; i = cmdQueue.length; i++) {
+	for (var i = 0; i < cmdQueue.length; i++) {
 		if (cmdQueue[i].state == undefined) {
 			cmdQueue[i].state = cmd;
 		}
@@ -46,6 +46,10 @@ function updateQueue(cmd) {
 }
 
 function treatQueue() {
+	var full = false;
+	if (cmdQueue.length == 10) {
+		full = true;
+	}
 	if (cmdQueue[0] && (cmdQueue[0].state == 'ok' || cmdQueue[0].state == 'ko')) {
 		cmdQueue.shift();
 	} else if (cmdQueue[0] && cmdQueue[0].command == 'voir' && cmdQueue[0].state) {
@@ -57,6 +61,9 @@ function treatQueue() {
 	} else {
 		console.log('Command not taken into account: ' + cmdQueue[0].command);
 		cmdQueue.shift();
+	}
+	if (full) {
+		IA.emit('wakeUp');
 	}
 }
 
@@ -77,6 +84,8 @@ module.exports = function(addr, port, team_name) {
 		if (debug) {
 			console.log(data.toString(undefined, 0, data.length - 1));
 		}
+		console.log('>>> ' + graphicCmd.indexOf(data.toString().slice(0, 3)));
+
 		var res = data.toString().split('\n');
 		if (!isAuth) {
 			for (var i = 0; i < res.length; i++) {
@@ -97,9 +106,9 @@ module.exports = function(addr, port, team_name) {
 					}
 				}
 			}
-		} else if (graphicCmd.indexOf(data.slice(0, 3)) > -1) {
+		} else if (graphicCmd.indexOf(data.toString().slice(0, 3)) > -1) {
 			for (var i = 0; i < res.length; i++) {
-				socket.emit('message', res[i] + '\n');
+				graphicSocket.emit('message', res[i] + '\n');
 			}
 		} else {
 			// command from server to IA
@@ -138,6 +147,8 @@ if (typeof Action.initialized == 'undefined') {
 		if (cmdQueue.length < 10) {
 			client.write('avance\n');
 			cmdQueue.push({command: 'avance', state: undefined});
+		} else {
+			IA.emit('wait');
 		}
 	};
 
@@ -145,6 +156,8 @@ if (typeof Action.initialized == 'undefined') {
 		if (cmdQueue.length < 10) {
 			client.write('gauche\n');
 			cmdQueue.push({command: 'gauche', state: undefined});
+		} else {
+			IA.emit('wait');
 		}
 	};
 
@@ -152,6 +165,8 @@ if (typeof Action.initialized == 'undefined') {
 		if (cmdQueue.length < 10) {
 			client.write('droite\n');
 			cmdQueue.push({command: 'droite', state: undefined});
+		} else {
+			IA.emit('wait');
 		}
 	};
 
@@ -160,6 +175,8 @@ if (typeof Action.initialized == 'undefined') {
 			client.write('voir\n');
 			cmdQueue.push({command: 'voir', state: undefined});
 			return (true);
+		} else {
+			IA.emit('wait');
 		}
 		return (false);
 	};
@@ -169,6 +186,8 @@ if (typeof Action.initialized == 'undefined') {
 			client.write('inventaire\n');
 			cmdQueue.push({command: 'inventaire', state: undefined});
 			return (true);
+		} else {
+			IA.emit('wait');
 		}
 		return (false);
 	};
@@ -177,6 +196,8 @@ if (typeof Action.initialized == 'undefined') {
 		if (cmdQueue.length < 10) {
 			client.write('prendre ' + obj + '\n');
 			cmdQueue.push({command: 'prendre objet', state: undefined});
+		} else {
+			IA.emit('wait');
 		}
 	};
 
@@ -184,6 +205,8 @@ if (typeof Action.initialized == 'undefined') {
 		if (cmdQueue.length < 10) {
 			client.write('pose ' + obj +'\n');
 			cmdQueue.push({command: 'pose objet', state: undefined});
+		} else {
+			IA.emit('wait');
 		}
 	};
 
@@ -191,6 +214,8 @@ if (typeof Action.initialized == 'undefined') {
 		if (cmdQueue.length < 10) {
 			client.write('expulse\n');
 			cmdQueue.push({command: 'expulse', state: undefined});
+		} else {
+			IA.emit('wait');
 		}
 	};
 
@@ -198,6 +223,8 @@ if (typeof Action.initialized == 'undefined') {
 		if (cmdQueue.length < 10) {
 			client.write('broadcast texte\n');
 			cmdQueue.push({command: 'broadcast texte', state: undefined});
+		} else {
+			IA.emit('wait');
 		}
 	};
 
@@ -205,6 +232,8 @@ if (typeof Action.initialized == 'undefined') {
 		if (cmdQueue.length < 10) {
 			client.write('incantation\n');
 			cmdQueue.push({command: 'incantation', state: undefined});
+		} else {
+			IA.emit('wait');
 		}
 	};
 
@@ -212,6 +241,8 @@ if (typeof Action.initialized == 'undefined') {
 		if (cmdQueue.length < 10) {
 			client.write('fork\n');
 			cmdQueue.push({command: 'fork', state: undefined});
+		} else {
+			IA.emit('wait');
 		}
 	};
 
@@ -219,6 +250,8 @@ if (typeof Action.initialized == 'undefined') {
 		if (cmdQueue.length < 10) {
 			client.write('connect_nbr\n');
 			cmdQueue.push({command: 'connect_nbr', state: undefined});
+		} else {
+			IA.emit('wait');
 		}
 	};
 	Action.initialized = true;
