@@ -48,7 +48,7 @@ int		countHowMany(t_case *tmp)
 
 char		*fillStringCase(t_case *tmp, char *str)
 {
-  str = realloc(str, countHowMany(tmp) + 3);
+  str = realloc(str, countHowMany(tmp) + 3 + strlen(str));
   if (tmp->nbr_player > 0)
     strcat(str, " joueur");
   if (tmp->meal > 0)

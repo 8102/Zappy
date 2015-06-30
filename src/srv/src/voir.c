@@ -74,6 +74,7 @@ void	select_position_watch(t_client *client, t_master *all)
 {
   char	*to_free;
 
+  to_free = NULL;
   if (client->orient == NORTH || client->orient == SOUTH)
     to_free = getUpAndDownVision(client, all, (client->orient == NORTH) ?
 				 -1 * (client->level) : client->level, NULL);
