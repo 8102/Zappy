@@ -28,11 +28,11 @@ char		*getUpAndDownVision(t_client *client, t_master *all,
   else
     if (!(to_write = fillFirstTime()))
       return (NULL);
-  while (tmp <= ((lvl < 0) ? lvl * -1 : lvl) &&
+  while (position && tmp <= ((lvl < 0) ? lvl * -1 : lvl) &&
 	 (int)client->pos[0] + tmp < all->width)
     {
       to_write = fillStringCase(position, to_write);
-      position = position -> next;
+      position = position->next;
       tmp++;
     }
   ((lvl < 0) ? lvl * -1 : lvl == client->level) ?
@@ -58,11 +58,11 @@ char	*getLeftAndRightVision(t_client *client, t_master *all,
   else
     if (!(to_write = fillFirstTime()))
       return (NULL);
-  while (tmp <= ((lvl < 0) ? lvl * -1 : lvl) &&
+  while (position && tmp <= ((lvl < 0) ? lvl * -1 : lvl) &&
 	 (int)client->pos[1] + tmp < all->height)
     {
       to_write = fillStringCase(position, to_write);
-      position = position -> next;
+      position = position->next;
       tmp++;
     }
   ((lvl < 0) ? lvl * -1 : lvl == client->level) ?
