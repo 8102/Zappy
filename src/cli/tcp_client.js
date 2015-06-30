@@ -38,7 +38,7 @@ function isNumber(n) {
 }
 
 function updateQueue(cmd) {
-	for (var i = 0; i = cmdQueue.length; i++) {
+	for (var i = 0; i < cmdQueue.length; i++) {
 		if (cmdQueue[i].state == undefined) {
 			cmdQueue[i].state = cmd;
 		}
@@ -84,6 +84,8 @@ module.exports = function(addr, port, team_name) {
 		if (debug) {
 			console.log(data.toString(undefined, 0, data.length - 1));
 		}
+		console.log('>>> ' + graphicCmd.indexOf(data.toString().slice(0, 3)));
+
 		var res = data.toString().split('\n');
 		if (!isAuth) {
 			for (var i = 0; i < res.length; i++) {
@@ -104,9 +106,9 @@ module.exports = function(addr, port, team_name) {
 					}
 				}
 			}
-		} else if (graphicCmd.indexOf(data.slice(0, 3)) > -1) {
+		} else if (graphicCmd.indexOf(data.toString().slice(0, 3)) > -1) {
 			for (var i = 0; i < res.length; i++) {
-				socket.emit('message', res[i] + '\n');
+				graphicSocket.emit('message', res[i] + '\n');
 			}
 		} else {
 			// command from server to IA

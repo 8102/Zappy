@@ -31,7 +31,7 @@ for (var opt in options) {
     }
 }
 
-require('./http_server.js')(options.port + 1);
+require('./http_server.js')(1081);
 require('./tcp_client.js')(options.hostname, options.port, options.team_name);
 
  var app = require('app');  // Module to control application life.

@@ -16,7 +16,7 @@
         <script src="ThreeJs/examples/js/wip/PlaneTypedGeometry.js"></script>
         <script src="ThreeJs/examples/js/ImprovedNoise.js"></script>
 
-        <script src="js/Network.js"></script>
+        <!-- <script src="js/Network.js"></script> -->
         <script src="js/VideoContext.js"></script>
         <script src="js/GeometryFactory.js"></script>
         <script src="js/EffectFactory.js"></script>
@@ -28,6 +28,7 @@
         <script src="js/Player.js"></script>
         <script src="js/Egg.js"></script>
         <script src="js/GameManager.js"></script>
+        <script src="http://127.0.0.1:1081/socket.io/socket.io.js"></script>
         <script>
             /*global VideoContext, GameEngine, GameManager, dat, animate, Effects, requestAnimationFrame*/
 
@@ -63,7 +64,10 @@
                 manager.debugTeam();
                 manager.debugPlayer();
                 manager.testEffect(EFFECT.decors);
-                network = new NetworkDevice(manager, {address: 'localhost', port: 1081});
+                var socket  = io('http://localhost:1081');
+                socket.on('message', function(data) {
+                    manager.treatMessage(data);
+                });
                 animate();
             };
             var test = true;
