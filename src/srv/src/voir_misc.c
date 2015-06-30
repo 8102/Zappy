@@ -63,3 +63,14 @@ char		*fillStringCase(t_case *tmp, char *str)
     strcat(str, " thystame");
   return (str);
 }
+
+char		*fillFirstTime()
+{
+  char		*to_write;
+
+  if (!(to_write = malloc(5)))
+    return (NULL);
+  bzero(to_write, 4);
+  to_write[0] = '{';
+  return (to_write);
+}

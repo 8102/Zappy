@@ -22,9 +22,11 @@
 # include <errno.h>
 # include <sys/types.h>
 # include <stdarg.h>
+# include <math.h>
 
 void		error(char *);
 char		*epur_str(char *);
 char		*str_replace(char *, char, char);
+t_case		*getCaseFromCoord(size_t x, size_t y, t_case *);
 
 #endif /* !_MISC_H_ */

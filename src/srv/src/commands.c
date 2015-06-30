@@ -21,20 +21,30 @@ void			inventaire(char UNUSED*params,
 				   t_client *client,
 				   UNUSED t_master *content)
 {
-  ssend(client->socket, "linemate %d, deraumère %d, sibur %d, mendiane %d,\
- phiras %d, thystame %d\n", client->resources[0], client->resources[1],
-	client->resources[2], client->resources[3], client->resources[4],
-	client->resources[5]);
+  ssend(client->socket, "{linemate %d, deraumère %d, sibur %d, mendiane %d,\
+ phiras %d, thystame %d}\n", client->resources[LINEMATE],
+	client->resources[DERAUMERE],
+	client->resources[SIBUR],
+	client->resources[MENDIANE],
+	client->resources[PHIRAS],
+	client->resources[THYSTAME]);
 }
 
 void			prend(char *params,
 			      t_client *client,
-			      UNUSED t_master *content)
+			      t_master *content)
 {
-  if (!params)
+  t_case		*position;
+
+  if (!(position = getCaseFromCoord(client->pos[0], client->pos[1],
+				    content->cases)))
+    ssend(client->socket, "ko\n");
+  else
     {
-      ssend(client->socket, "suc\n");
-      return ;
+      if (checkPossibleTake(position, params, client) == 0)
+	ssend(client->socket, "ko\n");
+      else
+	ssend(client->socket, "ok\n");
     }
 }
 
@@ -42,10 +52,17 @@ void			pose(char *params,
 			     t_client *client,
 			     UNUSED t_master *content)
 {
-  if (!params)
+  t_case		*position;
+
+  if (!(position = getCaseFromCoord(client->pos[0], client->pos[1],
+				    content->cases)))
+    ssend(client->socket, "ko\n");
+  else
     {
-      ssend(client->socket, "suc\n");
-      return ;
+      if (checkPossibleSend(position, params, client) == 0)
+	ssend(client->socket, "ko\n");
+      else
+	ssend(client->socket, "ok\n");
     }
 }
 
@@ -60,8 +77,8 @@ void			broadcast(char *params,
   while (parsing)
     {
       if (parsing->id != client->id)
-	ssend(parsing->socket, "message %d, %s", client->pos[1] *
-	      content->width + client->pos[0], params);
+	ssend(parsing->socket, "message %d, %s",
+	      checkBasicCase(client, parsing, content), params);
       parsing = parsing->next;
     }
 }
@@ -70,7 +87,7 @@ void			incantation(char UNUSED*params,
 				    t_client *client,
 				    UNUSED t_master *content)
 {
-  ssend(client->socket, "elevation en cours\nniveau actuel : %d\n", 0);
+  ssend(client->socket, "elevation en cours\nniveau actuel : %d\n", client->level);
 }
 
 void			_fork(char UNUSED*params,

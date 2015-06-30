@@ -25,3 +25,14 @@ char		*str_replace(char *str, char target, char replace)
       str[i] = replace;
   return (str);
 }
+
+t_case		*getCaseFromCoord(size_t x, size_t y, t_case *all)
+{
+  while (all)
+    {
+      if (x == all->x && y == all->y)
+	return (all);
+      all = all->next;
+    }
+  return (NULL);
+}

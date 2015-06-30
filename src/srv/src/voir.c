@@ -25,6 +25,9 @@ char		*getUpAndDownVision(t_client *client, t_master *all,
   if (lvl != 0)
     to_write = getUpAndDownVision(client, all,
 				  (lvl < 0) ? lvl + 1 : lvl - 1, position);
+  else
+    if (!(to_write = fillFirstTime()))
+      return (NULL);
   while (tmp <= ((lvl < 0) ? lvl * -1 : lvl) &&
 	 (int)client->pos[0] + tmp < all->width)
     {
@@ -33,7 +36,7 @@ char		*getUpAndDownVision(t_client *client, t_master *all,
       tmp++;
     }
   ((lvl < 0) ? lvl * -1 : lvl == client->level) ?
-    strcat(to_write, "\n") : strcat(to_write, ",");
+    strcat(to_write, "}\n") : strcat(to_write, ",");
   return (to_write);
 }
 
@@ -52,6 +55,9 @@ char	*getLeftAndRightVision(t_client *client, t_master *all,
   if (lvl != 0)
     to_write = getUpAndDownVision(client, all,
 				  (lvl < 0) ? lvl + 1 : lvl - 1, position);
+  else
+    if (!(to_write = fillFirstTime()))
+      return (NULL);
   while (tmp <= ((lvl < 0) ? lvl * -1 : lvl) &&
 	 (int)client->pos[1] + tmp < all->height)
     {
@@ -66,12 +72,18 @@ char	*getLeftAndRightVision(t_client *client, t_master *all,
 
 void	select_position_watch(t_client *client, t_master *all)
 {
+  char	*to_free;
+
   if (client->orient == NORTH || client->orient == SOUTH)
-    ssend(client->socket, getUpAndDownVision
-	  (client, all, (client->orient == NORTH) ?
-	   -1 * (client->level) : client->level, NULL));
+    to_free = getUpAndDownVision(client, all, (client->orient == NORTH) ?
+				 -1 * (client->level) : client->level, NULL);
   else
-    ssend(client->socket, getLeftAndRightVision
-	  (client, all, (client->orient == EAST) ?
-	   -1 * (client->level) : client->level, NULL));
+    to_free = getLeftAndRightVision
+      (client, all, (client->orient == EAST)
+       ? -1 * (client->level) : client->level, NULL);
+  if (to_free)
+    {
+      ssend(client->socket, to_free);
+      free(to_free);
+    }
 }
