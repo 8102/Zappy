@@ -5,7 +5,7 @@
 ** Login   <prenat_h@epitech.eu>
 **
 ** Started on  Mon Jun 29 17:18:03 2015 Hugo Prenat
-** Last update Mon Jun 29 19:20:53 2015 Hugo Prenat
+** Last update Tue Jun 30 17:38:58 2015 Hugo Prenat
 */
 
 #include "zappy.h"
@@ -30,7 +30,7 @@ void		expulse(char UNUSED*params,
       if (client->pos[X] == tmp->pos[X] && client->pos[Y] == tmp->pos[Y] &&
 	  client->id != tmp->id)
 	{
-	  change_pos(content, client, client->orient);
+	  change_pos(content, tmp, client->orient);
 	  ssend(tmp->socket, "deplacement: %d\n", orient);
 	}
       tmp = tmp->next;

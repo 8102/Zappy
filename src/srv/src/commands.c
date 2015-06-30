@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Wed Jun 17 08:31:10 2015 Emmanuel Chambon
-** Last update Wed Jun 24 15:26:13 2015 Hugo Prenat
+** Last update Tue Jun 30 16:37:03 2015 Hugo Prenat
 */
 
 #include "zappy.h"
@@ -30,11 +30,11 @@ void			inventaire(char UNUSED*params,
 	client->resources[THYSTAME]);
 }
 
-void			prend(char *params,
-			      t_client *client,
-			      t_master *content)
+void		prend(char *params,
+		      t_client *client,
+		      t_master *content)
 {
-  t_case		*position;
+  t_case	*position;
 
   if (!(position = getCaseFromCoord(client->pos[0], client->pos[1],
 				    content->cases)))
@@ -48,11 +48,11 @@ void			prend(char *params,
     }
 }
 
-void			pose(char *params,
-			     t_client *client,
-			     UNUSED t_master *content)
+void		pose(char *params,
+		     t_client *client,
+		     UNUSED t_master *content)
 {
-  t_case		*position;
+  t_case	*position;
 
   if (!(position = getCaseFromCoord(client->pos[0], client->pos[1],
 				    content->cases)))
@@ -66,11 +66,11 @@ void			pose(char *params,
     }
 }
 
-void			broadcast(char *params,
-				  t_client *client,
-				  t_master *content)
+void		broadcast(char *params,
+			  t_client *client,
+			  t_master *content)
 {
-  t_client		*parsing;
+  t_client	*parsing;
 
   parsing = content->clients;
   ssend(client->socket, "ok\n");
@@ -83,37 +83,38 @@ void			broadcast(char *params,
     }
 }
 
-void			incantation(char UNUSED*params,
-				    t_client *client,
-				    UNUSED t_master *content)
+void	incantation(char UNUSED*params,
+		    t_client *client,
+		    UNUSED t_master *content)
 {
-  ssend(client->socket, "elevation en cours\nniveau actuel : %d\n", client->level);
+  ssend(client->socket, "elevation en cours\nniveau actuel : %d\n",
+	client->level);
 }
 
-void			_fork(char UNUSED*params,
-			      t_client *client,
-			      UNUSED t_master *content)
+void	_fork(char UNUSED*params,
+	      t_client *client,
+	      UNUSED t_master *content)
 {
   ssend(client->socket, "ok\n");
 }
 
-void			connect_nbr(char UNUSED*params,
-				    t_client *client,
-				    UNUSED t_master *content)
+void	connect_nbr(char UNUSED*params,
+		    t_client *client,
+		    UNUSED t_master *content)
 {
   ssend(client->socket, "%d\n", client->team->slot);
 }
 
-void			msz(char UNUSED*params,
-				    t_client UNUSED*client,
-				    UNUSED t_master *content)
+void	msz(char UNUSED*params,
+	    t_client UNUSED*client,
+	    UNUSED t_master *content)
 {
 
 }
 
-void		bct(char *params,
-				    t_client *client,
-				    t_master *content)
+void	bct(char *params,
+	    t_client *client,
+	    t_master *content)
 {
 //   char	*tmp;
 //   int		i;
@@ -124,58 +125,80 @@ void		bct(char *params,
 //     i++;
 // printf("params === {%s} %d\n", params, i);
   // if (!params)
-	// 	{
-	// 		ssend(client->socket, "suc\n");
-	// 		return ;
-	// 	}
-	// ssend(client->socket, "ok\n");
+  // 	{
+  // 		ssend(client->socket, "suc\n");
+  // 		return ;
+  // 	}
+  // ssend(client->socket, "ok\n");
 }
 
-void			mct(char UNUSED*params,
-				    t_client *client,
-				    t_master *content)
+void	mct(char UNUSED*params,
+	    t_client *client,
+	    t_master *content)
 {
   send_map(client, content);
 }
 
-void			tna(char UNUSED*params,
-				    t_client UNUSED*client,
-				    UNUSED t_master *content)
+void	tna(char UNUSED*params,
+	    t_client UNUSED*client,
+	    UNUSED t_master *content)
 {
 
 }
 
-void			ppo(char UNUSED*params,
-				    t_client UNUSED*client,
-				    UNUSED t_master *content)
+void		ppo(char *params,
+		    t_client *client,
+		    t_master *content)
+{
+  int		id;
+  t_client	*tmp;
+
+  if (!params)
+    {
+      ssend(client->socket, "sbp\n");
+      return ;
+    }
+  id = atoi(params);
+  tmp = content->clients;
+  while (tmp)
+    {
+      if (tmp->id == id)
+	break ;
+      tmp = tmp->next;
+    }
+  if (!tmp || tmp->id != id)
+    {
+      ssend(client->socket, "sbp\n");
+      return ;
+    }
+  ssend(client->socket, "ppo %d %d %d %d\n", tmp->id,
+	tmp->pos[X], tmp->pos[Y], tmp->orient);
+}
+
+void	plv(char UNUSED*params,
+	    t_client UNUSED*client,
+	    UNUSED t_master *content)
 {
 
 }
 
-void			plv(char UNUSED*params,
-				    t_client UNUSED*client,
-				    UNUSED t_master *content)
+void	pin(char UNUSED*params,
+	    t_client UNUSED*client,
+	    UNUSED t_master *content)
 {
 
 }
 
-void			pin(char UNUSED*params,
-				    t_client UNUSED*client,
-				    UNUSED t_master *content)
+void	sgt(char UNUSED*params,
+	    t_client UNUSED*client,
+	    UNUSED t_master *content)
 {
 
 }
 
-void			sgt(char UNUSED*params,
-				    t_client UNUSED*client,
-				    UNUSED t_master *content)
-{
-
-}
-
-void			sst(char UNUSED*params,
-				    t_client UNUSED*client,
-				    UNUSED t_master *content)
+void	sst(char UNUSED*params,
+	    t_client UNUSED*client,
+	    UNUSED t_master *content)
 {
 
 }
