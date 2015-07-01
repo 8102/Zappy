@@ -79,7 +79,7 @@
                 manager = new GameManager();
                 manager.init();
                 var socket  = io('http://localhost:1081');
-                socket.emit('answer', 'GRAPHICS\n');
+                socket.emit('answer', 'GRAPHIC\n');
                 socket.on('message', function(data) {
                     manager.treatMessage(data);
                 });

@@ -58,8 +58,7 @@ void	avance(char UNUSED*params,
       ssend(client->socket, "ppo %d %d %d %d\n", client->id, client->pos[0],
 	    client->pos[1], client->orient);
     }
-  else
-    ssend(client->socket, "ok\n");
+  ssend(client->socket, "ok\n");
 }
 
 void	droite(char UNUSED*params,
@@ -75,8 +74,7 @@ void	droite(char UNUSED*params,
       ssend(client->socket, "ppo %d %d %d %d\n", client->id, client->pos[0],
 	    client->pos[1], client->orient);
     }
-  else
-    ssend(client->socket, "ok\n");
+  ssend(client->socket, "ok\n");
 }
 
 void	gauche(char UNUSED*params,
@@ -92,6 +90,5 @@ void	gauche(char UNUSED*params,
       ssend(client->socket, "ppo %d %d %d %d\n", client->id, client->pos[0],
 	    client->pos[1], client->orient);
     }
-  else
-    ssend(client->socket, "ok\n");
+  ssend(client->socket, "ok\n");
 }
