@@ -36,3 +36,24 @@ t_case		*getCaseFromCoord(size_t x, size_t y, t_case *all)
     }
   return (NULL);
 }
+
+char		*transform_int(int tmp)
+{
+  char		*str;
+  int		size;
+  int		i;
+
+  i = 0;
+  size = 1;
+  while (tmp / pow(10, size) != 0)
+    size++;
+  if (!(str = malloc(size + 1)))
+    return (NULL);
+  while (i < size)
+    {
+      str[i++] = tmp % 10;
+      tmp /= 10;
+    }
+  str[i] = 0;
+  return (str);
+}

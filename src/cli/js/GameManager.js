@@ -654,6 +654,11 @@ var GameManager = function (Context, Engine) {
         self.test2.update(self.context.clock.getDelta() * 1000);
         for (i = 0; i < self.players.length; i += 1) {
             self.players[i].render();
+        // var i;
+        // self.anim.update(self.context.clock.getDelta() * 1000);
+        // self.test2.update(self.context.clock.getDelta() * 1000);
+        // for (i = 0; i < self.players.length; i += 1) {
+        //     self.players[i].render();
         }
 */
 //    self.effects[0].update(0.025);

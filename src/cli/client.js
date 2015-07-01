@@ -45,7 +45,7 @@ require('./tcp_client.js')(options.hostname, options.port, options.team_name);
 // // Quit when all windows are closed.
  app.on('window-all-closed', function() {
      if (process.platform != 'darwin') {
- 	app.quit();
+ 	// app.quit();
      }
  });
 
