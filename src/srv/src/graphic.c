@@ -5,7 +5,7 @@
 ** Login   <prenat_h@epitech.eu>
 **
 ** Started on  Wed Jun 24 17:11:21 2015 Hugo Prenat
-** Last update Thu Jun 25 00:24:15 2015 Hugo Prenat
+** Last update Wed Jul  1 18:33:49 2015 Hugo Prenat
 */
 
 #include "zappy.h"
@@ -47,21 +47,13 @@ void	send_player(t_client *client, t_master *content)
     ssend(client->socket, "pnw %d %d %d %d %d %s\n", client_tmp->id,
 	  client_tmp->pos[0], client_tmp->pos[1], client_tmp->orient,
 	  client_tmp->level, client_tmp->team->name);
+    ssend(client->socket, "pin %d %d %d %d %d %d\n", client_tmp->id,
+	  client_tmp->pos[0], client_tmp->pos[1], client_tmp->resources[MEAL],
+	  client_tmp->resources[LINEMATE], client_tmp->resources[DERAUMERE],
+	  client_tmp->resources[SIBUR], client_tmp->resources[MENDIANE],
+	  client_tmp->resources[PHIRAS], client_tmp->resources[THYSTAME]);
     client_tmp = client_tmp->next;
   }
-}
-
-void	send_egg(t_client *client, t_master *content)
-{
-  t_egg		*egg_tmp;
-
-  // egg_tmp = content->eggs;
-  // while (egg_tmp)
-  // {
-  //   ssend(client->socket, "enw %d %d %d %d\n", egg_tmp->nbr, egg_tmp->id,
-	//   egg_tmp->pos[0], egg_tmp->pos[1]);
-  //   egg_tmp = egg_tmp->next;
-  // }
 }
 
 void		graphic(char UNUSED*params,
@@ -73,5 +65,4 @@ void		graphic(char UNUSED*params,
   send_map(client, content);
   send_team(client, content);
   send_player(client, content);
-  send_egg(client, content);
 }
