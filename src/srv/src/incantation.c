@@ -65,10 +65,10 @@ void	do_incantation(t_client *client, t_master *content)
   if (client->trigger[GRAPHIC])
     {
       if (!players)
-	ssend(client->socket, "pie %ul %ul %d", client->pos[0], client->pos[1],
+	ssend(client->socket, "pie %ul %ul %d\n", client->pos[0], client->pos[1],
 	      0);
       else
-	ssend(client->socket, "pie %ul %ul %d", client->pos[0], client->pos[1],
+	ssend(client->socket, "pie %ul %ul %d\n", client->pos[0], client->pos[1],
 	      check_stones(client, getCaseFromCoord
 			   (client->pos[0], client->pos[1], content->cases),
 			   content->clients));
