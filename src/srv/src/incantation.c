@@ -38,7 +38,7 @@ char		*check_level(t_client *client, t_client *clients)
 	{
 	  if (!(nbr = transform_int(clients->id)))
 	    return (NULL);
-	  str = realloc(str, strlen(str) + strlen(nbr) + 1);
+	  str = realloc(str, strlen(str) + strlen(nbr) + 2);
 	  strcat(str, nbr);
 	  strcat(str, " ");
 	  free(nbr);
