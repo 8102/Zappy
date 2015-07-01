@@ -14,6 +14,7 @@ var Player = function (playerTeam, parameters) {
     this.model = null;
     this.alive = true;
     this.inventory = [];
+    this.moving = true;
     this.params = {
         animOffset: 0,
         walking: false,
@@ -23,11 +24,27 @@ var Player = function (playerTeam, parameters) {
         lastKeyframe: 0,
         currentKeyframe: 0
     };
-    playerTeam.addPlayer(this.ID);
 
+//    playerTeam.addPlayer(this.ID);
     this.reorient = function () {
         self.model.rotation.y = (Math.PI / 2) * (self.orientation - 1);
     };
+
+    this.getStringInventory = function () {
+        var invent = "Player #" + self.ID, i;
+        for (i = 0; i < 7; i += 1) {
+            invent += " " + self.inventory[i];
+        }
+        return invent;
+    };
+
+    /*jslint bitwise: true*/
+    this.move = function (x, y) {
+        self.position[0] = x | 0;
+        self.position[1] = y | 0;
+        self.model.position.set(self.position[0], 0.0, self.position[1]);
+    };
+    /*jslint bitwise: false*/
 
     this.selfLoader = function () {
 
@@ -41,7 +58,7 @@ var Player = function (playerTeam, parameters) {
             }
             var material = new THREE.MeshFaceMaterial(materials);
             self.model = new THREE.Mesh(geometry, material);
-           
+
             self.model.scale.set(0.05, 0.05, 0.05);
             self.model.position.set(self.position[0], 0.0, self.position[1]);
             self.model.rotation.y = (Math.PI / 2) * (self.orientation - 1);
@@ -50,12 +67,11 @@ var Player = function (playerTeam, parameters) {
     };
 
     this.update = function () {
- 
         if (this.model !== null) { this.model.rotation.y += 0.1; this.model.position.y += 0.1; }
     };
 
     this.render = function () {
-        if (self.model) {
+        if (self.moving === true && self.model) {
             var time = new Date().getTime() % self.params.duration,
                 keyframe = Math.floor(time / self.params.interpolation) + self.params.animOffset;
             if (keyframe !== self.params.currenKeyframe) {
@@ -69,6 +85,7 @@ var Player = function (playerTeam, parameters) {
             self.model.morphTargetInfluences[self.params.lastKeyframe] = 1 - self.model.morphTargetInfluences[keyframe];
         }
     };
-    for (i = 0; i < 7; i += 1) {this.inventory[i] = 0; }
+    this.inventory[0] = 10;
+    for (i = 1; i < 7; i += 1) {this.inventory[i] = 0; }
     this.selfLoader();
 };

@@ -1,0 +1,90 @@
+<!DOCTYPE HTML>
+    <html>
+    <head>
+        <meta charset="utf-8">
+        <link href="ressources/images/diamonIcon.png" rel="icon" type="images/png"/>
+        <title>{ Zappy 3 Friends }</title>
+        <!--Libs-->
+        <script src="ThreeJs/build/three.min.js"></script>
+        <script src="ThreeJs/examples/js/Detector.js"></script>
+        <script src="ThreeJs/examples/js/libs/stats.min.js"></script>
+        <script src="ThreeJs/examples/js/controls/OrbitControls.js"></script>
+        <script src="ThreeJs/examples/js/renderers/Projector.js"></script>
+        <script src="ThreeJs/examples/js/libs/dat.gui.min.js"></script>
+        <script src="ThreeJs/examples/js/wip/TypedGeometry.js"></script>
+        <script src="ThreeJs/examples/js/wip/IndexedTypedGeometry.js"></script>
+        <script src="ThreeJs/examples/js/wip/PlaneTypedGeometry.js"></script>
+        <script src="ThreeJs/examples/js/ImprovedNoise.js"></script>
+
+        <!-- <script src="js/Network.js"></script> -->
+        <script src="js/VideoContext.js"></script>
+        <script src="js/GeometryFactory.js"></script>
+        <script src="js/EffectFactory.js"></script>
+        <script src="js/GameObject.js"></script>
+        <script src="js/GameEngine.js"></script>
+        <script src="js/GUI.js"></script>
+        <script src="js/Effect.js"></script>
+        <script src="js/Team.js"></script>
+        <script src="js/Player.js"></script>
+        <script src="js/Egg.js"></script>
+        <script src="js/GameManager.js"></script>
+        <script src="http://127.0.0.1:1081/socket.io/socket.io.js"></script>
+        <script>
+            /*global VideoContext, GameEngine, GameManager, dat, animate, Effects, requestAnimationFrame*/
+
+            var network;
+            var manager;
+
+            window.onload = function () {
+                'use strict';
+
+                manager = new GameManager();
+                manager.init();
+                manager.treatMessage('msz 25 25\n');
+                manager.treatMessage('tna team1\n');
+                manager.treatMessage('tna team2\n');
+                manager.treatMessage('tna team3\n');
+                manager.treatMessage('tna team4\n');
+                manager.treatMessage('pnw #1 8 8 2 1 team1\n');
+                manager.treatMessage('pnw #2 16 16 2 1 team2\n');
+                manager.treatMessage('pnw #3 8 16 2 1 team3\n');
+                manager.treatMessage('pnw #4 20 20 2 1 team4\n');
+                manager.treatMessage('enw #1 #1 20 20\n');
+                manager.treatMessage('enw #2 #2 10 10\n');
+                manager.treatMessage('enw #3 #3 30 30\n');
+                manager.treatMessage('enw #4 #4 10 30\n');
+
+                for (var x = 0; x < manager.mapWidth; x += 1) {
+                    for (var y =0; y < manager.mapHeight; y += 1) {
+                        if (x * y % 2 === 0) {
+                        manager.treatMessage('bct ' + x + ' ' + y + ' 1 0 1 1 0 0 0\n');
+                        }
+                    }
+                }
+                manager.debugTeam();
+                manager.debugPlayer();
+                manager.testEffect(EFFECT.decors);
+                var socket  = io('http://localhost:1081');
+                socket.on('message', function(data) {
+                    manager.treatMessage(data);
+                    socket.emit('answer', 'Hey bonsoir !');
+                });
+                animate();
+            };
+            var test = true;
+            function animate() {
+                'use strict';
+                requestAnimationFrame(animate);
+                manager.update();
+                manager.engine.render();
+            }
+
+        </script>
+
+    </head>
+    <body>
+<!--
+            <audio src="ressources/audio/AdhesiveWombat%20-%208%20Bit%20Adventure.mp3" autoplay=true></audio>
+-->
+    </body>
+    </html>

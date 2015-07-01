@@ -13,7 +13,15 @@ var RessourceName = ['food', 'Linemate', 'Deraumère', 'Sibur', 'Mendiane', 'Phi
         broadcast: 7,
         incantate: 300,
         fork: 42
-    };
+    },
+    convertType = [];
+convertType[PREFAB_MATERIAL.FOOD] = 0;
+convertType[PREFAB_MATERIAL.LINEMATE] = 1;
+convertType[PREFAB_MATERIAL.DERAUMERE] = 2;
+convertType[PREFAB_MATERIAL.SIBUR] = 3;
+convertType[PREFAB_MATERIAL.MENDIANE] = 4;
+convertType[PREFAB_MATERIAL.PHIRAS] = 5;
+convertType[PREFAB_MATERIAL.THYSTAME] = 6;
 
 var GameManager = function (Context, Engine) {
     'use strict';
@@ -50,7 +58,6 @@ var GameManager = function (Context, Engine) {
         self.mapWidth = self.engine.mapWidth;
         self.mapHeight = self.engine.mapHeight;
         self.context.fog = new THREE.Fog(0xffffff, 0.15, 100);
-
     };
     /************************************************************************************/
     /****************************** [Commands Management] *******************************/
@@ -62,12 +69,31 @@ var GameManager = function (Context, Engine) {
         self.mapHeight = parser[2];
         self.engine.generateMap(self.mapWidth, self.mapHeight);
         if (self.GUI === null) {self.GUI = new GUI(self); }
+        document.addEventListener('mousedown', function (event) {
+            event.preventDefault();
+            if (event.which === 1) {
+                self.engine.selectCell(event);
+                self.GUI.displayInventory(event);
+            }
+        }, false);
         self.initRessourceArray();
         self.engine.heightMap = self.engine.generateHeightMap(200, 200);
         self.engine.generateRandomMap(200, 200);
-
+//        document.getElementById("banner1").addEventListener("animationEnd", function (event) {document.getElementById('banner1').classList = []; }, false);
+        document.addEventListener('keydown', function (event) {
+  /*          document.getElementById('banner1').className = "bannerAnimation";
+            document.getElementById('banner3').className = "bannerAnimation";
+            document.getElementById('banner2').className = "bannerAnimation";
+*//*
+            document.getElementById('banner1').style.webkitAnimationPlayState = "running";
+*/
+            if (event.keyCode === 32) {
+                self.engine.changeGridDisplay();
+            }
+        }, false);
         return true;
     };
+
     /*bct*/
     this.addRessourcesToCell = function (message) {
         var i, j, datas = [], parser = message.split(' ').map(Number);
@@ -92,7 +118,7 @@ var GameManager = function (Context, Engine) {
     /*pnw*/
     this.createPlayer = function (message) {
         var i, playerExist, parser = message.split(' ').map(String), playerID, playerTeam;
-        playerID = parser[1].split('#').map(Number)[1];
+        playerID = parseInt(parser[1], 10);/*.split('#').map(Number)[1];*/
         if ((playerExist = self.getPlayerByID(playerID)) !== null) { return false; }
         if ((playerTeam = self.getTeamByName(parser[6])) === null) { return false; }
         self.addNewPlayer(parser[6],
@@ -108,9 +134,10 @@ var GameManager = function (Context, Engine) {
     this.setPlayerPosition = function (message) {
         var i, playerID, player, parser = message.split(' ').map(String);
 
-        playerID = parser[1].split('#').map(Number)[1];
+        playerID = parseInt(parser[1], 10);/*.split('#').map(Number)[1];*/
         if ((player = self.getPlayerByID(playerID)) === null) { return false; }
-        player.model.position.set(parseInt(parser[2], 10), 0, parseInt(parser[3], 10));
+//        player.model.position.set(parseInt(parser[2], 10), 0, parseInt(parser[3], 10));
+        player.move(parseInt(parser[2], 10), parseInt(parser[3], 10));
         player.orientation = parseInt(parser[4], 10);
         player.reorient();
         return true;
@@ -119,7 +146,7 @@ var GameManager = function (Context, Engine) {
     this.setPlayerLevel = function (message) {
         var playerID, player, parser = message.split(' ').map(String);
 
-        playerID = parser[1].split('#').map(Number)[1];
+        playerID = parseInt(parser[1], 10);/*.split('#').map(Number)[1];*/
         if ((player = self.getPlayerByID(playerID)) === null) { return false; }
         player.level = parseInt(parser[2], 10);
 
@@ -131,11 +158,11 @@ var GameManager = function (Context, Engine) {
     this.setPlayerInventory = function (message) {
         var i, playerID, player, parser = message.split(' ').map(String);
 
-        playerID = parser[1].split('#').map(Number)[1];
+        playerID = parseInt(parser[1], 10);/*.split('#').map(Number)[1];*/
         if ((player = self.getPlayerByID(playerID)) === null) { return false; }
 
         for (i = 4; i < 11; i += 1) {
-            player.inventory[i] = parseInt(parser[i], 10);
+            player.inventory[i - 4] = parseInt(parser[i], 10);
         }
         return true;
     };
@@ -143,7 +170,7 @@ var GameManager = function (Context, Engine) {
     this.playerExpulse = function (message) {
         var playerID, player, parser = message.split(' ').map(String);
 
-        playerID = parser[1].split('#').map(Number)[1];
+        playerID = parseInt(parser[1], 10);/*.split('#').map(Number)[1];*/
         if ((player = self.getPlayerByID(playerID)) === null) { return false; }
 
         /************/
@@ -155,7 +182,7 @@ var GameManager = function (Context, Engine) {
     this.playerBroadcast = function (message) {
         var playerID, player, parser = message.split(' ').map(String);
 
-        playerID = parser[1].split('#').map(Number)[1];
+        playerID = parseInt(parser[1], 10);/*.split('#').map(Number)[1];*/
         if ((player = self.getPlayerByID(playerID)) === null) { return false; }
 
         /************/
@@ -167,7 +194,7 @@ var GameManager = function (Context, Engine) {
     this.startIncantation = function (message) {
         var i, playerID, player, parser = message.split(' ').map(String);
 
-        playerID = parser[4].split('#').map(Number)[1];
+        playerID = parseInt(parser[4], 10);/*.split('#').map(Number)[1];*/
         if ((player = self.getPlayerByID(playerID)) === null) { return false; }
         window.console.log('Player #' + playerID + ' Has started incantation level {' + parser[3] + '} in (' + parseInt(parser[1], 10) + ', ' + parseInt(parser[2], 10) + ') for next players :');
         for (i = 5; i < parser.length; i += 1) {
@@ -185,7 +212,7 @@ var GameManager = function (Context, Engine) {
     this.playerLaying = function (message) {
         var playerID, player, parser = message.split(' ').map(String);
 
-        playerID = parser[1].split('#').map(Number)[1];
+        playerID = parseInt(parser[1], 10);/*.split('#').map(Number)[1];*/
         if ((player = self.getPlayerByID(playerID)) === null) { return false; }
         window.console.log('Player #' + playerID + ' is laying an egg !');
         return true;
@@ -194,7 +221,7 @@ var GameManager = function (Context, Engine) {
     this.playerLeavingItem = function (message) {
         var playerID, player, parser = message.split(' ').map(String);
 
-        playerID = parser[1].split('#').map(Number)[1];
+        playerID = parseInt(parser[1], 10);/*.split('#').map(Number)[1];*/
         if ((player = self.getPlayerByID(playerID)) === null) { return false; }
         window.console.log('Player #' + playerID + ' is throwing a ' + RessourceName[parseInt(parser[2], 10)] + ' !');
         return true;
@@ -203,7 +230,7 @@ var GameManager = function (Context, Engine) {
     this.playerTakingItem = function (message) {
         var playerID, player, parser = message.split(' ').map(String);
 
-        playerID = parser[1].split('#').map(Number)[1];
+        playerID = parseInt(parser[1], 10);/*.split('#').map(Number)[1];*/
         if ((player = self.getPlayerByID(playerID)) === null) { return false; }
         window.console.log('Player #' + playerID + ' is taking a ' + RessourceName[parseInt(parser[2], 10)] + ' !');
         return true;
@@ -212,7 +239,7 @@ var GameManager = function (Context, Engine) {
     this.playerDeath = function (message) {
         var playerID, player, parser = message.split(' ').map(String);
 
-        playerID = parser[1].split('#').map(Number)[1];
+        playerID = parseInt(parser[1], 10);/*.split('#').map(Number)[1];*/
         if ((player = self.getPlayerByID(playerID)) === null) { return false; }
         self.removePlayer(playerID);
         self.remove(player);
@@ -223,8 +250,8 @@ var GameManager = function (Context, Engine) {
     this.layEgg = function (message) {
         var playerID, player, eggID, egg, x, y, parser = message.split(' ').map(String);
 
-        playerID = parser[2].split('#').map(Number)[1];
-        eggID = parser[1].split('#').map(Number)[1];
+        playerID = parseInt(parser[2], 10);/*.split('#').map(Number)[1];*/
+        eggID = parseInt(parser[1], 10);/*.split('#').map(Number)[1];*/
         x = parseInt(parser[3], 10);
         y = parseInt(parser[4], 10);
         if ((player = self.getPlayerByID(playerID)) === null) { return false; }
@@ -235,7 +262,7 @@ var GameManager = function (Context, Engine) {
     };
     /*eht*/
     this.eggIsReady = function (message) {
-        var eggID, egg, parser = message.split('#').map(Number);
+        var eggID, egg, parser = message.split(' ').map(Number);
 
         eggID = parser[1];
 /*
@@ -246,7 +273,7 @@ var GameManager = function (Context, Engine) {
     };
     /*edi*/
     this.eggIsDead = function (message) {
-        var eggID, egg, parser = message.split('#').map(Number);
+        var eggID, egg, parser = message.split(' ').map(Number);
 
         eggID = parser[1];
         if ((egg = self.getEggByID(eggID)) === null) { return false; }
@@ -257,7 +284,7 @@ var GameManager = function (Context, Engine) {
     };
     /*ebo*/
     this.connectToEgg = function (message) {
-        var eggID, egg, parser = message.split('#').map(Number);
+        var eggID, egg, parser = message.split(' ').map(Number);
 
         eggID = parser[1];
         if ((egg = self.getEggByID(eggID)) === null) { return false; }
@@ -304,22 +331,22 @@ var GameManager = function (Context, Engine) {
             '^[m][s][z]( [0-9]*){2}\n$',
             '^[b][c][t]( [0-9]*){9}\n$',
             '^[t][n][a] [a-zA-Z0-9]*\n$',
-            '^[p][n][w] #[0-9]*( [0-9]*){2} [1-4] [1-8] [a-zA-Z0-9]+\n$',
-            '^[p][p][o] #[0-9]*( [0-9]*){2} [1-4]\n$',
-            '^[p][l][v] #[0-9]* [1-8]\n$',
-            '^[p][i][n] #[0-9]*( [0-9]*){9}\n$',
-            '^[p][e][x] #[0-9]*\n$',
-            '^[p][b][c] #[0-9]*.*\n$',
-            '^[p][i][c]( [0-9]*){2} [1-4]( #[0-9]*){}\n$',
+            '^[p][n][w] [0-9]*( [0-9]*){2} [1-4] [1-8] [a-zA-Z0-9]+\n$',
+            '^[p][p][o] [0-9]*( [0-9]*){2} [1-4]\n$',
+            '^[p][l][v] [0-9]* [1-8]\n$',
+            '^[p][i][n] [0-9]*( [0-9]*){9}\n$',
+            '^[p][e][x] [0-9]*\n$',
+            '^[p][b][c] [0-9]*.*\n$',
+            '^[p][i][c]( [0-9]*){2} [1-4]( [0-9]*){}\n$',
             '^[p][i][e]( [0-9]*){2} [0-1]\n$',
-            '^[p][f][k] #[0-9]*\n$',
-            '^[p][d][r] #[0-9]* [0-6]\n$',
-            '^[p][g][t] #[0-9]* [0-6]\n$',
-            '^[p][d][i] #[0-9]*\n$',
-            '^[e][n][w] #[0-9]* #[0-9]( [0-9]*){2}\n$',
-            '^[e][h][t] #[0-9]*\n$',
-            '^[e][b][o] #[0-9]*\n$',
-            '^[e][d][i] #[0-9]*\n$',
+            '^[p][f][k] [0-9]*\n$',
+            '^[p][d][r] [0-9]* [0-6]\n$',
+            '^[p][g][t] [0-9]* [0-6]\n$',
+            '^[p][d][i] [0-9]*\n$',
+            '^[e][n][w] [0-9]* [0-9]( [0-9]*){2}\n$',
+            '^[e][h][t] [0-9]*\n$',
+            '^[e][b][o] [0-9]*\n$',
+            '^[e][d][i] [0-9]*\n$',
             '^[s][g][t] [0-9]*',
             '^[s][e][g] [a-zA-Z0-9]+\n$',
             '^[s][m][g] .*\n$',
@@ -430,6 +457,7 @@ var GameManager = function (Context, Engine) {
         return typeArray;
     };
     this.typeArray = this.initTypeArray();
+
     /* generates ressource of type [ŧype] in random position [x][y]; */
     this.generateRessource = function (type, x, y) {
         var neutralObject;
@@ -451,7 +479,14 @@ var GameManager = function (Context, Engine) {
         self.ressources[y * self.mapWidth + x] = [];
     };
 
+    this.getRessourcesOnCell = function (x, y) {
+        var cell = self.ressources[x + y * self.mapWidth], i, ressources = [0, 0, 0, 0, 0, 0, 0];
 
+        for (i = 0; i < cell.length; i += 1) {
+            ressources[convertType[cell[i].type]] += 1;
+        }
+        return ressources;
+    };
     /************************************************************************************/
     /********************************* [Team Management] ********************************/
     /************************************************************************************/
@@ -468,6 +503,7 @@ var GameManager = function (Context, Engine) {
         return newTeam;
     };
 
+    /*return team correponding to [teamName]*/
     this.getTeamByName = function (teamName) {
         var i;
         for (i = 0; i < self.teams.length; i += 1) {
@@ -486,12 +522,7 @@ var GameManager = function (Context, Engine) {
         if ((targetTeam = self.getTeamByName(teamName)) === null) {targetTeam = self.addNewTeam(teamName); }
         newPlayer = new Player(targetTeam, parameters);
         self.players.push(newPlayer);
-        
-        
-        
-
-        
-        
+        targetTeam.addPlayer(parameters.ID);
         return newPlayer;
     };
 
@@ -504,6 +535,20 @@ var GameManager = function (Context, Engine) {
         return null;
     };
 
+    /* return an array containing players(object) found on cell x, y */
+    this.getPlayersOnCell = function (x, y) {
+        var playerArray = [], i;
+
+        for (i = 0; i < self.players.length; i += 1) {
+            if (self.players[i].position[0] === x && self.players[i].position[1] === y) {
+                playerArray.push(self.players[i]);
+            }
+        }
+        return playerArray;
+    };
+
+    /* remove player from scene and game*/
+    /*NEEDS AN EFFECT*/
     this.removePlayer = function (playerID) {
         var i;
         for (i = 0; i < self.players.length; i += 1) {
@@ -513,10 +558,13 @@ var GameManager = function (Context, Engine) {
             }
         }
     };
+
     /************************************************************************************/
     /******************************** [Egg Management] *******************************/
     /************************************************************************************/
 
+    /* create an egg and place it to the cell or to the position of the player, while adding it to the player's team*/
+    /* FOR NOW ADD AN EFFECT TO THE EGG*/
     this.addNewEgg = function (ID, player, xCoordinate, yCoordinate) {
         var parameters, newEgg;
 
@@ -532,6 +580,7 @@ var GameManager = function (Context, Engine) {
         return true;
     };
 
+    /*return the egg corresponding to [eggID]*/
     this.getEggByID = function (eggID) {
         var i;
         for (i = 0; i < self.eggs.length; i += 1) {
@@ -540,7 +589,21 @@ var GameManager = function (Context, Engine) {
         return null;
     };
 
+    /* return an array containing eggs(object) found on cell x, y */
+    this.getEggsOnCell = function (x, y) {
+        var eggArray = [], i;
+
+        for (i = 0; i < self.eggs.length; i += 1) {
+            if (self.eggs[i].position[0] === x && self.eggs[i].position[1] === y) {
+                eggArray.push(self.eggs[i]);
+            }
+        }
+        return eggArray;
+    };
+
+    /*remove egg from scene and lists*/
     this.removeEgg = function (eggID) {
+
         var i;
         for (i = 0; i < self.eggs.length; i += 1) {
             if (self.eggs[i].ID === eggID) {
@@ -549,6 +612,7 @@ var GameManager = function (Context, Engine) {
             }
         }
     };
+
     /************************************************************************************/
     /************************************* [Debugger] ***********************************/
     /************************************************************************************/
@@ -574,6 +638,7 @@ var GameManager = function (Context, Engine) {
         effect2 = new Effect(Effects.create(EFFECT.decors), self.context, {position: {x: self.mapWidth + 1, y: 10, z: self.mapHeight + 1}}, {load: 500});
         self.effects.push(effect2);
         self.test2 = new Effects.TextureAnimator(EFFECT.decors);
+        document.addEventListener('mousedown', function (event) { self.GUI.displayInventory(); return true; });
 
     };
 
@@ -583,12 +648,14 @@ var GameManager = function (Context, Engine) {
 
 
     this.update = function () {
+/*
         var i;
         self.anim.update(self.context.clock.getDelta() * 1000);
         self.test2.update(self.context.clock.getDelta() * 1000);
         for (i = 0; i < self.players.length; i += 1) {
             self.players[i].render();
         }
+*/
 //    self.effects[0].update(0.025);
 
     };
