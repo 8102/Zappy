@@ -70,6 +70,6 @@ void		handle_io_connection(t_client *, t_master *);
 */
 t_team		*find_team(char *, t_master *);
 void		select_team(char *, t_client *, t_master *);
-void		place_player(t_master *, t_client *, t_team *);
+void		place_player(t_master *, t_client *);
 
 #endif /* !_CLIENT_H_ */
