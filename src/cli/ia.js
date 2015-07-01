@@ -149,6 +149,8 @@ function findGoal() {
 	if (compos.nbPlayer > 1) {
 		brain.objective = goal.CALL;
 		IA.emit('callTeam', compos.nbPlayer);
+	} else {
+		action.incantation();
 	}
 	return (true);
 }
@@ -212,10 +214,11 @@ IA.on('updateInventory', function(action, compoName, quantity) {
 		if (!added) {
 			brain.inventory.push([compoName, quantity]);
 		}
-		console.log("c'est bon j'ai remplis ma mission bitach !");
 		brain.inventory.push([compoName, quantity]);
 		brain.objective = goal.NONE;
-
+		if (compoName == 'nourriture') {
+			brain.hp += quantity;
+		}
 	} else {
 		for (var i = 0; i < brain.inventory.length; i++) {
 			if (brain.inventory[i][0] == compoName) {
@@ -225,6 +228,7 @@ IA.on('updateInventory', function(action, compoName, quantity) {
 				brain.inventory.splice(i, 1);
 			}
 		}
+		brain.objective = goal.NONE;
 	}
 	updateFov();
 });

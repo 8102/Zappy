@@ -73,8 +73,10 @@ function treatQueue() {
 		IA.emit('inventory');
 		cmdQueue.shift();
 	} else {
-		console.log('Command not taken into account: ' + cmdQueue[0].command);
-		cmdQueue.shift();
+		if (cmdQueue[0]) {
+			console.log('Command not taken into account: ' + cmdQueue[0].command);
+			cmdQueue.shift();
+		}
 	}
 	if (full) {
 		IA.emit('wakeUp');
@@ -128,6 +130,10 @@ module.exports = function(addr, port, team_name) {
 		} else if (graphicCmd.indexOf(data.toString().slice(0, 3)) > -1) {
 			for (var i = 0; i < res.length; i++) {
 				if (res[i].length > 0) {
+					if (res[i].slice(0, 3) == 'pie' && res[i].split(' ')[3] == '1') {
+						console.log('uuuuuuuuuuuuuuuuuupppppppppp !');
+						IA.emit('levelUp');
+					}
 					// console.log('Et jenvoie ça: ' + res[i]);
 					graphicSocket.emit('message', res[i] + '\n');
 				}
