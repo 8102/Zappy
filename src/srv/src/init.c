@@ -5,7 +5,7 @@
 ** Login   <prenat_h@epitech.eu>
 **
 ** Started on  Wed Jun 17 18:04:44 2015 Hugo Prenat
-** Last update Wed Jun 24 17:27:30 2015 Hugo Prenat
+** Last update Wed Jul  1 18:49:41 2015 Hugo Prenat
 */
 
 #include "zappy.h"
@@ -48,7 +48,7 @@ int		add_one_team(char *team, t_master *content)
   new->name = team;
   new->slot = content->max_clients;
   new->eggs = NULL;
-  while (i != content->max_clients)
+  while (i < content->max_clients)
     {
       pos[0] = rand() % content->width;
       pos[1] = rand() % content->height;
