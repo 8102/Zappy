@@ -34,7 +34,7 @@ char		*getUpAndDownVision(t_client *client, t_master *all, int lvl)
 	strcat(to_write, "") : strcat(to_write, ",");
       tmp++;
     }
-  if (((lvl < 0) ? lvl * -1 : lvl) == client->level)
+  if (tmp - 1 == client->level)
     strcat(to_write, "}\n");
   return (to_write);
 }
@@ -63,8 +63,8 @@ char	*getLeftAndRightVision(t_client *client, t_master *all, int lvl)
 	strcat(to_write, "") : strcat(to_write, ",");
       tmp++;
     }
-  ((lvl < 0) ? lvl * -1 : lvl == client->level) ?
-    strcat(to_write, "\n") : strcat(to_write, ",");
+  if (tmp - 1 == client->level)
+    strcat(to_write, "}\n");
   return (to_write);
 }
 
