@@ -97,6 +97,14 @@ char		*fillStringCase(t_case *, char *);
 char		*fillFirstTime();
 t_case		*getNextCase(t_case *, t_master *, int);
 /*
+**	prend.c
+*/
+int	checkPossibleTake(t_case *, char *, t_client *);
+/*
+**	pose.c
+*/
+int	checkPossibleSend(t_case *, char *, t_client *);
+/*
 **	broadcast.c
 */
 float		calculateDistance(int, int, int, int);
@@ -106,5 +114,6 @@ int		checkBasicYAxis(t_client *, t_client *, t_master *);
 int		multipleCases(t_client *, t_client *, t_master *);
 int		calculateOrientation(int, int, int, int);
 void		select_position_watch(t_client *client, t_master *all);
+int		checkBasicCase(t_client *, t_client *, t_master *);
 
 #endif /* !_ZAPPY_H_ */
