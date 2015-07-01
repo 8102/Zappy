@@ -28,5 +28,6 @@ void		error(char *);
 char		*epur_str(char *);
 char		*str_replace(char *, char, char);
 t_case		*getCaseFromCoord(size_t x, size_t y, t_case *);
+char		*transform_int(int);
 
 #endif /* !_MISC_H_ */
