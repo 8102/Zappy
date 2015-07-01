@@ -51,12 +51,11 @@ var VideoContext = function (width, height) {
 
     this.initScene = function () {
         this.scene = new THREE.Scene();
-        this.scene.position.set(-13, 0, -13);
     };
 
     this.initCamera = function () {
         this.camera = new THREE.PerspectiveCamera(65, this.width / this.height, 0.1, 10000);
-        this.camera.position.set(10, 20, 30);
+        this.camera.position.set(70, 30, 60);
         this.camera.lookAt(this.scene.position);
     };
 

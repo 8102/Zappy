@@ -5,10 +5,33 @@
 ** Login   <prenat_h@epitech.eu>
 **
 ** Started on  Mon Jun 29 17:18:03 2015 Hugo Prenat
-** Last update Tue Jun 30 17:38:58 2015 Hugo Prenat
+** Last update Tue Jun 30 21:05:34 2015 Hugo Prenat
 */
 
 #include "zappy.h"
+
+void		send_new_pos(t_master *content, int id)
+{
+  t_client	*cur;
+  t_client	*tmp;
+
+  cur = content->clients;
+  while (cur)
+    {
+      if (cur->trigger[GRAPHIC] == true)
+	{
+	  ssend(cur->socket, "pex %d\n", id);
+	  tmp = content->clients;
+	  while (tmp)
+	    {
+	      ssend(cur->socket, "ppo %d %d %d %d\n", tmp->id,
+		    tmp->pos[X], tmp->pos[Y], tmp->orient);
+	      tmp = tmp->next;
+	    }
+	}
+      cur = cur->next;
+    }
+}
 
 void		expulse(char UNUSED*params,
 			t_client *client,
@@ -37,4 +60,5 @@ void		expulse(char UNUSED*params,
 	}
       tmp = tmp->next;
     }
+  send_new_pos(content, client->id);
 }

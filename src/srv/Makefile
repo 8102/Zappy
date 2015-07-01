@@ -5,7 +5,7 @@
 ## chambo_e  <chambon.emmanuel@gmail.com>
 ##
 ## Started on  Wed Apr  8 22:49:16 2015 Emmanuel Chambon
-## Last update Mon Jun 29 17:55:48 2015 Hugo Prenat
+## Last update Tue Jun 30 21:07:06 2015 Hugo Prenat
 ##
 
 DEBUG		=	yes
@@ -43,6 +43,8 @@ SRC_SERVER	=	main.c			\
 			voir_misc.c		\
 			prend.c			\
 			pose.c			\
+			fork.c			\
+			ppo.c			\
 			broadcast.c		\
 			broadcast_orient.c	\
 			incantation.c		\

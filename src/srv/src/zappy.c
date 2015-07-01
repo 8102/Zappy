@@ -18,6 +18,7 @@ int		init_zappy(t_master *content, int ac, char **av)
   content->delay = 0;
   content->nbr_egg = 0;
   content->nbr_player = 0;
+  content->port = NULL;
   content->teams = NULL;
   content->clients = NULL;
   content->cases = NULL;
@@ -30,7 +31,8 @@ int		init_zappy(t_master *content, int ac, char **av)
       return (-1);
   }
   create_map(content);
-  init_server(&(content->server), content->port);
+  init_server(&(content->server),
+	      (content->port == NULL ? "4242" : content->port));
   return (0);
 }
 
