@@ -92,9 +92,10 @@ void		pop_egg(t_egg **, t_egg *);
 /*
 **	voir.c
 */
-t_case		*getCaseInMap(int, int, t_case *, t_master *);
+t_case		*getCaseInMap(t_client *, int, int, t_master *);
 char		*fillStringCase(t_case *, char *);
 char		*fillFirstTime();
+t_case		*getNextCase(t_case *, t_master *, int);
 /*
 **	broadcast.c
 */

@@ -10,8 +10,7 @@
 
 #include "zappy.h"
 
-char		*getUpAndDownVision(t_client *client, t_master *all,
-				    int lvl, t_case *save)
+char		*getUpAndDownVision(t_client *client, t_master *all, int lvl)
 {
   int		tmp;
   t_case	*position;
@@ -20,28 +19,27 @@ char		*getUpAndDownVision(t_client *client, t_master *all,
   tmp = (lvl < 0) ? lvl : lvl * -1;
   while (tmp + (int)client->pos[0] < 0)
     tmp++;
-  position = getCaseInMap((int)client->pos[0] + tmp, (int)client->pos[1] + lvl,
-			  save, all);
+  position = getCaseInMap(client, tmp, lvl, all);
   if (lvl != 0)
     to_write = getUpAndDownVision(client, all,
-				  (lvl < 0) ? lvl + 1 : lvl - 1, position);
+				  (lvl < 0) ? lvl + 1 : lvl - 1);
   else
     if (!(to_write = fillFirstTime()))
       return (NULL);
-  while (position && tmp <= ((lvl < 0) ? lvl * -1 : lvl) &&
-	 (int)client->pos[0] + tmp < all->width)
+  while (position && tmp <= ((lvl < 0) ? lvl * -1 : lvl))
     {
       to_write = fillStringCase(position, to_write);
-      position = position->next;
+      getNextCase(position, all, 0);
+      (tmp == client->level) ?
+	strcat(to_write, "") : strcat(to_write, ",");
       tmp++;
     }
-  ((lvl < 0) ? lvl * -1 : lvl == client->level) ?
-    strcat(to_write, "}\n") : strcat(to_write, ",");
+  if (((lvl < 0) ? lvl * -1 : lvl) == client->level)
+    strcat(to_write, "}\n");
   return (to_write);
 }
 
-char	*getLeftAndRightVision(t_client *client, t_master *all,
-			      int lvl, t_case *save)
+char	*getLeftAndRightVision(t_client *client, t_master *all, int lvl)
 {
   int		tmp;
   t_case	*position;
@@ -50,19 +48,19 @@ char	*getLeftAndRightVision(t_client *client, t_master *all,
   tmp = (lvl < 0) ? lvl : lvl * -1;
   while (tmp + (int)client->pos[0] < 0)
     tmp++;
-  position = getCaseInMap((int)client->pos[0] + lvl, (int)client->pos[1] + tmp,
-			  save, all);
+  position = getCaseInMap(client, lvl, tmp, all);
   if (lvl != 0)
     to_write = getUpAndDownVision(client, all,
-				  (lvl < 0) ? lvl + 1 : lvl - 1, position);
+				  (lvl < 0) ? lvl + 1 : lvl - 1);
   else
     if (!(to_write = fillFirstTime()))
       return (NULL);
-  while (position && tmp <= ((lvl < 0) ? lvl * -1 : lvl) &&
-	 (int)client->pos[1] + tmp < all->height)
+  while (position && tmp <= ((lvl < 0) ? lvl * -1 : lvl))
     {
       to_write = fillStringCase(position, to_write);
-      position = position->next;
+      getNextCase(position, all, 1);
+      (tmp == client->level) ?
+	strcat(to_write, "") : strcat(to_write, ",");
       tmp++;
     }
   ((lvl < 0) ? lvl * -1 : lvl == client->level) ?
@@ -77,11 +75,11 @@ void	select_position_watch(t_client *client, t_master *all)
   to_free = NULL;
   if (client->orient == NORTH || client->orient == SOUTH)
     to_free = getUpAndDownVision(client, all, (client->orient == NORTH) ?
-				 -1 * (client->level) : client->level, NULL);
+				 -1 * (client->level) : client->level);
   else
     to_free = getLeftAndRightVision
       (client, all, (client->orient == EAST)
-       ? -1 * (client->level) : client->level, NULL);
+       ? -1 * (client->level) : client->level);
   if (to_free)
     {
       ssend(client->socket, to_free);

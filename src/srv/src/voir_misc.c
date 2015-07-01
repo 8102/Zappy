@@ -10,14 +10,37 @@
 
 #include "zappy.h"
 
-t_case		*getCaseInMap(int x, int y, t_case *tmp, t_master *all)
+t_case		*getNextCase(t_case *tmp, t_master *all, int type)
+{
+  if (type == 0)
+    {
+      if ((int)tmp->x + 1 > all->width)
+	return (getCaseFromCoord(0, tmp->y, all->cases));
+      return (tmp->next);
+    }
+  if ((int)tmp->y + 1 > all->height)
+    return (getCaseFromCoord(tmp->x, 0, all->cases));
+  return (tmp->next);
+}
+
+t_case		*getCaseInMap(t_client *client, int tmp, int lvl, t_master *all)
 {
   t_case	*parse;
+  int		x;
+  int		y;
 
-  if (y < 0 || y > all->height || x < 0 || x > all->width)
-    return (NULL);
-  parse = (tmp) ? tmp : all->cases;
-  while (parse->x != (size_t)x || parse->y != (size_t)y)
+  x = client->pos[0] + tmp;
+  if (x < 0)
+    x += all->width;
+  else if (x >= all->width)
+    x -= all->width;
+  y = client->pos[1] + lvl;
+  if (y < 0)
+    y += all->height;
+  else if (y >= all->height)
+    y-= all->height;
+  parse = all->cases;
+  while (parse && (parse->x != (size_t)x || parse->y != (size_t)y))
     parse = parse->next;
   return (parse);
 }
