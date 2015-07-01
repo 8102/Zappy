@@ -56,19 +56,19 @@ void	do_incantation(t_client *client, t_master *content)
 
   players = check_level(client, content->clients);
   if (client->trigger[GRAPHIC])
-    players ? ssend(client->socket, "pic %ul %ul %d %s\n",
+    players ? ssend(client->socket, "pic %u %u %d %s\n",
 		    client->pos[0], client->pos[1], client->level, players) :
-      ssend(client->socket, "pic %ul %ul %d\n", client->pos[0], client->pos[1],
+      ssend(client->socket, "pic %u %u %d\n", client->pos[0], client->pos[1],
 	    client->level);
   ssend(client->socket, "elevation en cours\nniveau actuel : %d\n",
 	client->level);
   if (client->trigger[GRAPHIC])
     {
       if (!players)
-	ssend(client->socket, "pie %ul %ul %d\n", client->pos[0], client->pos[1],
+	ssend(client->socket, "pie %u %u %d\n", client->pos[0], client->pos[1],
 	      0);
       else
-	ssend(client->socket, "pie %ul %ul %d\n", client->pos[0], client->pos[1],
+	ssend(client->socket, "pie %u %u %d\n", client->pos[0], client->pos[1],
 	      check_stones(client, getCaseFromCoord
 			   (client->pos[0], client->pos[1], content->cases),
 			   content->clients));

@@ -103,7 +103,7 @@ void	msz(char UNUSED*params,
 	    t_client UNUSED*client,
 	    UNUSED t_master *content)
 {
-  ssend(client->socket, "msz %ul %ul\n", content->width, content->height);
+  ssend(client->socket, "msz %u %u\n", content->width, content->height);
 }
 
 void		bct(char *params,
@@ -202,7 +202,7 @@ void	pin(char *params,
     {
       if (clients->id == nbrP)
 	{
-	  ssend(client->socket, "pin #%d %ul %ul %d %d %d %d %d %d\n",
+	  ssend(client->socket, "pin #%d %u %u %d %d %d %d %d %d\n",
 		clients->id, clients->pos[0], clients->pos[1], clients->resources[MEAL],
 		clients->resources[LINEMATE], clients->resources[DERAUMERE],
 		clients->resources[SIBUR], clients->resources[MENDIANE],
