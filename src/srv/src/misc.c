@@ -37,21 +37,45 @@ t_case		*getCaseFromCoord(size_t x, size_t y, t_case *all)
   return (NULL);
 }
 
+char		*revstr(char *str)
+{
+  char		*revd;
+  int		i;
+  int		j;
+
+  if (!(revd = malloc(strlen(str) + 1)))
+    return (NULL);
+  i = strlen(str) - 1;
+  while (i >= 0)
+    {
+      revd[j] = str[i];
+      i--;
+      j++;
+    }
+  revd[j] = 0;
+  return (revd);
+}
+
 char		*transform_int(int tmp)
 {
   char		*str;
   int		size;
   int		i;
+  int		mult;
 
   i = 0;
   size = 1;
-  while (tmp / pow(10, size) != 0)
-    size++;
+  mult = 10;
+  while (tmp / mult != 0)
+    {
+      size++;
+      mult *= 10;
+    }
   if (!(str = malloc(size + 1)))
     return (NULL);
   while (i < size)
     {
-      str[i++] = tmp % 10;
+      str[i++] = tmp % 10 + '0';
       tmp /= 10;
     }
   str[i] = 0;
