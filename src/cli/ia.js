@@ -1,5 +1,5 @@
 module.exports = function (Actions, Ia, Queue) {
-// var sleep = require('sleep');
+var sleep = require('sleep');
 var spellbook = require('./spellbook.json');
 
 /*
@@ -72,15 +72,24 @@ function calcCoord(pos, to) {
 	to.x = pos - middle;
 }
 
+function dumpFOV() {
+	console.log('======== DUMP FOV ========');
+	console.log(brain.fov);
+	console.log('======== END ========');
+}
+
 function findResource(resource) {
+	dumpFOV();
 	if (brain.direction == 4) {
 		for (var i = 0; i < Math.floor((Math.random() * 15) + 1); i++) {
 			if (i % (brain.visualCapacity + 1) == 0) {
-				IA.emit('updateFov');
+				updateFov();
 			}
 			for (var i = 0; i < brain.fov.length; i++) {
-				if (fov[i].indexOf(resource) > -1) {
+				if (brain.fov[i].indexOf(resource) > -1) {
+					console.log('oOoOoOoOoO ' + i);
 					calcCoord(i, brain.to);
+					console.log('pos = (' + brain.pos.x + ',' + brain.pos.y + ') to = (' + brain.to.x + ',' + brain.to.y + ')');
 					brain.objective = goal.TAKE;
 					brain.obj = resource;
 					IA.emit('move');
@@ -92,8 +101,10 @@ function findResource(resource) {
 		brain.direction = 0;
 	} else {
 		for (var i = 0; i < brain.fov.length; i++) {
-			if (fov[i].indexOf(resource) > -1) {
+			if (brain.fov[i].indexOf(resource) > -1) {
+				console.log('oOoOoOoOoO ' + i);
 				calcCoord(i, brain.to);
+				console.log('pos = (' + brain.pos.x + ',' + brain.pos.y + ') to = (' + brain.to.x + ',' + brain.to.y + ')');
 				brain.objective = goal.TAKE;
 				brain.obj = resource;
 				IA.emit('move');
@@ -101,7 +112,7 @@ function findResource(resource) {
 			}
 		}
 		action.right();
-		IA.emit('updateFov');
+		updateFov();
 		brain.direction += 1;
 	}
 	return (false);
@@ -112,32 +123,42 @@ function findResource(resource) {
 */
 function inInventory(stoneName) {
 	var quantity = 0;
-	for (var i = 0; i < inventory.length; i++) {
-		if (inventory[i][0] == stoneName) {
-			quantity += inventory[i][1];
+	for (var i = 0; i < brain.inventory.length; i++) {
+		if (brain.inventory[i][0] == stoneName) {
+			quantity += brain.inventory[i][1];
 		}
 	}
 	return (quantity);
 }
 
 function findGoal() {
-	var compos = spellbook[level.toString()];
+	var idx = brain.level + 1;
+	var compos = spellbook[idx.toString()];
 
 	for (var compo in compos) {
 		if (compo == 'nbPlayer') {
 			continue;
 		}
-		if (compos[compo] > 0 && inventory(compo) < compos[compo]) {
+		if (compos[compo] > 0 && inInventory(compo) < compos[compo]) {
 			brain.objective = goal.SEARCH;
 			brain.obj = compo;
 			return (false);
 		}
 	}
+	console.log(compos);
 	if (compos.nbPlayer > 1) {
 		brain.objective = goal.CALL;
 		IA.emit('callTeam', compos.nbPlayer);
 	}
 	return (true);
+}
+
+function updateInventory() {
+	action.inventory();
+}
+
+function updateFov() {
+	action.see();
 }
 
 IA.on('levelUp', function() {
@@ -179,8 +200,33 @@ IA.on('saw', function(cmd) {
 	}
 });
 
-IA.on('updateFov', function() {
-	action.see();
+IA.on('updateInventory', function(action, compoName, quantity) {
+	if (action == 'prendre') {
+		var added = false;
+		for (var i = 0; i < brain.inventory.length; i++) {
+			if (brain.inventory[i][0] == compoName) {
+				brain.inventory[i][1] += quantity;
+				added = true;
+			}
+		}
+		if (!added) {
+			brain.inventory.push([compoName, quantity]);
+		}
+		console.log("c'est bon j'ai remplis ma mission bitach !");
+		brain.inventory.push([compoName, quantity]);
+		brain.objective = goal.NONE;
+
+	} else {
+		for (var i = 0; i < brain.inventory.length; i++) {
+			if (brain.inventory[i][0] == compoName) {
+				brain.inventory[i][1] -= 1;
+			}
+			if (brain.inventory[i][1] == 0) {
+				brain.inventory.splice(i, 1);
+			}
+		}
+	}
+	updateFov();
 });
 
 IA.on('inventory', function() {
@@ -191,16 +237,11 @@ IA.on('inventory', function() {
 	for (var j = 0; j < tmp.length; j++) {
 		brain.inventory.push(tmp[j].split(' '));
 	}
-	brain.hp = brain.inventory[0][1];
-});
-
-IA.on('updateInventory', function() {
-	action.inventory();
 });
 
 IA.on('bump', function() {
-	IA.emit('updateFov');
-	IA.emit('updateInventory');
+	updateFov();
+	updateInventory();
 });
 
 IA.on('move', function() {
@@ -212,7 +253,7 @@ IA.on('move', function() {
 	if (brain.to.x < 0) {
 		action.left;
 		return (true);
-	} else {
+	} else if (brain.to.x > 0 ){
 		action.right;
 		return (true);
 	}
@@ -228,6 +269,7 @@ IA.on('move', function() {
 	action.takeItem(brain.obj);
 	brain.objective = goal.NONE;
 	brain.obj = undefined;
+	brain.pos.x = brain.pos.y = 0;
 });
 
 IA.on('starving', function() {
@@ -253,8 +295,9 @@ function brainManagement() {
 		brain.objective = goal.EAT;
 	}
 	if (brain.objective == goal.EAT && brain.hp > 20) {
-		brain.objective = goal.SEARCH;
+		brain.objective = goal.NONE;
 	}
+	console.log(brain.objective);
 	switch (brain.objective) {
 		case goal.TAKE:
 			IA.emit('move');
@@ -269,13 +312,16 @@ function brainManagement() {
 			//IA.emit('');
 			break;
 		case goal.SEARCH:
-			findGoal();
+			findResource(brain.obj);
 			break;
 		case goal.WAIT:
 			//IA.emit('');
 			break;
 		case goal.CALL:
 			IA.emit('callTeam');
+			break;
+		case goal.NONE:
+			findGoal();
 			break;
 		default:
 			console.log('im waiting');
@@ -284,7 +330,7 @@ function brainManagement() {
 
 function run() {
 	if (debug) console.log('Here we gooo !');
-	IA.emit('updateFov');
+	updateFov();
 	var intervall = setInterval(brainManagement, 50);
 }
 
@@ -292,6 +338,6 @@ function run() {
 
 /*
 **		 Todo:
-**			- error management (if a command fail)
-**			- improve IA (chief, take resources more efficiently)
+**			- modifier l'update de l'inventaire
+**			- update brain.hp
 */

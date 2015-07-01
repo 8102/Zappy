@@ -41,8 +41,17 @@ function updateQueue(cmd) {
 	for (var i = 0; i < cmdQueue.length; i++) {
 		if (cmdQueue[i].state == undefined) {
 			cmdQueue[i].state = cmd;
+			break;
 		}
 	}
+}
+
+function dumpQueue() {
+	console.log("*** DUMP ***");
+	for (var i = 0; i < cmdQueue.length; i++) {
+		console.log(cmdQueue[i].command + ' --> ' + cmdQueue[i].state);
+	}
+	console.log("*** END ***");
 }
 
 function treatQueue() {
@@ -51,6 +60,11 @@ function treatQueue() {
 		full = true;
 	}
 	if (cmdQueue[0] && (cmdQueue[0].state == 'ok' || cmdQueue[0].state == 'ko')) {
+		if (cmdQueue[0].command.slice(0, 7) == 'prendre' && cmdQueue[0].state == 'ok') {
+			IA.emit('updateInventory', 'prendre', cmdQueue[0].command.slice(8), 1);
+		} else if (cmdQueue[0].command.slice(0, 4) == 'pose' && cmdQueue[0].state == 'ok') {
+			IA.emit('updateInventory', 'pose', cmdQueue[0].command.slice(5), 1);
+		}
 		cmdQueue.shift();
 	} else if (cmdQueue[0] && cmdQueue[0].command == 'voir' && cmdQueue[0].state) {
 		IA.emit('saw', cmdQueue[0].state);
@@ -84,14 +98,19 @@ module.exports = function(addr, port, team_name) {
 		if (debug) {
 			console.log(data.toString(undefined, 0, data.length - 1));
 		}
-		// console.log('>>> ' + graphicCmd.indexOf(data.toString().slice(0, 3)));
 
 		var res = data.toString().split('\n');
+		for (var i = 0; i < res.length; i++) {
+			if (res[i].length == 0) {
+				res.splice(i, 1);
+				i = 0;
+			}
+		}
 		if (!isAuth) {
 			for (var i = 0; i < res.length; i++) {
 				if (res[i] == 'BIENVENUE') {
 					client.write(team_name + '\n');
-				} else if (isNumber(res[i])) {
+				} else if (isNumber(res[i]) > 0) {
 					availPlaces = res[i];
 				} else if (res[i].split(' ').length == 2) {
 					var tmp = res[i].split(' ');
@@ -122,6 +141,8 @@ module.exports = function(addr, port, team_name) {
 					IA.emit('notification', res[i].substring(res[i].indexOf('message'), res[i].length));
 				} else {
 					updateQueue(res[i]);
+					if (debug) dumpQueue();
+					treatQueue();
 				}
 			}
 		}
@@ -198,7 +219,7 @@ if (typeof Action.initialized == 'undefined') {
 	Action.prototype.takeItem = function(obj) {
 		if (cmdQueue.length < 10) {
 			client.write('prendre ' + obj + '\n');
-			cmdQueue.push({command: 'prendre objet', state: undefined});
+			cmdQueue.push({command: 'prendre ' + obj, state: undefined});
 		} else {
 			IA.emit('wait');
 		}
@@ -207,7 +228,7 @@ if (typeof Action.initialized == 'undefined') {
 	Action.prototype.dropItem = function(obj) {
 		if (cmdQueue.length < 10) {
 			client.write('pose ' + obj +'\n');
-			cmdQueue.push({command: 'pose objet', state: undefined});
+			cmdQueue.push({command: 'pose ' + obj, state: undefined});
 		} else {
 			IA.emit('wait');
 		}
@@ -224,8 +245,8 @@ if (typeof Action.initialized == 'undefined') {
 
 	Action.prototype.sayToEveryone = function(message) {
 		if (cmdQueue.length < 10) {
-			client.write('broadcast texte\n');
-			cmdQueue.push({command: 'broadcast texte', state: undefined});
+			client.write('broadcast ' + message + '\n');
+			cmdQueue.push({command: 'broadcast ' + message, state: undefined});
 		} else {
 			IA.emit('wait');
 		}
