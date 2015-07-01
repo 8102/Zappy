@@ -42,6 +42,8 @@ void		expulse(char UNUSED*params,
 
   tmp = content->clients;
   orient = client->orient - 2;
+  if (client->trigger[GRAPHIC])
+    ssend(client->socket, "pex #%d\n", client->id);
   if (orient == -1)
     orient = SOUTH;
   else if (orient == 0)

@@ -74,6 +74,8 @@ void		broadcast(char *params,
 
   parsing = content->clients;
   ssend(client->socket, "ok\n");
+  if (client->trigger[GRAPHIC])
+    ssend(client->socket, "pbc #%d %s", client->id, params);
   while (parsing)
     {
       if (parsing->id != client->id)
@@ -85,10 +87,9 @@ void		broadcast(char *params,
 
 void	incantation(char UNUSED*params,
 		    t_client *client,
-		    UNUSED t_master *content)
+		    t_master *content)
 {
-  ssend(client->socket, "elevation en cours\nniveau actuel : %d\n",
-	client->level);
+  do_incantation(client, content);
 }
 
 void	connect_nbr(char UNUSED*params,

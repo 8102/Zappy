@@ -131,10 +131,9 @@ module.exports = function(addr, port, team_name) {
 			for (var i = 0; i < res.length; i++) {
 				if (res[i].length > 0) {
 					if (res[i].slice(0, 3) == 'pie' && res[i].split(' ')[3] == '1') {
-						console.log('uuuuuuuuuuuuuuuuuupppppppppp !');
 						IA.emit('levelUp');
 					}
-					// console.log('Et jenvoie ça: ' + res[i]);
+					if (debug) console.log('Comand send to graphical [' + res[i] + '\n]');
 					graphicSocket.emit('message', res[i] + '\n');
 				}
 			}

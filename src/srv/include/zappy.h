@@ -115,5 +115,10 @@ int		multipleCases(t_client *, t_client *, t_master *);
 int		calculateOrientation(int, int, int, int);
 void		select_position_watch(t_client *client, t_master *all);
 int		checkBasicCase(t_client *, t_client *, t_master *);
+/*
+**	incantation.c
+*/
+void	do_incantation(t_client *, t_master *);
+int	check_stones(t_client *, t_case *, t_client *);
 
 #endif /* !_ZAPPY_H_ */

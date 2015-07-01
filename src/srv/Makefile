@@ -46,7 +46,9 @@ SRC_SERVER	=	main.c			\
 			fork.c			\
 			ppo.c			\
 			broadcast.c		\
-			broadcast_orient.c
+			broadcast_orient.c	\
+			incantation.c		\
+			incantation_stone.c
 
 OBJ_DIR		=	obj/
 

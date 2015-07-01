@@ -40,35 +40,36 @@
 
                 manager = new GameManager();
                 manager.init();
-                manager.treatMessage('msz 25 25\n');
-                manager.treatMessage('tna team1\n');
-                manager.treatMessage('tna team2\n');
-                manager.treatMessage('tna team3\n');
-                manager.treatMessage('tna team4\n');
-                manager.treatMessage('pnw #1 8 8 2 1 team1\n');
-                manager.treatMessage('pnw #2 16 16 2 1 team2\n');
-                manager.treatMessage('pnw #3 8 16 2 1 team3\n');
-                manager.treatMessage('pnw #4 20 20 2 1 team4\n');
-                manager.treatMessage('enw #1 #1 20 20\n');
-                manager.treatMessage('enw #2 #2 10 10\n');
-                manager.treatMessage('enw #3 #3 30 30\n');
-                manager.treatMessage('enw #4 #4 10 30\n');
+                // manager.treatMessage('msz 25 25\n');
+                // manager.treatMessage('tna team1\n');
+                // manager.treatMessage('tna team2\n');
+                // manager.treatMessage('tna team3\n');
+                // manager.treatMessage('tna team4\n');
+                // manager.treatMessage('pnw #1 8 8 2 1 team1\n');
+                // manager.treatMessage('pnw #2 16 16 2 1 team2\n');
+                // manager.treatMessage('pnw #3 8 16 2 1 team3\n');
+                // manager.treatMessage('pnw #4 20 20 2 1 team4\n');
+                // manager.treatMessage('enw #1 #1 20 20\n');
+                // manager.treatMessage('enw #2 #2 10 10\n');
+                // manager.treatMessage('enw #3 #3 30 30\n');
+                // manager.treatMessage('enw #4 #4 10 30\n');
 
-                for (var x = 0; x < manager.mapWidth; x += 1) {
-                    for (var y =0; y < manager.mapHeight; y += 1) {
-                        if (x * y % 2 === 0) {
-                        manager.treatMessage('bct ' + x + ' ' + y + ' 1 0 1 1 0 0 0\n');
-                        }
-                    }
-                }
-                manager.debugTeam();
-                manager.debugPlayer();
-                manager.testEffect(EFFECT.decors);
+                // for (var x = 0; x < manager.mapWidth; x += 1) {
+                //     for (var y =0; y < manager.mapHeight; y += 1) {
+                //         if (x * y % 2 === 0) {
+                //         manager.treatMessage('bct ' + x + ' ' + y + ' 1 0 1 1 0 0 0\n');
+                //         }
+                //     }
+                // }
+                // manager.debugTeam();
+                // manager.debugPlayer();
+                // manager.testEffect(EFFECT.decors);
                 var socket  = io('http://localhost:1081');
                 socket.on('message', function(data) {
                     manager.treatMessage(data);
-                    socket.emit('answer', 'Hey bonsoir !');
+                    // socket.emit('answer', 'Hey bonsoir !');
                 });
+                socket.emit('answer', 'GRAPHICS\n');
                 animate();
             };
             var test = true;
