@@ -75,11 +75,11 @@ void		broadcast(char *params,
   parsing = content->clients;
   ssend(client->socket, "ok\n");
   if (client->trigger[GRAPHIC])
-    ssend(client->socket, "pbc #%d %s", client->id, params);
+    ssend(client->socket, "pbc #%d %s\n", client->id, params);
   while (parsing)
     {
       if (parsing->id != client->id)
-	ssend(parsing->socket, "message %d, %s",
+	ssend(parsing->socket, "message %d, %s\n",
 	      checkBasicCase(client, parsing, content), params);
       parsing = parsing->next;
     }
@@ -202,7 +202,7 @@ void	pin(char *params,
     {
       if (clients->id == nbrP)
 	{
-	  ssend(client->socket, "pin #%d %ul %ul %d %d %d %d %d %d \n",
+	  ssend(client->socket, "pin #%d %ul %ul %d %d %d %d %d %d\n",
 		clients->id, clients->pos[0], clients->pos[1], clients->resources[MEAL],
 		clients->resources[LINEMATE], clients->resources[DERAUMERE],
 		clients->resources[SIBUR], clients->resources[MENDIANE],
