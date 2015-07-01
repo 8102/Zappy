@@ -5,7 +5,7 @@
 ** Login   <milox_t@epitech.eu>
 **
 ** Started on  Sat Jun 27 20:56:34 2015 TommyStarK
-** Last update Sun Jun 28 00:17:25 2015 TommyStarK
+** Last update Tue Jun 30 23:35:24 2015 TommyStarK
 */
 
 #include "client.h"
@@ -44,4 +44,16 @@ void		snd(char *buf, int *len, int sock)
       l -= r;
     }
   *len = tot;
+}
+
+int 		get_array_size(char **array)
+{
+  int		i;
+
+  i = 0;
+  if (!array || !(*array))
+    return (i);
+  while (array[i])
+    ++i;
+  return (i);
 }

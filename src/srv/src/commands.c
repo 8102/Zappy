@@ -102,27 +102,38 @@ void	msz(char UNUSED*params,
 	    t_client UNUSED*client,
 	    UNUSED t_master *content)
 {
-
+  ssend(client->socket, "msz %ul %ul\n", content->width, content->height);
 }
 
-void	bct(char *params,
-	    t_client *client,
-	    t_master *content)
+void		bct(char *params,
+		    t_client *client,
+		    t_master *content)
 {
-//   char	*tmp;
-//   int		i;
-//
-//   i = 0;
-//   tmp = params;
-//   while ((tmp = index(tmp, ' ')) != NULL)
-//     i++;
-// printf("params === {%s} %d\n", params, i);
-  // if (!params)
-  // 	{
-  // 		ssend(client->socket, "suc\n");
-  // 		return ;
-  // 	}
-  // ssend(client->socket, "ok\n");
+  int		x;
+  int		y;
+  int		i;
+  t_case	*case_tmp;
+
+  if (!params || !params[0])
+    {
+      ssend(client->socket, "sbp\n");
+      return ;
+    }
+  x = atoi(params);
+  i = 0;
+  while (params[i] && params[i++] != ' ');
+  if (!params[i])
+    {
+      ssend(client->socket, "sbp\n");
+      return ;
+    }
+  y = atoi(&params[i]);
+  (!(case_tmp = getCaseFromCoord(x, y, content->cases))) ?
+    ssend(client->socket, "sbp\n") :
+    ssend(client->socket, "bct %d %d %d %d %d %d %d %d %d\n",
+	  case_tmp->x, case_tmp->y, case_tmp->meal, case_tmp->linemate,
+	  case_tmp->deraumere, case_tmp->sibur, case_tmp->mendiane,
+	  case_tmp->phiras, case_tmp->thystame);
 }
 
 void	mct(char UNUSED*params,
@@ -132,37 +143,96 @@ void	mct(char UNUSED*params,
   send_map(client, content);
 }
 
-void	tna(char UNUSED*params,
-	    t_client UNUSED*client,
-	    UNUSED t_master *content)
+void		tna(char UNUSED*params,
+		    t_client UNUSED*client,
+		    t_master *content)
 {
+  t_team	*allT;
 
+  allT = content->teams;
+  while (allT)
+    {
+      ssend(client->socket, "tna %s\n", allT->name);
+      allT = allT->next;
+    }
 }
 
-void	plv(char UNUSED*params,
-	    t_client UNUSED*client,
-	    UNUSED t_master *content)
+void		plv(char *params,
+		    t_client UNUSED*client,
+		    t_master *content)
 {
+  int		nbrP;
+  t_client	*clients;
 
+  if (!params || !params[0])
+    {
+      ssend(client->socket, "sbp\n");
+      return ;
+    }
+  nbrP = atoi(params);
+  clients = content->clients;
+  while (clients)
+    {
+      if (clients->id == nbrP)
+	{
+	  ssend(client->socket, "plv #%d %d\n", nbrP, clients->level);
+	  return ;
+	}
+      clients = clients->next;
+    }
+  ssend(client->socket, "sbp\n");
 }
 
-void	pin(char UNUSED*params,
-	    t_client UNUSED*client,
-	    UNUSED t_master *content)
+void	pin(char *params,
+	    t_client *client,
+	    t_master *content)
 {
+  int		nbrP;
+  t_client	*clients;
 
+  if (!params || !params[0])
+    {
+      ssend(client->socket, "sbp\n");
+      return ;
+    }
+  nbrP = atoi(params);
+  clients = content->clients;
+  while (clients)
+    {
+      if (clients->id == nbrP)
+	{
+	  ssend(client->socket, "pin #%d %ul %ul %d %d %d %d %d %d \n",
+		clients->id, clients->pos[0], clients->pos[1], clients->resources[MEAL],
+		clients->resources[LINEMATE], clients->resources[DERAUMERE],
+		clients->resources[SIBUR], clients->resources[MENDIANE],
+		clients->resources[MENDIANE], clients->resources[PHIRAS],
+		clients->resources[THYSTAME]);
+	  return ;
+	}
+      clients = clients->next;
+    }
+  ssend(client->socket, "sbp\n");
 }
 
 void	sgt(char UNUSED*params,
-	    t_client UNUSED*client,
-	    UNUSED t_master *content)
+	    t_client *client,
+	    t_master *content)
 {
-
+  ssend(client->socket, "sgt %d\n", content->delay);
 }
 
-void	sst(char UNUSED*params,
+void	sst(char *params,
 	    t_client UNUSED*client,
-	    UNUSED t_master *content)
+	    t_master *content)
 {
+  int	newT;
 
+  if (!params || !params[0])
+    {
+      ssend(client->socket, "sbp\n");
+      return ;
+    }
+  newT = atoi(params);
+  ssend(client->socket, "sgt %d\n", newT);
+  content->delay = newT;
 }

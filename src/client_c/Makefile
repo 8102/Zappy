@@ -5,21 +5,22 @@
 ## Login   <milox_t@epitech.eu>
 ##
 ## Started on  Sat Jun 27 23:15:04 2015 TommyStarK
-## Last update Sun Jun 28 01:20:36 2015 Milox Thomas
+## Last update Tue Jun 30 23:45:28 2015 Milox Thomas
 ##
 
-NAME 	=					zappy_client_c
+NAME 	=	zappy_client_c
 
-SRC 	= 				client.c				\
-								network.c				\
-								utils.c
+SRC 	= 	client.c				\
+		network.c				\
+		init.c					\
+		utils.c
 
-OBJ		=					$(SRC:.c=.o)
+OBJ	=	$(SRC:.c=.o)
 
 
-name:					$(OBJ)
-							gcc $(SRC) -o $(NAME) -g
+name:		$(OBJ)
+		gcc -W -Wall -Wextra -Werror $(SRC) -o $(NAME) -g
 
 
 clean:
-							rm -rf $(OBJ)
+		rm -rf $(OBJ)
