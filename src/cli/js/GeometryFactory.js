@@ -70,9 +70,7 @@ var GeometryFactory = function () {
     for (i = 0; i < 6; i += 1) {
         this.groundMaterialArray.push(i === 2 || i === 3 ? this.mat1 : this.mat2);
     }
-    this.prefabMaterials[PREFAB_MATERIAL.GROUND] = new this.materials[MATERIAL.BASIC]({transparent: false, opacity: 0.4, side: THREE.DoubleSide, map: this.textures['minecraft_surface.png']});
-    this.prefabMaterials[PREFAB_MATERIAL.GROUND_SIDE] = new this.materials[MATERIAL.FACE](self.groundMaterialArray);
-    this.prefabMaterials[PREFAB_MATERIAL.GROUND_SIDE] = new this.materials[MATERIAL.BASIC]({side: THREE.DoubleSide, map: this.textures['minecraft_side.png']});
+    this.prefabMaterials[PREFAB_MATERIAL.GROUND] = new this.materials[MATERIAL.BASIC]({transparent: false, opacity: 0.4, side: THREE.DoubleSide, map: this.textures['grass.png']});
     this.prefabMaterials[PREFAB_MATERIAL.FOOD] = new this.materials[MATERIAL.BASIC]({side: THREE.FrontSide, map: this.textures['chocolate.png']});
     this.prefabMaterials[PREFAB_MATERIAL.LINEMATE] = new this.materials[MATERIAL.PHONG]({side: THREE.FrontSide, color: 'lime'});
     this.prefabMaterials[PREFAB_MATERIAL.DERAUMERE] = new this.materials[MATERIAL.PHONG]({side: THREE.FrontSide, color: 'red'});

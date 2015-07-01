@@ -9,7 +9,7 @@
 */
 
 
-var x = 0, y = 0, /*COLOURCHANGER = 1, */GROUND = 0, neutralObject = null, projector, mouse = {x: 0, y: 0}, cellList = [], TESTSPRITE, EGG, o;
+var x = 0, y = 0, /*COLOURCHANGER = 1, */GROUND = 0, neutralObject = null, projector, mouse = {x: 0, y: 0}, cellList = [], TESTSPRITE, EGG, o, selectorRot = 0.02;
 var GameEngine = function (videoContext) {
     'use strict';
     var self = this;
@@ -24,12 +24,15 @@ var GameEngine = function (videoContext) {
     this.j = false;
     this.guiReady = false;
     this.gridHelper = null;
-    /* add a gameObject to the scene */
+    this.decors = null;
+    this.targets = [];
+    this.selector = null;
+    this.mouse = {x: 0, y: 0};
+    this.displaySelector = false;
     this.add = function (gameObject) {
         this.videoContext.scene.add(gameObject.mesh);
     };
 
-    /* For a given size, create the map and place stone on it */
     this.clearMap = function () {
 
         for (x = 0; x < this.mapWidth; x += 1) {
@@ -41,24 +44,21 @@ var GameEngine = function (videoContext) {
     };
 
     this.generateMap = function (mapWidth, mapHeight) {
-
         if (self.map.length !== 0) {self.clearMap(); }
         this.mapWidth = (typeof mapWidth === 'number' && mapWidth > 0) ? mapWidth : 0;
         this.mapHeight = (typeof mapHeight === 'number' && mapHeight > 0) ? mapHeight : 0;
-
         for (x = 0; x < this.mapWidth; x += 1) {
             for (y = 0; y < this.mapHeight; y += 1) {
- /**/           this.stones[y * this.mapWidth + x] = [];
                 self.map[y * this.mapWidth + x] = new GameObject(LIGHT_SHAPE.BOX, PREFAB_MATERIAL.GROUND);
                 self.map[y * this.mapWidth + x].mesh.position.set(x, -0.5, y);
                 this.add(this.map[y * this.mapWidth + x]);
+                self.targets.push(self.map[y * this.mapWidth + x].mesh);
             }
         }
     };
 
     this.addLights = function (nbLight) {
         var i;
-        videoContext.scene.add(new THREE.AmbientLight(0xbbbbbbbb, 0.5));
         if (self.lights.length !== 0) { for (i = 0; i < self.lights.length; i += 1) {videoContext.scene.remove(self.lights[i]); } }
         for (i = 0; i < nbLight; i += 1) {
             self.lights[i] = new THREE.DirectionalLight(0xffffffff, 1);
@@ -73,16 +73,52 @@ var GameEngine = function (videoContext) {
     this.setupGrid = function (width, height) {
         self.gridHelper = new THREE.GridHelper((height >= width ? height : width) / 2, 1);
         self.gridHelper.position.set(width / 2 - 0.5, 0.1, height / 2 - 0.5);
-        self.gridHelper.setColors(new THREE.Color('white'), new THREE.Color('white'));
+        self.gridHelper.setColors(new THREE.Color('gold'), new THREE.Color('gold'));
         this.videoContext.scene.add(self.gridHelper);
     };
 
+    this.changeGridDisplay = function () {
+        if (self.gridHelper === null) {
+            self.setupGrid(self.mapWidth, self.mapHeight);
+            self.videoContext.scene.add(self.gridHelper);
+        } else { self.videoContext.scene.remove(self.gridHelper);
+                 self.gridHelper = null; }
+    };
+
+    this.selectedCell = function () {
+        if (self.displaySelector === true) { return {x: self.selector.position.x, y: self.selector.position.z}; }
+        return null;
+    };
+
+    this.selectCell = function (event) {
+        var vector, ray, intersects, camera = self.videoContext.camera;
+
+        self.mouse.x = (event.clientX / self.videoContext.width) * 2 - 1;
+        self.mouse.y = -(event.clientY / self.videoContext.height) * 2 + 1;
+        vector = new THREE.Vector3(self.mouse.x, self.mouse.y, 1);
+        vector.unproject(camera);
+        ray = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
+        intersects = ray.intersectObjects(self.targets);
+        if (intersects.length > 0) {
+            self.selector.position.x = intersects[0].object.position.x;
+            self.selector.position.z = intersects[0].object.position.z;
+            if (self.displaySelector === false) {
+                self.videoContext.scene.add(self.selector);
+                self.displaySelector = true;
+            }
+        } else if (self.displaySelector === true) {
+            self.videoContext.scene.remove(self.selector);
+            self.displaySelector = false;
+        }
+    };
 
     this.init = function () {
         self.addLights(3);
+        self.selector = new THREE.GridHelper(0.5, 0.10);
+        self.selector.setColors(new THREE.Color('gold'), new THREE.Color('gold'));
+        self.selector.position.set(15, 0.05, 15);
     };
 
-    /* Skybox creator : pass the name of the repertory of the skybox */
     this.generateSkyBox = function (skyboxTheme) {
         var faces = ['xpos', 'xneg', 'ypos', 'yneg', 'zpos', 'zneg'],
             skyboxGeometry = new THREE.BoxGeometry(5000, 5000, 5000),
@@ -190,18 +226,61 @@ var GameEngine = function (videoContext) {
     };
 
     this.getY = function (x, y, width) {
-//        console.log(self.heightMap[25] + 'for ' + x + ' ' + y);
         return (self.heightMap[x + y * width] * 0.2) | 0;
     };
 
     this.isInGraphicArenaRange = function (worldWidth, worldDepth, x, z) {
         if (
             x - worldWidth / 2 + self.mapWidth / 2 >= 0 &&
-                x - worldWidth / 2 + self.mapWidth / 2 <= self.mapWidth - 1 &&
+                x - worldWidth / 2 + self.mapWidth / 2 <= self.mapWidth - (1 - self.mapWidth % 2) &&
                 z - worldDepth / 2 + self.mapHeight / 2 >= 0 &&
-                z - worldWidth / 2 + self.mapHeight / 2 <= self.mapHeight - 1
+                z - worldWidth / 2 + self.mapHeight / 2 <= self.mapHeight - (1 - self.mapHeight % 2)
         ) {return true; }
         return false;
+
+    };
+
+    this.generateTree = function (worldWidth, worldDepth) {
+        var matrix = new THREE.Matrix4(),
+            leafGeometry = new THREE.Geometry(),
+            trunkGeometry = new THREE.Geometry(),
+            leaf = new THREE.CylinderGeometry(0, 3, 8, 32, 16),
+            trunk = new THREE.CylinderGeometry(1, 1, 3, 32, 16),
+            leafMaterial = Factory.prefabMaterials[PREFAB_MATERIAL.GROUND],
+            trunkMaterial = Factory.prefabMaterials[PREFAB_MATERIAL.FOOD],
+            leavesMesh,
+            trunksMesh,
+            x = 0,
+            y = 0,
+            z = 0,
+            i,
+            position = 0;
+
+        for (i = 0; i < 10; i += 1) {
+            x += (worldWidth / 20) | 0;
+            z += (worldDepth / 20) | 0;
+            if (self.isInGraphicArenaRange(worldWidth, worldDepth, x, z) === false) {
+                y = self.getY(x, z, worldWidth);
+                matrix.makeTranslation(x - worldWidth / 2 + self.mapWidth / 2 - (self.mapWidth % 2) / 2, y + 6,  z - worldDepth / 2 + self.mapHeight / 2 - (self.mapHeight % 2) / 2);
+                leafGeometry.merge(leaf, matrix);
+                matrix.makeTranslation(x - worldWidth / 2 + self.mapWidth / 2 - (self.mapWidth % 2) / 2, y + 2,  z - worldDepth / 2 + self.mapHeight / 2 - (self.mapHeight % 2) / 2);
+                trunkGeometry.merge(trunk, matrix);
+                leavesMesh = new THREE.Mesh(leafGeometry, leafMaterial);
+            }
+        }
+        trunksMesh = new THREE.Mesh(trunkGeometry, trunkMaterial);
+        self.videoContext.scene.add(leavesMesh);
+        self.videoContext.scene.add(trunksMesh);
+        /*
+        matrix.makeTranslation(25, 18, 25);
+        var tree = new THREE.CylinderGeometry(0, 3, 8, 64, 32);
+        test.merge(tree, matrix);
+        matrix.makeTranslation(25, 14, 25);
+        var trunk = new THREE.CylinderGeometry(1, 1, 3, 64, 32);
+        test.merge(trunk, matrix);
+        var treemesh = new THREE.Mesh(test, Factory.prefabMaterials[PREFAB_MATERIAL.GROUND]);
+        self.videoContext.scene.add(treemesh);
+*/
 
     };
 
@@ -259,8 +338,11 @@ var GameEngine = function (videoContext) {
         texture.minFilter = THREE.LinearMipMapLinearFilter;
         texture.wrapS = THREE.ClampToEdgeWrapping;
         texture.wrapT = THREE.ClampToEdgeWrapping;
-        mesh = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({map: texture, side: THREE.FrontSide}));
-        self.videoContext.scene.add(mesh);
+        self.decors = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({map: texture, side: THREE.FrontSide}));
+        self.videoContext.scene.add(self.decors);
+/*
+        self.generateTree(worldWidth, worldDepth);
+*/
     };
 
     this.animateStone = function (x, y) {
@@ -301,6 +383,10 @@ var GameEngine = function (videoContext) {
 
     this.render = function () {
         if (this.guiReady === true) {this.update(); }
+        if (Math.abs(self.selector.rotation.y) > 0.20) {
+            selectorRot *= -1;
+        }
+        self.selector.rotation.y += selectorRot;
         this.videoContext.render();
         this.videoContext.update();
     };
