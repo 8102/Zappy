@@ -9,7 +9,7 @@ var EventEmitter = require('events').EventEmitter;
 /*
 ** debug
 */
-var debug = true;
+var debug = false;
 
 /*
 ** variable scope
@@ -56,6 +56,7 @@ function dumpQueue() {
 
 function treatQueue() {
 	var full = false;
+	if (debug) console.log('length = ' + cmdQueue.length);
 	if (cmdQueue.length == 10) {
 		full = true;
 	}
@@ -108,8 +109,8 @@ module.exports = function(addr, port, team_name) {
 				i = 0;
 			}
 		}
-		if (!isAuth) {
-			for (var i = 0; i < res.length; i++) {
+		for (var i = 0; i < res.length; i++) {
+			if (!isAuth) {
 				if (res[i] == 'BIENVENUE') {
 					client.write(team_name + '\n');
 				} else if (isNumber(res[i]) > 0) {
@@ -126,9 +127,7 @@ module.exports = function(addr, port, team_name) {
 						console.error('Bad map size !');
 					}
 				}
-			}
-		} else if (graphicCmd.indexOf(data.toString().slice(0, 3)) > -1) {
-			for (var i = 0; i < res.length; i++) {
+			} else if (graphicCmd.indexOf(res[i].slice(0, 3)) > -1) {
 				if (res[i].length > 0) {
 					if (res[i].slice(0, 3) == 'pie' && res[i].split(' ')[3] == '1') {
 						IA.emit('levelUp');
@@ -136,10 +135,8 @@ module.exports = function(addr, port, team_name) {
 					if (debug) console.log('Comand send to graphical [' + res[i] + '\n]');
 					graphicSocket.emit('message', res[i] + '\n');
 				}
-			}
-		} else {
-			// command from server to IA
-			for (var i = 0; i < res.length; i++) {
+			} else {
+				// command from server to IA
 				if (res[i].search('deplacement') != -1) {
 					IA.emit('bump');
 				} else if (res[i].search('message') != -1) {
@@ -149,7 +146,7 @@ module.exports = function(addr, port, team_name) {
 					if (debug) dumpQueue();
 					treatQueue();
 				}
-			}
+			}			
 		}
 	});
 
@@ -177,7 +174,9 @@ if (typeof Action.initialized == 'undefined') {
 			client.write('avance\n');
 			cmdQueue.push({command: 'avance', state: undefined});
 		} else {
+			console.log('wait');
 			IA.emit('wait');
+			dumpQueue();
 		}
 	};
 

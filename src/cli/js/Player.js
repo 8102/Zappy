@@ -27,7 +27,9 @@ var Player = function (playerTeam, parameters) {
 
 //    playerTeam.addPlayer(this.ID);
     this.reorient = function () {
-        self.model.rotation.y = (Math.PI / 2) * (self.orientation - 1);
+        if (self.model !== null) {
+            self.model.rotation.y = (Math.PI / 2) * (self.orientation - 1);
+        }
     };
 
     this.getStringInventory = function () {
@@ -42,7 +44,9 @@ var Player = function (playerTeam, parameters) {
     this.move = function (x, y) {
         self.position[0] = x | 0;
         self.position[1] = y | 0;
-        self.model.position.set(self.position[0], 0.0, self.position[1]);
+        if (self.model !== null) {
+            self.model.position.set(self.position[0], 0.0, self.position[1]);
+        }
     };
     /*jslint bitwise: false*/
 
