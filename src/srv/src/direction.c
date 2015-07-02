@@ -5,7 +5,7 @@
 ** Login   <prenat_h@epitech.eu>
 **
 ** Started on  Wed Jun 24 19:02:16 2015 Hugo Prenat
-** Last update Thu Jul  2 15:54:28 2015 Hugo Prenat
+** Last update Thu Jul  2 16:13:34 2015 Hugo Prenat
 */
 
 #include "zappy.h"
@@ -61,8 +61,8 @@ void		avance(char UNUSED*params,
     {
       if (tmp->trigger[GRAPHIC] == true)
 	{
-	  ssend(tmp->socket, "ppo %d %d %d %d\n", tmp->id, tmp->pos[0],
-		tmp->pos[1], tmp->orient);
+	  ssend(tmp->socket, "ppo %d %d %d %d\n", client->id, client->pos[0],
+		client->pos[1], client->orient);
 	}
       tmp = tmp->next;
     }
@@ -84,8 +84,8 @@ void		droite(char UNUSED*params,
     {
       if (tmp->trigger[GRAPHIC] == true)
 	{
-	  ssend(tmp->socket, "ppo %d %d %d %d\n", tmp->id, tmp->pos[0],
-		tmp->pos[1], tmp->orient);
+	  ssend(tmp->socket, "ppo %d %d %d %d\n", client->id, client->pos[0],
+		client->pos[1], client->orient);
 	}
       tmp = tmp->next;
     }
@@ -107,8 +107,8 @@ void		gauche(char UNUSED*params,
     {
       if (tmp->trigger[GRAPHIC] == true)
 	{
-	  ssend(tmp->socket, "ppo %d %d %d %d\n", tmp->id, tmp->pos[0],
-		tmp->pos[1], tmp->orient);
+	  ssend(tmp->socket, "ppo %d %d %d %d\n", client->id, client->pos[0],
+		client->pos[1], client->orient);
 	}
       tmp = tmp->next;
     }
