@@ -5,7 +5,7 @@
 ** Login   <prenat_h@epitech.eu>
 **
 ** Started on  Thu Jul  2 15:37:37 2015 Hugo Prenat
-** Last update Thu Jul  2 15:53:57 2015 Hugo Prenat
+** Last update Thu Jul  2 17:13:26 2015 Hugo Prenat
 */
 
 #include "zappy.h"
@@ -65,9 +65,9 @@ void		plv(char *params,
   ssend(client->socket, "sbp\n");
 }
 
-void	pin(char *params,
-	    t_client *client,
-	    t_master *content)
+void		pin(char *params,
+		    t_client *client,
+		    t_master *content)
 {
   int		nbrP;
   t_client	*clients;

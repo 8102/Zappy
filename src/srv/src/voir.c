@@ -5,7 +5,7 @@
 ** tran_0  <david.tran@epitech.eu>
 **
 ** Started on  Wed Jun 17 08:31:10 2015 David Tran
-** Last update Wed Jun 24 15:26:13 2015 David Tran
+** Last update Thu Jul  2 17:15:25 2015 Hugo Prenat
 */
 
 #include "zappy.h"
@@ -37,7 +37,7 @@ char		*getUpAndDownVision(t_client *client, t_master *all, int lvl)
   return (to_write);
 }
 
-char	*getLeftAndRightVision(t_client *client, t_master *all, int lvl)
+char		*getLeftAndRightVision(t_client *client, t_master *all, int lvl)
 {
   int		tmp;
   t_case	*position;

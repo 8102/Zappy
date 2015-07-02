@@ -5,15 +5,15 @@
 ** Login   <prenat_h@epitech.eu>
 **
 ** Started on  Tue Jun 23 18:04:19 2015 Hugo Prenat
-** Last update Tue Jun 30 23:12:34 2015 Hugo Prenat
+** Last update Thu Jul  2 17:16:58 2015 Hugo Prenat
 */
 
 #include "zappy.h"
 
 void		push_egg(t_egg **list, t_egg *elem)
 {
-  t_egg	*it;
-  t_egg	*save;
+  t_egg		*it;
+  t_egg		*save;
   bool		stop;
 
   if (*list == NULL)
@@ -38,8 +38,8 @@ void		push_egg(t_egg **list, t_egg *elem)
 
 void		pop_egg(t_egg **list, t_egg *elem)
 {
-  t_egg	*it;
-  t_egg	*prev;
+  t_egg		*it;
+  t_egg		*prev;
 
   if (!(*list))
     return ;
@@ -63,9 +63,9 @@ void		pop_egg(t_egg **list, t_egg *elem)
     }
 }
 
-void	add_egg(t_team *team, t_master *content, size_t pos[2], int id)
+void		add_egg(t_team *team, t_master *content, size_t pos[2], int id)
 {
-  t_egg	*egg;
+  t_egg		*egg;
   t_client	*tmp;
 
   if (!(egg = malloc(sizeof(t_egg))))
