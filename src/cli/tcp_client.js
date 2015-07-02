@@ -9,7 +9,7 @@ var EventEmitter = require('events').EventEmitter;
 /*
 ** debug
 */
-var debug = false;
+var debug = true;
 
 /*
 ** variable scope
@@ -130,6 +130,7 @@ module.exports = function(addr, port, team_name) {
 			} else if (graphicCmd.indexOf(res[i].slice(0, 3)) > -1) {
 				if (res[i].length > 0) {
 					if (res[i].slice(0, 3) == 'pie' && res[i].split(' ')[3] == '1') {
+						console.log('#######################################################################################');
 						IA.emit('levelUp');
 					}
 					if (debug) console.log('Comand send to graphical [' + res[i] + '\n]');
@@ -141,6 +142,8 @@ module.exports = function(addr, port, team_name) {
 					IA.emit('bump');
 				} else if (res[i].search('message') != -1) {
 					IA.emit('notification', res[i].substring(res[i].indexOf('message'), res[i].length));
+				} else if (res[i] == 'elevation en cours') {
+					continue;
 				} else {
 					updateQueue(res[i]);
 					if (debug) dumpQueue();
@@ -174,9 +177,7 @@ if (typeof Action.initialized == 'undefined') {
 			client.write('avance\n');
 			cmdQueue.push({command: 'avance', state: undefined});
 		} else {
-			console.log('wait');
 			IA.emit('wait');
-			dumpQueue();
 		}
 	};
 
@@ -222,8 +223,8 @@ if (typeof Action.initialized == 'undefined') {
 
 	Action.prototype.takeItem = function(obj) {
 		if (cmdQueue.length < 10) {
-			client.write('prendre ' + obj + '\n');
-			cmdQueue.push({command: 'prendre ' + obj, state: undefined});
+			client.write('prend ' + obj + '\n');
+			cmdQueue.push({command: 'prend ' + obj, state: undefined});
 		} else {
 			IA.emit('wait');
 		}

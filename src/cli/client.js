@@ -9,9 +9,11 @@ var argc = process.argv[2],
 ** Arguments checking
 */
 var options = new Array();
+
 options['team_name'] = null;
 options['port'] = null;
 options['hostname'] = "localhost";
+options['GUI'] = false;
 for (var i = 0; i < argc; i++) {
     if (argv[i] == '-n') {
         options.team_name = argv[i + 1];
@@ -22,6 +24,9 @@ for (var i = 0; i < argc; i++) {
     if (i < argc - 1 && argv[i] == '-h') {
         options.hostname = argv[i + 1];
     }
+    if (argv[i] == '-g' || argv[i] == '--gui') {
+        options.GUI = true;
+    }
 }
 
 for (var opt in options) {
@@ -31,38 +36,35 @@ for (var opt in options) {
     }
 }
 
-require('./http_server.js')(1081);
+if (options.GUI) {
+    require('./http_server.js')(1081);
+}
 require('./tcp_client.js')(options.hostname, options.port, options.team_name);
 
- var app = require('app');  // Module to control application life.
- var BrowserWindow = require('browser-window');  // Module to create native browser window.
- var toto = require("websocket");
+if (options.GUI) {
+    graphicalInterface();
+}
 
-// // Keep a global reference of the window object, if you don't, the window will
-// // be closed automatically when the javascript object is GCed.
- var mainWindow = null;
+function graphicalInterface() {
+    var app = require('app');
+    var BrowserWindow = require('browser-window');
+    var toto = require("websocket");
 
-// // Quit when all windows are closed.
- app.on('window-all-closed', function() {
-     if (process.platform != 'darwin') {
- 	// app.quit();
-     }
- });
+    var mainWindow = null;
 
-// // This method will be called when Electron has done everything
-// // initialization and ready for creating browser windows.
- app.on('ready', function() {
-     //     // Create the browser window.
-     mainWindow = new BrowserWindow({width: 1600, height: 960, 'auto-hide-menu-bar': true});
+    app.on('window-all-closed', function() {
+        if (process.platform != 'darwin') {
+        // app.quit();
+        }
+    });
 
-//     // and load the index.html of the app.
-     mainWindow.loadUrl('file://' + __dirname + '/index.html');
-    
-//     // Emitted when the window is closed.
-     mainWindow.on('closed', function() {
-// 	// Dereference the window object, usually you would store windows
-// 	// in an array if your app supports multi windows, this is the time
-// 	// when you should delete the corresponding element.
- 	mainWindow = null;
-     });
- });
+    app.on('ready', function() {
+        mainWindow = new BrowserWindow({width: 1600, height: 960, 'auto-hide-menu-bar': true});
+
+        mainWindow.loadUrl('file://' + __dirname + '/index.html');
+        
+        mainWindow.on('closed', function() {
+        mainWindow = null;
+        });
+    });    
+}
