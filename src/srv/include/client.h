@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Tue Jun 16 11:35:49 2015 Emmanuel Chambon
-** Last update Wed Jun 24 13:32:24 2015 Emmanuel Chambon
+** Last update Thu Jul  2 22:27:02 2015 Emmanuel Chambon
 */
 
 #pragma once
@@ -24,6 +24,8 @@
 # define	X		0
 # define	Y		1
 
+typedef		struct timespec	timespec_t;
+
 enum		Orientation {
   NORTH = 1,
   EAST,
@@ -39,6 +41,7 @@ struct          s_client
   int		resources[7];
   int		level;
   int		id;
+  timespec_t	*clock;
 
   char          *ip;
   int           socket;

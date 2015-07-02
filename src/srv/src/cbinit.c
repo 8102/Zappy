@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Thu Apr  9 14:11:57 2015 Emmanuel Chambon
-** Last update Fri Jun 19 16:18:06 2015 Emmanuel Chambon
+** Last update Thu Jul  2 23:25:51 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
@@ -35,18 +35,19 @@ unsigned int		cb_available(t_cmd_buffer *ring)
 
 void			cb_write(t_cmd_buffer *ring, char *str, bool dup)
 {
-  if (ring->slot == 0)
-    return ;
-  if (dup)
+  if (ring->slot)
     {
-      if (!(ring->data[ring->index_w] = strdup(str)))
-	error("strdup");
+      if (dup)
+	{
+	  if (!(ring->data[ring->index_w] = strdup(str)))
+	    error("strdup");
+	}
+      else
+	ring->data[ring->index_w] = str;
+      ring->index_w = (ring->index_w + 1 == CB_SIZE)
+	? 0 : ring->index_w + 1;
+      ring->slot--;
     }
-  else
-    ring->data[ring->index_w] = str;
-  ring->index_w = (ring->index_w + 1 == CB_SIZE)
-    ? 0 : ring->index_w + 1;
-  ring->slot--;
 }
 
 char			*cb_read(t_cmd_buffer *ring)
