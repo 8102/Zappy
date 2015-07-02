@@ -49,11 +49,13 @@ int		calculateOrientation(int x, int y, int xc, int yc)
     {
       angle = 90 - atanf(calculateDistance(x, y, tx, ty) /
 			 calculateDistance(x, y, xc, yc));
-      return ((x > xc) ? (returnOrientation(angle, 0)) : (returnOrientation(angle, 1)));
+      return ((x > xc) ? (returnOrientation(angle, 0)) :
+	      (returnOrientation(angle, 1)));
     }
   angle = 90 - atanf(calculateDistance(x, y, tx, ty) /
 		     calculateDistance(x, y, xc, yc));
-  return ((x > xc) ? (returnOrientation(angle, 2)) : (returnOrientation(angle, 3)));
+  return ((x > xc) ? (returnOrientation(angle, 2)) :
+	  (returnOrientation(angle, 3)));
 }
 
 void	translateMapUp(int *y, int *yc, t_master *all)

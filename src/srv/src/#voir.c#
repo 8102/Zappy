@@ -82,10 +82,3 @@ void	select_position_watch(t_client *client, t_master *all)
       free(to_free);
     }
 }
-
-void			voir(char UNUSED*params,
-			     t_client *client,
-			     t_master *content)
-{
-  select_position_watch(client, content);
-}

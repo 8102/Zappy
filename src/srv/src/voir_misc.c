@@ -14,7 +14,6 @@ t_case		*getNextCase(t_case *tmp, t_master *all, int type)
 {
   if (type == 0)
     {
-      printf("nextCasex\n");
       if ((int)tmp->x + 1 >= all->width)
 	return (getCaseFromCoord(0, tmp->y, all->cases));
       return (getCaseFromCoord(tmp->x + 1, tmp->y, all->cases));
@@ -41,7 +40,6 @@ t_case		*getCaseInMap(t_client *client, int tmp, int lvl, t_master *all)
   else if (y >= all->height)
     y-= all->height;
   parse = all->cases;
-  printf("%d/%d\n", x, y);
   while (parse && (parse->x != (size_t)x || parse->y != (size_t)y))
     parse = parse->next;
   return (parse);
