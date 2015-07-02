@@ -64,24 +64,29 @@ char		*check_params(char *);
 /*
 **	commands.c
 */
-void		voir(char *, t_client *, t_master *);
 void		inventaire(char *, t_client *, t_master *);
-void		prend(char *, t_client *, t_master *);
-void		pose(char *, t_client *, t_master *);
 void		broadcast(char *, t_client *, t_master *);
-void		incantation(char *, t_client *, t_master *);
-void		_fork(char *, t_client *, t_master *);
 void		connect_nbr(char *, t_client *, t_master *);
+void		tna(char *, t_client *, t_master *);
+/*
+**	fork.c
+*/
+void		_fork(char *, t_client *, t_master *);
+/*
+**	map_misc.c
+*/
 void		msz(char *, t_client *, t_master *);
 void		bct(char *, t_client *, t_master *);
 void		mct(char *, t_client *, t_master *);
-void		tna(char *, t_client *, t_master *);
-void		plv(char *, t_client *, t_master *);
-void		pin(char *, t_client *, t_master *);
+void		prend(char *, t_client *, t_master *);
+void		pose(char *, t_client *, t_master *);
+/*
+**	time.c
+*/
 void		sgt(char *, t_client *, t_master *);
 void		sst(char *, t_client *, t_master *);
 /*
-**	graphic.h
+**	graphic.c
 */
 void		graphic(char *, t_client *, t_master *);
 void		send_map(t_client *, t_master *);
@@ -97,8 +102,43 @@ void		change_pos(t_master *, t_client *, e_Orientation);
 */
 void		expulse(char *, t_client *, t_master *);
 /*
-**	ppo.c
+**	player_misc.c
 */
 void		ppo(char *, t_client *, t_master *);
+void		plv(char *, t_client *, t_master *);
+void		pin(char *, t_client *, t_master *);
+/*
+**	voir.c
+*/
+void		voir(char *, t_client *, t_master *);
+t_case		*getCaseInMap(t_client *, int, int, t_master *);
+char		*fillStringCase(t_case *, char *);
+char		*fillFirstTime();
+t_case		*getNextCase(t_case *, t_master *, int);
+/*
+**	prend.c
+*/
+int	checkPossibleTake(t_case *, char *, t_client *);
+/*
+**	pose.c
+*/
+int	checkPossibleSend(t_case *, char *, t_client *);
+/*
+**	broadcast.c
+*/
+float		calculateDistance(int, int, int, int);
+void		translateMapUp(int *, int *, t_master *);
+void		translateMapRight(int *, int *, t_master *);
+int		checkBasicYAxis(t_client *, t_client *, t_master *);
+int		multipleCases(t_client *, t_client *, t_master *);
+int		calculateOrientation(int, int, int, int);
+void		select_position_watch(t_client *client, t_master *all);
+int		checkBasicCase(t_client *, t_client *, t_master *);
+/*
+**	incantation.c
+*/
+void	do_incantation(t_client *, t_master *);
+int	check_stones(t_client *, t_case *, t_client *);
+void		incantation(char *, t_client *, t_master *);
 
 #endif /* !_SERVER_H_ */

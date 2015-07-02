@@ -89,36 +89,5 @@ void		set_pos(t_master *, t_client *, size_t , size_t);
 */
 void		add_egg(t_team *team, t_master *content, size_t pos[2], int id);
 void		pop_egg(t_egg **, t_egg *);
-/*
-**	voir.c
-*/
-t_case		*getCaseInMap(t_client *, int, int, t_master *);
-char		*fillStringCase(t_case *, char *);
-char		*fillFirstTime();
-t_case		*getNextCase(t_case *, t_master *, int);
-/*
-**	prend.c
-*/
-int	checkPossibleTake(t_case *, char *, t_client *);
-/*
-**	pose.c
-*/
-int	checkPossibleSend(t_case *, char *, t_client *);
-/*
-**	broadcast.c
-*/
-float		calculateDistance(int, int, int, int);
-void		translateMapUp(int *, int *, t_master *);
-void		translateMapRight(int *, int *, t_master *);
-int		checkBasicYAxis(t_client *, t_client *, t_master *);
-int		multipleCases(t_client *, t_client *, t_master *);
-int		calculateOrientation(int, int, int, int);
-void		select_position_watch(t_client *client, t_master *all);
-int		checkBasicCase(t_client *, t_client *, t_master *);
-/*
-**	incantation.c
-*/
-void	do_incantation(t_client *, t_master *);
-int	check_stones(t_client *, t_case *, t_client *);
 
 #endif /* !_ZAPPY_H_ */

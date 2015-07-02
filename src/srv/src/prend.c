@@ -10,7 +10,8 @@
 
 #include "zappy.h"
 
-int	checkOthers(t_case *position, char *param, t_client *client, int possible)
+int	checkOthers(t_case *position, char *param, t_client *client,
+		    int possible)
 {
   if (strstr(param, "sibur") && position->sibur > 0)
     {

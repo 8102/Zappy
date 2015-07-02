@@ -76,3 +76,10 @@ void	do_incantation(t_client *client, t_master *content)
   if (players)
     free(players);
 }
+
+void	incantation(char UNUSED*params,
+		    t_client *client,
+		    t_master *content)
+{
+  do_incantation(client, content);
+}

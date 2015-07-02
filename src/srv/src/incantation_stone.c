@@ -10,7 +10,6 @@
 
 #include "zappy.h"
 
-
 int	playerLevelUp(t_client *client, t_client *all)
 {
   int	lvl;
