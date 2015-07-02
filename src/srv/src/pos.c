@@ -5,23 +5,33 @@
 ** Login   <prenat_h@epitech.eu>
 **
 ** Started on  Mon Jun 29 17:29:07 2015 Hugo Prenat
-** Last update Tue Jun 30 17:36:34 2015 Hugo Prenat
+** Last update Thu Jul  2 19:25:46 2015 Hugo Prenat
 */
 
 #include "zappy.h"
 
-void 	set_pos(t_master *content, t_client *client, size_t x, size_t y)
+void		set_pos(t_master *content, t_client *client, size_t x, size_t y)
 {
   t_case	*tmp;
 
   tmp = content->cases;
-  while (tmp->x != client->pos[0] && tmp->y != client->pos[1])
-    tmp = tmp->next;
-  if (tmp->nbr_player != 0)
-    tmp->nbr_player--;
+  if (client->placed)
+    {
+      while (tmp)
+	{
+	  if (tmp->x == client->pos[X] && tmp->y == client->pos[Y])
+	    break ;
+	  tmp = tmp->next;
+	}
+      tmp->nbr_player--;
+    }
   tmp = content->cases;
-  while (tmp->x != x && tmp->y != y)
-    tmp = tmp->next;
+  while (tmp)
+    {
+      if (tmp->x == x && tmp->y == y)
+	break ;
+      tmp = tmp->next;
+    }
   tmp->nbr_player++;
   client->pos[X] = x;
   client->pos[Y] = y;

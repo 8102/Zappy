@@ -35,6 +35,7 @@ struct          s_client
 {
   size_t	pos[2];
   bool		trigger[2];
+  bool		placed;
   int		resources[7];
   int		level;
   int		id;

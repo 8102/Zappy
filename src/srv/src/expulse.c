@@ -5,7 +5,7 @@
 ** Login   <prenat_h@epitech.eu>
 **
 ** Started on  Mon Jun 29 17:18:03 2015 Hugo Prenat
-** Last update Tue Jun 30 21:05:34 2015 Hugo Prenat
+** Last update Thu Jul  2 17:10:45 2015 Hugo Prenat
 */
 
 #include "zappy.h"
@@ -43,7 +43,7 @@ void		expulse(char UNUSED*params,
   tmp = content->clients;
   orient = client->orient - 2;
   if (client->trigger[GRAPHIC])
-    ssend(client->socket, "pex #%d\n", client->id);
+    ssend(client->socket, "pex %d\n", client->id);
   if (orient == -1)
     orient = SOUTH;
   else if (orient == 0)
