@@ -12,24 +12,24 @@
 
 char		*getUpAndDownVision(t_client *client, t_master *all, int lvl)
 {
+  printf("%d/%d -> %d\n", client->pos[0], client->pos[1], lvl);
   int		tmp;
   t_case	*position;
   char		*to_write;
 
-  tmp = (lvl < 0) ? lvl : lvl * -1;
-  while (tmp + (int)client->pos[0] < 0)
-    tmp++;
+  tmp = (lvl <= 0) ? lvl : lvl * -1;
   position = getCaseInMap(client, tmp, lvl, all);
   if (lvl != 0)
     to_write = getUpAndDownVision(client, all,
-				  (lvl < 0) ? lvl + 1 : lvl - 1);
+-				  (lvl < 0) ? lvl + 1 : lvl - 1);
   else
     if (!(to_write = fillFirstTime()))
       return (NULL);
   while (position && tmp <= ((lvl < 0) ? lvl * -1 : lvl))
     {
+      printf("position :%d/%d -> %d\n", position->x, position->y, lvl);
       to_write = fillStringCase(position, to_write);
-      getNextCase(position, all, 0);
+      position = getNextCase(position, all, 0);
       (tmp == client->level) ?
 	strcat(to_write, "") : strcat(to_write, ",");
       tmp++;
@@ -45,20 +45,18 @@ char	*getLeftAndRightVision(t_client *client, t_master *all, int lvl)
   t_case	*position;
   char		*to_write;
 
-  tmp = (lvl < 0) ? lvl : lvl * -1;
-  while (tmp + (int)client->pos[0] < 0)
-    tmp++;
+  tmp = (lvl <= 0) ? lvl : lvl * -1;
   position = getCaseInMap(client, lvl, tmp, all);
   if (lvl != 0)
-    to_write = getUpAndDownVision(client, all,
-				  (lvl < 0) ? lvl + 1 : lvl - 1);
+    to_write = getLeftAndRightVision(client, all,
+				     (lvl < 0) ? lvl + 1 : lvl - 1);
   else
     if (!(to_write = fillFirstTime()))
       return (NULL);
   while (position && tmp <= ((lvl < 0) ? lvl * -1 : lvl))
     {
       to_write = fillStringCase(position, to_write);
-      getNextCase(position, all, 1);
+      position = getNextCase(position, all, 1);
       (tmp == client->level) ?
 	strcat(to_write, "") : strcat(to_write, ",");
       tmp++;
