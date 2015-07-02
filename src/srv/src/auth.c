@@ -5,10 +5,44 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Thu Jun 18 15:01:28 2015 Emmanuel Chambon
-** Last update Wed Jun 24 14:01:08 2015 Emmanuel Chambon
+** Last update Thu Jul  2 18:28:27 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
+
+void                            handle_new_connection(int *max,
+						      t_master *content)
+{
+  t_server                      *serv;
+  struct sockaddr_storage       r;
+  socklen_t                     len;
+  char                          ip[INET6_ADDRSTRLEN];
+  t_client                      *client;
+
+  if (!(client = malloc(sizeof(t_client))))
+    error("malloc");
+  memset(client, 0, sizeof(*client));
+  serv = &(content->server);
+  len = sizeof(r);
+  if ((client->socket = accept(serv->socket, (struct sockaddr *)&r,
+			       &len)) == -1)
+    error("accept");
+  FD_SET(client->socket, &serv->master);
+  if (client->socket > *max)
+    *max = client->socket;
+  client->ip = strdup(inet_ntop(r.ss_family, ipvx((struct sockaddr *)&r),
+				ip, INET6_ADDRSTRLEN));
+  init_client(client, content);
+  push_client(&(content->clients), client);
+  ssend(client->socket, "BIENVENUE\n");
+}
+
+void            remove_connection(t_client *client, t_master *content, int rc)
+{
+  (rc == 0) ? printf("%s Disconnected\n", client->ip) : perror("recv");
+  FD_CLR(client->socket, &content->server.master);
+  pop_client(&content->clients, client);
+}
 
 t_team		*find_team(char *team_name, t_master *content)
 {
