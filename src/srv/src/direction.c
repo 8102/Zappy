@@ -5,12 +5,13 @@
 ** Login   <prenat_h@epitech.eu>
 **
 ** Started on  Wed Jun 24 19:02:16 2015 Hugo Prenat
-** Last update Tue Jun 30 20:40:48 2015 Hugo Prenat
+** Last update Thu Jul  2 15:54:28 2015 Hugo Prenat
 */
 
 #include "zappy.h"
 
-void	go_south_west(t_master *content, t_client *client, e_Orientation orient)
+void	go_south_west(t_master *content, t_client *client,
+		      e_Orientation orient)
 {
   if (orient == SOUTH)
     {
@@ -48,47 +49,68 @@ void	change_pos(t_master *content, t_client *client, e_Orientation orient)
     go_south_west(content, client, orient);
 }
 
-void	avance(char UNUSED*params,
-	       t_client *client,
-	       t_master *content)
+void		avance(char UNUSED*params,
+		       t_client *client,
+		       t_master *content)
 {
+  t_client	*tmp;
+
+  tmp = content->clients;
   change_pos(content, client, client->orient);
-  if (client->trigger[GRAPHIC] == true)
+  while (tmp)
     {
-      ssend(client->socket, "ppo %d %d %d %d\n", client->id, client->pos[0],
-	    client->pos[1], client->orient);
+      if (tmp->trigger[GRAPHIC] == true)
+	{
+	  ssend(tmp->socket, "ppo %d %d %d %d\n", tmp->id, tmp->pos[0],
+		tmp->pos[1], tmp->orient);
+	}
+      tmp = tmp->next;
     }
   ssend(client->socket, "ok\n");
 }
 
-void	droite(char UNUSED*params,
-	       t_client *client,
-	       UNUSED t_master *content)
+void		droite(char UNUSED*params,
+		       t_client *client,
+		       UNUSED t_master *content)
 {
+  t_client	*tmp;
+
+  tmp = content->clients;
   if (client->orient != WEST)
     client->orient++;
   else
     client->orient = NORTH;
-  if (client->trigger[GRAPHIC] == true)
+  while (tmp)
     {
-      ssend(client->socket, "ppo %d %d %d %d\n", client->id, client->pos[0],
-	    client->pos[1], client->orient);
+      if (tmp->trigger[GRAPHIC] == true)
+	{
+	  ssend(tmp->socket, "ppo %d %d %d %d\n", tmp->id, tmp->pos[0],
+		tmp->pos[1], tmp->orient);
+	}
+      tmp = tmp->next;
     }
   ssend(client->socket, "ok\n");
 }
 
-void	gauche(char UNUSED*params,
-	       t_client *client,
-	       UNUSED t_master *content)
+void		gauche(char UNUSED*params,
+		       t_client *client,
+		       UNUSED t_master *content)
 {
+  t_client	*tmp;
+
+  tmp = content->clients;
   if (client->orient != NORTH)
     client->orient--;
   else
     client->orient = WEST;
-  if (client->trigger[GRAPHIC] == true)
+  while (tmp)
     {
-      ssend(client->socket, "ppo %d %d %d %d\n", client->id, client->pos[0],
-	    client->pos[1], client->orient);
+      if (tmp->trigger[GRAPHIC] == true)
+	{
+	  ssend(tmp->socket, "ppo %d %d %d %d\n", tmp->id, tmp->pos[0],
+		tmp->pos[1], tmp->orient);
+	}
+      tmp = tmp->next;
     }
   ssend(client->socket, "ok\n");
 }
