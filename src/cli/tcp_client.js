@@ -56,7 +56,6 @@ function dumpQueue() {
 
 function treatQueue() {
 	var full = false;
-	if (debug) console.log('length = ' + cmdQueue.length);
 	if (cmdQueue.length == 10) {
 		full = true;
 	}
@@ -73,7 +72,7 @@ function treatQueue() {
 		IA.emit('saw', cmdQueue[0].state);
 		cmdQueue.shift();
 	} else if (cmdQueue[0] && cmdQueue[0].command == 'inventaire' && cmdQueue[0].state) {
-		IA.emit('inventory');
+		IA.emit('inventory', cmdQueue[0].state);
 		cmdQueue.shift();
 	} else {
 		if (cmdQueue[0]) {
@@ -89,7 +88,7 @@ function treatQueue() {
 /*
 ** Init
 */
-module.exports = function(addr, port, team_name) {
+module.exports = function(addr, port, team_name, gui) {
 	console.log('connecting to ' + addr + ':' + port + '...')
 	client.connect(port, addr, function() {
 		console.log('Connected');
@@ -98,6 +97,7 @@ module.exports = function(addr, port, team_name) {
 	client.on('close', function() {
 		client.destroy();
 		console.log('Connection closed');
+		process.exit(1);
 	});
 	client.on('data', function(data) {
 		if (debug) {
@@ -114,7 +114,11 @@ module.exports = function(addr, port, team_name) {
 		for (var i = 0; i < res.length; i++) {
 			if (!isAuth) {
 				if (res[i] == 'BIENVENUE') {
-					client.write(team_name + '\n');
+					if (gui == 'only') {
+						isAuth = true;
+					} else {
+						client.write(team_name + '\n');
+					}
 				} else if (isNumber(res[i]) > 0) {
 					availPlaces = res[i];
 				} else if (res[i].split(' ').length == 2) {
@@ -131,7 +135,6 @@ module.exports = function(addr, port, team_name) {
 				}
 			} else if (graphicCmd.indexOf(res[i].slice(0, 3)) > -1) {
 				if (res[i].length > 0) {
-					if (debug) console.log('Comand send to graphical [' + res[i] + '\n]');
 					graphicSocket.emit('message', res[i] + '\n');
 				}
 			} else {
@@ -145,7 +148,6 @@ module.exports = function(addr, port, team_name) {
 					IA.emit('levelUp');
 				} else {
 					updateQueue(res[i]);
-					if (debug) dumpQueue();
 					treatQueue();
 				}
 			}			

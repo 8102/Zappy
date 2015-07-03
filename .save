@@ -1,8 +1,18 @@
 #! /bin/sh
 
+if [ $# == 1 -a "$1" == "-h" -o "$1" == "--help" ]
+then
+    echo -e "Usage: ${0} -n team_name -p port [-h hostname] [-g='ia|only' | --gui='ia|only']\n"
+    echo -e "  -n\t\tteam name you want to join"
+    echo -e "  -p\t\tis the port of the server"
+    echo -e "  -h\t\toptional, is the host address (localhost by default)"
+    echo -e "  -g, --gui\tgraphical option.\n\t\tIf you choose 'only' the client will don't lauch the ia (ia by default)"
+    exit 1
+fi
+
 if [ $# < 4 -o $# > 7 ]
 then
-    echo "Usage: ${0} -n team_name -p port [-h hostname] [-g | --gui]"
+    echo "Usage: ${0} -n team_name -p port [-h hostname] [-g='ia|only' | --gui='ia|only']"
 else
     ./src/cli/node_modules/electron-prebuilt/dist/electron ./src/cli/client.js $# $@
 fi

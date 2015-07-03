@@ -71,7 +71,6 @@ function calcCoord(pos, to) {
 	}
 	var middle = (tmpRight + tmpLeft) / 2;
 	to.x = pos - middle;
-	if (debug) console.log('[CALC_COORD] i = ' + pos + ' --> (' + to.x + ',' + to.y + ')');
 }
 
 function dumpFOV() {
@@ -81,7 +80,6 @@ function dumpFOV() {
 }
 
 function findResource(resource) {
-	if (debug) dumpFOV();
 	if (brain.direction == 4) {
 		for (var i = 0; i < Math.floor((Math.random() * 15) + 1); i++) {
 			if (i % (brain.visualCapacity + 1) == 0) {
@@ -90,7 +88,6 @@ function findResource(resource) {
 			for (var i = 0; i < brain.fov.length; i++) {
 				if (brain.fov[i].indexOf(resource) > -1) {
 					calcCoord(i, brain.to);
-					if (debug) console.log('pos = (' + brain.pos.x + ',' + brain.pos.y + ') to = (' + brain.to.x + ',' + brain.to.y + ')');
 					brain.objective = goal.TAKE;
 					brain.obj = resource;
 					IA.emit('move');
@@ -104,7 +101,6 @@ function findResource(resource) {
 		for (var i = 0; i < brain.fov.length; i++) {
 			if (brain.fov[i].indexOf(resource) > -1) {
 				calcCoord(i, brain.to);
-				if (debug) console.log('pos = (' + brain.pos.x + ',' + brain.pos.y + ') to = (' + brain.to.x + ',' + brain.to.y + ')');
 				brain.objective = goal.TAKE;
 				brain.obj = resource;
 				IA.emit('move');
@@ -140,7 +136,6 @@ function findGoal() {
 			continue;
 		}
 		if (compos[compo] > 0 && inInventory(compo) < compos[compo]) {
-			console.log('il me manque: ' + compo);
 			brain.objective = goal.SEARCH;
 			brain.obj = compo;
 			return (false);
@@ -214,7 +209,6 @@ IA.on('callTeam', function(playersRequired) {
 });
 
 IA.on('notification', function(msg, direction) {
-	if (debug) console.log('I\'m earing a sound: [' + msg + '] provenant de ' + direction);
 	if (brain.objective != goal.WAIT && brain.objective != goal.EAT && msg.split('-')[0] == 'incantation' && msg.split('-')[1] == brain.level) {
 		brain.pos.x = brain.pos.y = 0;
 		if (direction == 1 || direction == 2 || direction == 8) {
@@ -246,7 +240,6 @@ IA.on('saw', function(cmd) {
 });
 
 IA.on('updateInventory', function(action, compoName, quantity) {
-	console.log('+++++++++++++++++++++++++++++++++++ 1');
 	if (action == 'prend') {
 		var added = false;
 		for (var i = 0; i < brain.inventory.length; i++) {
@@ -276,11 +269,11 @@ IA.on('updateInventory', function(action, compoName, quantity) {
 	updateFov();
 });
 
-IA.on('inventory', function() {
+IA.on('inventory', function(cmd) {
 	brain.inventory.length = 0;
-	cmd.state = cmd.replace('{', '');
-	cmd.state = cmd.replace('}', '');
-	tmp = cmd.state.split(',');
+	cmd = cmd.replace('{', '');
+	cmd = cmd.replace('}', '');
+	tmp = cmd.split(',');
 	for (var j = 0; j < tmp.length; j++) {
 		brain.inventory.push(tmp[j].split(' '));
 	}
@@ -303,15 +296,12 @@ IA.on('move', function() {
 	if (brain.pos.y != brain.to.y) {
 		action.forward();
 		brain.pos.y += 1;
-		console.log('je sors ici');
 		return (true);
 	}
 	if (brain.to.x < 0) {
 		action.left();
-		console.log('je sors la');
 	} else if (brain.to.x > 0 ){
 		action.right();
-		console.log('nan ici');
 	}
 	if (brain.pos.x != brain.to.x) {
 		action.forward();
@@ -320,11 +310,8 @@ IA.on('move', function() {
 		} else {
 			brain.pos.x += 1;
 		}
-		console.log('en fait là');
 		return (true);
 	}
-	console.log('Take it Take it !');
-	console.log(brain.inventory);
 	action.takeItem(brain.obj);
 	brain.objective = goal.NONE;
 	brain.obj = undefined;
@@ -341,33 +328,26 @@ IA.on('launch', function() {
 
 IA.on('wait', function() {
 	if (brain.objective != goal.WAIT) {
-		console.log('OOOOOOOOh Waaaaaaaaait !')
-		console.log('avant: ' + brain.prevObjective);
 		brain.prevObjective = brain.objective;
 		brain.objective = goal.WAIT;
 	}
 });
 
 IA.on('wakeUp', function() {
-	console.log('on se réveiiiiiiiiiiiiiillllllllllllllle !');
 	if (brain.objective == goal.WAIT) {
-		console.log('avant : ' + brain.objective);
-		console.log('apres : ' + brain.prevObjective);
 		brain.objective = brain.prevObjective;
 		brain.prevObjective = goal.NONE;
 	}
 });
 
 function brainManagement() {
-	if (debug)	console.log('objectif = ' + brain.objective);
 	if (brain.objective == goal.NONE) {
 		updateFov();
 	}
-	if (debug) console.log('HP = ' + brain.hp);
-	if (brain.objective == goal.NONE && brain.hp < 15) {
+	if (brain.objective == goal.NONE && brain.hp < 5) {
 		brain.objective = goal.EAT;
 	}
-	if (brain.objective == goal.EAT && brain.hp > 15) {
+	if (brain.objective == goal.EAT && brain.hp > 5) {
 		brain.objective = goal.NONE;
 	}
 	switch (brain.objective) {
