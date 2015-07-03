@@ -1,5 +1,6 @@
 /*global manager*/
-var bannerColor = 0, backgroundArray = ["red.png", "blue.png", "green.png", "purple.png", "dark.png"];
+var bannerColor = 0, backgroundArray = ["red.png", "blue.png", "green.png", "purple.png", "dark.png", "orange.png", "grey.png", "limegreen.png", "turquoise.png"],
+    shaftArray = ["red.png", "blue.png", "green.png", "purple.png", "dark.png", "orange.png", "grey.png", "limegreen.png", "turquoise.png"];
 /*jslint browser: true*/
 var Team = function (parameters) {
     'use strict';
@@ -19,12 +20,16 @@ var Team = function (parameters) {
                 this.eggs = parameters.eggs === undefined ? [] : parameters.eggs;
         }
     this.banner = {
+        bannerContainer: null,
         banner: null,
+        shaft: null,
         container: null,
         title: null,
         nbplayers: null,
         content: null
     };
+
+    this.nbDead = 0;
 
     this.updatePlayerList = function () {
         var i, player;
@@ -68,16 +73,30 @@ var Team = function (parameters) {
             teamContent;
         if (self.banner.banner !== null) {self.banner.banner.remove(); }
 
+        self.banner.bannerContainer = document.createElement("div");
+        self.banner.bannerContainer.id = "banner-container-" + self.name;
+        self.banner.bannerContainer.className = "teamBannerContainer";
+        teamDisplayer.appendChild(self.banner.bannerContainer);
+
+        self.banner.shaft = document.createElement("div");
+        self.banner.shaft.id = "banner-shaft-" + self.name;
+        self.banner.shaft.className = "bannerShaft";
+        self.banner.shaft.style.backgroundImage = "url('ressources/images/GUIBanners/shaft-" + shaftArray[bannerColor] + "')";
+        self.banner.bannerContainer.appendChild(self.banner.shaft);
+
         self.banner.banner = document.createElement("div");
         self.banner.banner.id = "banner-" + self.name;
         self.banner.banner.className = 'teamBanner';
         self.banner.banner.style.backgroundImage = "url('ressources/images/GUIBanners/" + backgroundArray[bannerColor] + "')";
+        self.banner.bannerContainer.appendChild(self.banner.banner);
         bannerColor = (bannerColor + 1) % backgroundArray.length;
-        teamDisplayer.appendChild(self.banner.banner);
+
+
 
         self.banner.container = document.createElement("div");
-        self.banner.container.id = "banner-container-" + self.name;
-        self.banner.container.className = "bannerContainer";
+        self.banner.container.id = "banner-content-container-" + self.name;
+        self.banner.container.className = "bannerContentContainer";
+
         self.banner.banner.appendChild(self.banner.container);
 
         self.banner.title = document.createElement("div");
@@ -104,8 +123,15 @@ var Team = function (parameters) {
     };
 
     this.updateNbPlayersOnBanner = function () {
-        self.banner.content.innerHTML = self.nbPlayers + " players alive<br><br>";
-        self.banner.content.innerHTML += "level max : " + self.getHigherLevel();
+        var i, nbEggsReady = 0;
+
+        self.banner.content.innerHTML = self.nbPlayers + " Players Alive<br><br>";
+        self.banner.content.innerHTML += "Higher Level : " + self.getHigherLevel() + "<br><br>";
+        self.banner.content.innerHTML += "Deads : " + self.nbDead + "<br><br>";
+        for (i = 0; i < self.eggs.length; i += 1) {
+            if (self.eggs[i].isReady === true) {nbEggsReady += 1; }
+        }
+        self.banner.content.innerHTML += "Eggs : " + self.eggs.length + (nbEggsReady > 0 ? "<br> - (" + nbEggsReady + " ready) - " : "");
     };
 
 

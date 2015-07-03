@@ -5,19 +5,19 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Thu Jun 18 15:01:28 2015 Emmanuel Chambon
-** Last update Fri Jul  3 03:32:15 2015 Emmanuel Chambon
+** Last update Fri Jul  3 06:05:42 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
 
-void                            handle_new_connection(int *max,
+void				handle_new_connection(int *max,
 						      t_master *content)
 {
-  t_server                      *serv;
-  struct sockaddr_storage       r;
-  socklen_t                     len;
-  char                          ip[INET6_ADDRSTRLEN];
-  t_client                      *client;
+  t_server			*serv;
+  struct sockaddr_storage	r;
+  socklen_t			len;
+  char				ip[INET6_ADDRSTRLEN];
+  t_client			*client;
 
   if (!(client = malloc(sizeof(t_client))))
     error("malloc");
@@ -37,7 +37,7 @@ void                            handle_new_connection(int *max,
   ssend(client->socket, "BIENVENUE\n");
 }
 
-void            remove_connection(t_client *client, t_master *content, int rc)
+void		remove_connection(t_client *client, t_master *content, int rc)
 {
   (rc == 0) ? printf("%s Disconnected\n", client->ip) : perror("recv");
   FD_CLR(client->socket, &content->server.master);

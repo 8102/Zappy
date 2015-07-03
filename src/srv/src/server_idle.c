@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Tue Jun 16 11:48:27 2015 Emmanuel Chambon
-** Last update Fri Jul  3 04:23:59 2015 Emmanuel Chambon
+** Last update Fri Jul  3 06:20:37 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
@@ -43,10 +43,7 @@ void		client_lookup(t_master *content)
       /* 	die_player_die(tmp); */
       if (cb_available(tmp->buffer) < CB_SIZE &&
 	  timespec_is_greater(now, tmp->clock))
-	{
-	  printf("action decalée client %d\n", tmp->id);
-	  input_interpret(tmp, content);
-	}
+	input_interpret(tmp, content);
     }
   timespec_release(now);
 }
@@ -64,18 +61,17 @@ void		idle_server(t_master *content)
   while (g_run)
     {
       catch = serv->master;
-      if ((r = (pselect(max + 1, &catch, NULL, NULL, content->timeout, NULL))) == -1)
+      if ((r = (pselect(max + 1, &catch, NULL, NULL,
+			content->timeout, NULL))) == -1)
 	{
 	  if (!g_run)
 	    return ;
 	  error("select");
 	}
       if (!r)
-	{
 	  client_lookup(content);
-	  continue ;
-	}
-      for (int i = 0; i <= max; i++)
-	watch_sockets(&i, &max, &catch, content);
+      else
+	for (int i = 0; i <= max; i++)
+	  watch_sockets(&i, &max, &catch, content);
     }
 }

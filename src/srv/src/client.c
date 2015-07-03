@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Wed Jun 17 22:07:25 2015 Emmanuel Chambon
-** Last update Fri Jul  3 03:40:24 2015 Emmanuel Chambon
+** Last update Fri Jul  3 06:20:48 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
@@ -86,7 +86,6 @@ void		release_clients(t_client **clients)
   tmp = *clients;
   while (tmp)
     {
-      printf("%d\n", tmp->socket);
       if (prv)
 	delete_client(prv);
       prv = tmp;

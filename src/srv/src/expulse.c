@@ -5,7 +5,7 @@
 ** Login   <prenat_h@epitech.eu>
 **
 ** Started on  Mon Jun 29 17:18:03 2015 Hugo Prenat
-** Last update Thu Jul  2 17:10:45 2015 Hugo Prenat
+** Last update Fri Jul  3 05:54:48 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
@@ -40,6 +40,7 @@ void		expulse(char UNUSED*params,
   t_client	*tmp;
   int		orient;
 
+  timespec_add(client->clock, content->delays[EXPULSE], true);
   tmp = content->clients;
   orient = client->orient - 2;
   if (client->trigger[GRAPHIC])

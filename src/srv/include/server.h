@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Tue Jun 16 11:27:54 2015 Emmanuel Chambon
-** Last update Fri Jul  3 01:19:47 2015 Emmanuel Chambon
+** Last update Fri Jul  3 05:51:39 2015 Emmanuel Chambon
 */
 
 #ifndef _SERVER_H_
@@ -20,6 +20,17 @@ typedef struct	s_server	t_server;
 # define	BACKLOG		5
 # define	RECV_SIZE	4096
 # define	UNUSED		__attribute__((unused))
+# define	AVANCE		0
+# define	DROITE		1
+# define	GAUCHE		2
+# define	VOIR		3
+# define	INVENTAIRE	4
+# define	PREND		5
+# define	POSE		6
+# define	EXPULSE		7
+# define	BROADCAST	8
+# define	INCANTATION	9
+# define	FORK		10
 
 struct		s_server
 {

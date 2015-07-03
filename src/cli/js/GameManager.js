@@ -2,6 +2,16 @@
 /*jslint browser: true*/
 /*global VideoContext*/
 /*global GameEngine */
+/*global Animation*/
+/*global createjs, SoundManager*/
+
+/*
+var clickSound = new buzz.sound("ressources/audio/assets/click", { formats: ["mp3"] });
+clickSound.setVolume(50);
+clickSound.setSpeed(2);
+var expulseSound = new buzz.sound("ressources/audio/assets/expulse", { formats: ["mp3"] });
+*/
+
 var RessourceName = ['food', 'Linemate', 'Deraumère', 'Sibur', 'Mendiane', 'Phiras', 'Thystame'],
     ActionTImes = {
         move: 7,
@@ -23,6 +33,7 @@ convertType[PREFAB_MATERIAL.MENDIANE] = 4;
 convertType[PREFAB_MATERIAL.PHIRAS] = 5;
 convertType[PREFAB_MATERIAL.THYSTAME] = 6;
 
+var testAnim, targetANim;
 var GameManager = function (Context, Engine) {
     'use strict';
     var self = this;
@@ -44,6 +55,10 @@ var GameManager = function (Context, Engine) {
     this.time = 100;
     this.commandROM = {lastCommand: "", status: false};
     this.GUI = null;
+    this.sound = null;
+    this.animations = [];
+    this.commandRecords = [];
+    this.mapInformations = {size: {x: 0, y: 0}, ressources: [0, 0, 0, 0, 0, 0, 0], witness: true};
 
     /************************************************************************************/
     /****************************** [Management Basics] *******************************/
@@ -54,6 +69,8 @@ var GameManager = function (Context, Engine) {
         self.engine = new GameEngine(self.context);
         self.engine.generateSkyBox('stormySky');
         self.engine.init();
+        self.sound = new SoundManager();
+        self.sound.init();
         self.typeArray = self.initTypeArray();
         self.mapWidth = self.engine.mapWidth;
         self.mapHeight = self.engine.mapHeight;
@@ -67,28 +84,33 @@ var GameManager = function (Context, Engine) {
         var parser = message.split(' ').map(Number);
         self.mapWidth = parser[1];
         self.mapHeight = parser[2];
+        self.mapInformations.size.x = self.mapWidth;
+        self.mapInformations.size.y = self.mapHeight;
         self.engine.generateMap(self.mapWidth, self.mapHeight);
+        self.mapInformations.witness = true;
         if (self.GUI === null) {self.GUI = new GUI(self); }
         document.addEventListener('mousedown', function (event) {
             event.preventDefault();
             if (event.which === 1) {
                 self.engine.selectCell(event);
                 self.GUI.displayInventory(event);
+                createjs.Sound.play("click", {volume: 0.1});
             }
         }, false);
         self.initRessourceArray();
         self.engine.heightMap = self.engine.generateHeightMap(200, 200);
         self.engine.generateRandomMap(200, 200);
-//        document.getElementById("banner1").addEventListener("animationEnd", function (event) {document.getElementById('banner1').classList = []; }, false);
         document.addEventListener('keydown', function (event) {
-  /*          document.getElementById('banner1').className = "bannerAnimation";
-            document.getElementById('banner3').className = "bannerAnimation";
-            document.getElementById('banner2').className = "bannerAnimation";
-*//*
-            document.getElementById('banner1').style.webkitAnimationPlayState = "running";
-*/
             if (event.keyCode === 32) {
+                event.preventDefault();
                 self.engine.changeGridDisplay();
+            }
+            if (event.keyCode === 9) {
+                var logBook = document.getElementById("logBook");
+
+                event.preventDefault();
+                if (logBook.style.display === 'none') {logBook.style.display = 'block';
+                    } else { logBook.style.display = 'none'; }
             }
         }, false);
         return true;
@@ -101,6 +123,7 @@ var GameManager = function (Context, Engine) {
         for (i = 0; i < 9; i += 1) { datas[i] = parser[i + 1]; }
         self.clearRessourceFromCell(datas[0], datas[1]);
         for (i = 2; i < 9; i += 1) {
+            if (self.mapInformations.witness === true) {self.mapInformations.ressources[i - 2] += datas[i]; }
             for (j = 0; j < datas[i]; j += 1) {
                 self.generateRessource(self.typeArray[i - 2], datas[0], datas[1]);
             }
@@ -110,7 +133,10 @@ var GameManager = function (Context, Engine) {
     /*tna*/
     this.createTeam = function (message) {
         var i, teamExist, parser = message.split(' ').map(String);
-
+        if (self.mapInformations.witness === true) {
+            self.mapInformations.witness = false;
+            self.GUI.setRigthPageContent();
+        }
         if ((teamExist = self.getTeamByName(parser[1])) !== null) { return false; }
         self.addNewTeam(parser[1]);
         return true;
@@ -132,14 +158,20 @@ var GameManager = function (Context, Engine) {
     };
     /* ppo */
     this.setPlayerPosition = function (message) {
-        var i, playerID, player, parser = message.split(' ').map(String);
+        var i, playerID, player, parser = message.split(' ').map(String), destination = {x: 0, y: 0};
 
-        playerID = parseInt(parser[1], 10);/*.split('#').map(Number)[1];*/
+        playerID = parseInt(parser[1], 10);
+        destination.x = parseInt(parser[2], 10);
+        destination.y = parseInt(parser[3], 10);
         if ((player = self.getPlayerByID(playerID)) === null) { return false; }
-//        player.model.position.set(parseInt(parser[2], 10), 0, parseInt(parser[3], 10));
-        player.move(parseInt(parser[2], 10), parseInt(parser[3], 10));
+        if (destination.x !== player.position[0] || destination.y !== player.position[1]) {
+            player.moveToward(parseInt(parser[2], 10), 0.0, parseInt(parser[3], 10));
+        }
+//        player.move(parseInt(parser[2], 10), 0.0, parseInt(parser[3], 10));
+/*
         player.orientation = parseInt(parser[4], 10);
         player.reorient();
+*/
         return true;
     };
     /*plv*/
@@ -167,26 +199,39 @@ var GameManager = function (Context, Engine) {
         return true;
     };
     /*pex*/
+    /*jslint bitwise: true*/
     this.playerExpulse = function (message) {
-        var playerID, player, parser = message.split(' ').map(String);
+        var playerID, player, parser = message.split(' ').map(String),
+            playersAround, i;
 
         playerID = parseInt(parser[1], 10);/*.split('#').map(Number)[1];*/
         if ((player = self.getPlayerByID(playerID)) === null) { return false; }
-
-        /************/
-        window.console.log('Player #' + playerID + 'expulse !');
-        /************/
+        playersAround = self.getPlayersOnCell(player.position[0] | 0, player.position[1] | 0);
+        for (i = 0; i < playersAround.length; i += 1) {
+            if (playersAround[i].ID !== playerID) {playersAround[i].getExpulsed(player.orientation); }
+        }
+/*
+        self.afeffect = new Effect(Effects.create(EFFECT.expulse), self.context, player, {load: 60, blink: false});
+        self.anim = new Effects.TextureAnimator(EFFECT.expulse);
+*/
+        createjs.Sound.play("expulse", {volume: 0.2});
         return true;
     };
     /*pbc*/
     this.playerBroadcast = function (message) {
-        var playerID, player, parser = message.split(' ').map(String);
+        var playerID, player, parser = message.split(' ').map(String), parameters, anima;
 
         playerID = parseInt(parser[1], 10);/*.split('#').map(Number)[1];*/
         if ((player = self.getPlayerByID(playerID)) === null) { return false; }
 
         /************/
+/*
         window.console.log('Player #' + playerID + 'says : \"' + parser[2] + '\" !');
+*/
+        parameters = {targetP: {x: player.position[0], y: 0.0, z: player.position[1]}, delay: 1, modifyer: {x: 0, y: 0.5, z: 0}, frames: 100, rotate: true, callback: self.move};
+        anima = new Animation(player, parameters);
+        self.animations.push(anima);
+
         /************/
         return true;
     };
@@ -228,11 +273,16 @@ var GameManager = function (Context, Engine) {
     };
     /*pgt*/
     this.playerTakingItem = function (message) {
-        var playerID, player, parser = message.split(' ').map(String);
+        var playerID, player, parser = message.split(' ').map(String), item, i, anima;
 
         playerID = parseInt(parser[1], 10);/*.split('#').map(Number)[1];*/
         if ((player = self.getPlayerByID(playerID)) === null) { return false; }
         window.console.log('Player #' + playerID + ' is taking a ' + RessourceName[parseInt(parser[2], 10)] + ' !');
+        if ((item = self.getParticularRessourceOnCell(player.position[0], player.position[1], parseInt(parser[2], 10))) !== null) {
+            anima = new Animation(item, {targetP: {x: player.model.position.x, y: 0.5, z: player.model.position.z}, rotate: false, modifyer: {x: 1, y: 1, z: 1}, delay: 1, frames: 50, callback: function () {self.remove(item); }});
+            window.alert("Item found");
+            self.animations.push(anima);
+        }
         return true;
     };
     /*pdi*/
@@ -265,10 +315,8 @@ var GameManager = function (Context, Engine) {
         var eggID, egg, parser = message.split(' ').map(Number);
 
         eggID = parser[1];
-/*
         if ((egg = this.getEggByID(eggID)) === null) { return false; }
         egg.isReady = true;
-*/
         return (true);
     };
     /*edi*/
@@ -404,6 +452,11 @@ var GameManager = function (Context, Engine) {
         var commandNumber;
 
         self.commandROM.lastCommand = message;
+        self.commandRecords.unshift(message);
+        if (self.commandRecords.length > 10) {self.commandRecords.pop(); }
+        if (self.GUI && document.getElementById("logBook").style.display !== 'none') {
+            self.GUI.setLogRecordContent();
+        }
         if (this.regexp.length === 0) {this.regexp = this.initRegExpArray(); }
         if (this.commandArray.length === 0) { this.commandArray = this.initCommandArray(); }
         if ((commandNumber = this.checkCommand(message)) !== null) {
@@ -469,6 +522,7 @@ var GameManager = function (Context, Engine) {
         neutralObject.mesh.castShadow = true;
         self.add(neutralObject);
         self.ressources[y * self.mapWidth + x].push(neutralObject);
+        targetANim = neutralObject;
     };
 
     this.clearRessourceFromCell = function (x, y) {
@@ -486,6 +540,15 @@ var GameManager = function (Context, Engine) {
             ressources[convertType[cell[i].type]] += 1;
         }
         return ressources;
+    };
+
+    this.getParticularRessourceOnCell = function (x, y, type) {
+        var cell = self.ressources[x + y * self.mapWidth], i;
+
+        for (i = 0; i < cell.length; i += 1) {
+            if (convertType[cell[i].type] === type) { return cell[i]; }
+        }
+        return null;
     };
     /************************************************************************************/
     /********************************* [Team Management] ********************************/
@@ -554,6 +617,7 @@ var GameManager = function (Context, Engine) {
         for (i = 0; i < self.players.length; i += 1) {
             if (self.players[i].ID === playerID) {
                 self.players[i].alive = false;
+                self.players[i].team.nbDead += 1;
                 self.players.splice(i, 1);
             }
         }
@@ -573,9 +637,9 @@ var GameManager = function (Context, Engine) {
         newEgg = new Egg(ID, player, parameters);
         self.eggs.push(newEgg);
         self.add(newEgg);
-
+/*
         self.afeffect = new Effect(Effects.create(EFFECT.expulse), self.context, newEgg, {load: 150});
-        self.anim = new Effects.TextureAnimator(EFFECT.expulse);
+        self.anim = new Effects.TextureAnimator(EFFECT.expulse);*/
 
         return true;
     };
@@ -589,6 +653,10 @@ var GameManager = function (Context, Engine) {
         return null;
     };
 
+    this.getTeamNbEggs = function (teamName) {
+        var teamEggs = {nb: 0, ready: 0};
+
+    };
     /* return an array containing eggs(object) found on cell x, y */
     this.getEggsOnCell = function (x, y) {
         var eggArray = [], i;
@@ -644,24 +712,21 @@ var GameManager = function (Context, Engine) {
 
     this.testEffect = function (type) {
         self.test = new Effects.TextureAnimator(type);
+        targetANim = self.getPlayerByID(1);
+        testAnim = new Animation(targetANim, {targetP: {x: 16, y: 0, z: 17}, delay: 0.10, modifyer: {x: 0, y: 3, z: 0}, frames: 150, rotate: true});
     };
 
-
     this.update = function () {
-/*
-        var i;
-        self.anim.update(self.context.clock.getDelta() * 1000);
-        self.test2.update(self.context.clock.getDelta() * 1000);
+        var i, delta = self.context.clock.getDelta() * 1000;
+        if (self.afeffect && self.afeffect.exist) {
+            if (self.afeffect.update(delta) !== null) {self.anim.update(delta); } else {self.afeffect.mesh.position.y = 50; }
+        }
         for (i = 0; i < self.players.length; i += 1) {
             self.players[i].render();
-        // var i;
-        // self.anim.update(self.context.clock.getDelta() * 1000);
-        // self.test2.update(self.context.clock.getDelta() * 1000);
-        // for (i = 0; i < self.players.length; i += 1) {
-        //     self.players[i].render();
         }
-*/
-//    self.effects[0].update(0.025);
-
+        for (i = 0; i < self.animations.length; i += 1) {
+            if (self.animations[i].isDone === false) {self.animations[i].update(delta);
+                } else {self.animations.slice(i, 1); }
+        }
     };
 };

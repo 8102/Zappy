@@ -22,6 +22,8 @@ var Egg = function (ID, player, parameters) {
         } else {self.model.position.set(parameters.position.x, parameters.position.y, parameters.position.z); }
         self.position[0] = self.model.position.x | 0;
         self.position[1] = self.model.position.z | 0;
+        self.team.eggs.push(self);
+        self.team.updateNbPlayersOnBanner();
     };
     /*jslint bitwise: false*/
 

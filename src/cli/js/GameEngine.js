@@ -3,6 +3,7 @@
 /*global SHAPE, LIGHT_SHAPE, MATERIAL, PREFAB_MATERIAL, TEXTURE*/
 /*global ImprovedNoise*/
 /*jslint browser: true*/
+/*global createjs*/
 /* EXAMPLE MULTIMATERIAL OBJECT
                 this.map[y * this.mapWidth + x].setMultiMaterial(2, [{type: MATERIAL.LAMBERT, color: 0xffffffff, wireframe: false, transparent: false, map: Factory.textures['minecraft_side.png']},
                                                                      {type: MATERIAL.BASIC, color: 0xffff0000, wireframe: true, transparent: true}]);

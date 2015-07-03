@@ -62,6 +62,7 @@ function graphicalInterface() {
         mainWindow = new BrowserWindow({width: 1600, height: 960, 'auto-hide-menu-bar': true});
 
         mainWindow.loadUrl('file://' + __dirname + '/index.html');
+/*	mainWindow.openDevTools(); */
         
         mainWindow.on('closed', function() {
         mainWindow = null;

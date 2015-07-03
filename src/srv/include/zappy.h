@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Tue Jun 16 11:35:49 2015 Emmanuel Chambon
-** Last update Fri Jul  3 03:15:02 2015 Emmanuel Chambon
+** Last update Fri Jul  3 06:11:37 2015 Emmanuel Chambon
 */
 
 #ifndef _ZAPPY_H_
@@ -85,9 +85,15 @@ void		release_zappy(t_master *);
 int		check_param(int, char **, t_master *);
 int		create_map(t_master *);
 /*
+**	zappy_init.c
+*/
+void		set_timeout(t_master *);
+void		set_delays(t_master *);
+void		release_delays(t_master *);
+/*
 **	pos.c
 */
-void		set_pos(t_master *, t_client *, int , int);
+void		set_pos(t_master *, t_client *, int, int);
 /*
 **	egg.c
 */

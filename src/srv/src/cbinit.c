@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Thu Apr  9 14:11:57 2015 Emmanuel Chambon
-** Last update Thu Jul  2 23:25:51 2015 Emmanuel Chambon
+** Last update Fri Jul  3 06:23:52 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
@@ -24,6 +24,13 @@ t_cmd_buffer		*cb_init()
 
 void			cb_free(t_cmd_buffer *ring)
 {
+  char			*tmp;
+
+  while (cb_available(ring) != CB_SIZE)
+    {
+      tmp = cb_read(ring);
+      free(tmp);
+    }
   if (ring)
     free(ring);
 }
