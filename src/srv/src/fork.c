@@ -5,29 +5,16 @@
 ** Login   <prenat_h@epitech.eu>
 **
 ** Started on  Tue Jun 30 21:06:34 2015 Hugo Prenat
-** Last update Tue Jun 30 23:55:20 2015 Hugo Prenat
+** Last update Sat Jul  4 01:48:10 2015 Hugo Prenat
 */
 
 #include "zappy.h"
 
-void		send_fork(t_master *content, int id)
-{
-  t_client	*cur;
-
-  cur = content->clients;
-  while (cur)
-    {
-      if (cur->trigger[GRAPHIC] == true)
-	ssend(cur->socket, "pfk %d\n", id);
-      cur = cur->next;
-    }
-}
-
 void	_fork(char UNUSED*params,
 	      t_client *client,
-	      UNUSED t_master *content)
+	      t_master *content)
 {
   ssend(client->socket, "ok\n");
-  send_fork(content, client->id);
+  ssend_graphics(content, "pfk %d\n", client->id);
   add_egg(client->team, content, client->pos, client->id);
 }

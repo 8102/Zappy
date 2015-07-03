@@ -5,7 +5,7 @@
 ** tran_0  <david.tran@epitech.eu>
 **
 ** Started on  Wed Jun 17 08:31:10 2015 David Tran
-** Last update Fri Jul  3 22:38:51 2015 Hugo Prenat
+** Last update Sat Jul  4 00:23:59 2015 Hugo Prenat
 */
 
 #include "zappy.h"
@@ -91,7 +91,7 @@ void		prend_graphic(t_client *client, t_master *content, int resource)
   t_client	*client_tmp;
 
   client_tmp = content->clients;
-  while(client_tmp)
+  while (client_tmp)
     {
       if (client_tmp->trigger[GRAPHIC])
 	ssend(client_tmp->socket, "pgt %d %d\n", client->id, resource);

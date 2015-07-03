@@ -50,6 +50,7 @@ void		ssend(int, char *, ...);
 void		*ipvx(struct sockaddr *);
 int		bind_local(struct addrinfo *, int *);
 int		bind_port(char *);
+void		ssend_graphics(t_master *, char *, ...);
 /*
 **      server_init.c
 */

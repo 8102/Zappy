@@ -5,7 +5,7 @@
 ** Login   <prenat_h@epitech.eu>
 **
 ** Started on  Tue Jun 23 18:04:19 2015 Hugo Prenat
-** Last update Thu Jul  2 17:16:58 2015 Hugo Prenat
+** Last update Sat Jul  4 01:21:14 2015 Hugo Prenat
 */
 
 #include "zappy.h"
@@ -66,7 +66,6 @@ void		pop_egg(t_egg **list, t_egg *elem)
 void		add_egg(t_team *team, t_master *content, size_t pos[2], int id)
 {
   t_egg		*egg;
-  t_client	*tmp;
 
   if (!(egg = malloc(sizeof(t_egg))))
     error("malloc");
@@ -75,13 +74,7 @@ void		add_egg(t_team *team, t_master *content, size_t pos[2], int id)
   egg->pos[Y] = pos[Y];
   content->nbr_egg++;
   egg->nbr = content->nbr_egg;
-  tmp = content->clients;
-  while (tmp)
-    {
-      if (tmp->trigger[GRAPHIC] == true)
-	ssend(tmp->socket, "enw %d %d %lu %lu\n", egg->nbr, id, egg->pos[X],
-	      egg->pos[Y]);
-      tmp = tmp->next;
-    }
+  ssend_graphics(content, "enw %d %d %lu %lu\n", egg->nbr, id, egg->pos[X],
+		 egg->pos[Y]);
   push_egg(&team->eggs, egg);
 }

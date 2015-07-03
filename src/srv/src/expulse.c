@@ -5,7 +5,7 @@
 ** Login   <prenat_h@epitech.eu>
 **
 ** Started on  Mon Jun 29 17:18:03 2015 Hugo Prenat
-** Last update Fri Jul  3 05:54:48 2015 Emmanuel Chambon
+** Last update Sat Jul  4 01:25:49 2015 Hugo Prenat
 */
 
 #include "zappy.h"
@@ -24,7 +24,7 @@ void		send_new_pos(t_master *content, int id)
 	  tmp = content->clients;
 	  while (tmp)
 	    {
-	      ssend(cur->socket, "ppo %d %d %d %d\n", tmp->id,
+	      ssend(cur->socket, "ppo %d %lu %lu %d\n", tmp->id,
 		    tmp->pos[X], tmp->pos[Y], tmp->orient);
 	      tmp = tmp->next;
 	    }

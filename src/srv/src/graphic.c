@@ -5,7 +5,7 @@
 ** Login   <prenat_h@epitech.eu>
 **
 ** Started on  Wed Jun 24 17:11:21 2015 Hugo Prenat
-** Last update Wed Jul  1 18:43:20 2015 Hugo Prenat
+** Last update Sat Jul  4 01:24:03 2015 Hugo Prenat
 */
 
 #include "zappy.h"
@@ -17,7 +17,7 @@ void		send_map(t_client *client, t_master *content)
   case_tmp = content->cases;
   while (case_tmp)
     {
-      ssend(client->socket, "bct %d %d %d %d %d %d %d %d %d\n",
+      ssend(client->socket, "bct %lu %lu %d %d %d %d %d %d %d\n",
 	    case_tmp->x, case_tmp->y, case_tmp->meal, case_tmp->linemate,
 	    case_tmp->deraumere, case_tmp->sibur, case_tmp->mendiane,
 	    case_tmp->phiras, case_tmp->thystame);
@@ -44,7 +44,7 @@ void		send_player(t_client *client, t_master *content)
   client_tmp = content->clients;
   while (client_tmp)
     {
-      ssend(client->socket, "pnw %d %d %d %d %d %s\n", client_tmp->id,
+      ssend(client->socket, "pnw %d %lu %lu %d %d %s\n", client_tmp->id,
 	    client_tmp->pos[0], client_tmp->pos[1], client_tmp->orient,
 	    client_tmp->level, client_tmp->team->name);
       client_tmp = client_tmp->next;
@@ -62,7 +62,7 @@ void		send_egg(t_client *client, t_master *content)
       egg_tmp = team_tmp->eggs;
       while (egg_tmp)
 	{
-	  ssend(client->socket, "enw %d %d %d %d\n", egg_tmp->nbr, egg_tmp->id,
+	  ssend(client->socket, "enw %d %d %lu %lu\n", egg_tmp->nbr, egg_tmp->id,
 		egg_tmp->pos[0], egg_tmp->pos[1]);
 	  egg_tmp = egg_tmp->next;
 	}
@@ -74,7 +74,7 @@ void	graphic(char UNUSED*params,
 		t_client *client, t_master *content)
 {
   client->trigger[GRAPHIC] = true;
-  ssend(client->socket, "msz %d %d\n", content->width, content->height);
+  ssend(client->socket, "msz %lu %lu\n", content->width, content->height);
   ssend(client->socket, "sgt %d\n", content->delay);
   send_map(client, content);
   send_team(client, content);
