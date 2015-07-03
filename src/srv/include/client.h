@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Tue Jun 16 11:35:49 2015 Emmanuel Chambon
-** Last update Thu Jul  2 22:27:02 2015 Emmanuel Chambon
+** Last update Fri Jul  3 16:26:35 2015 Hugo Prenat
 */
 
 #pragma once
@@ -67,7 +67,7 @@ void		init_client(t_client *, t_master *);
 void		handle_new_connection(int *, t_master *);
 t_client	*get_client(int, t_client **);
 void		remove_connection(t_client *, t_master *, int);
-void		input_interpret(t_client *client, t_master *);
+void		input_interpret(t_client *, t_master *);
 void		handle_io_connection(t_client *, t_master *);
 /*
 **	auth.c

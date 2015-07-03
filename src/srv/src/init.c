@@ -5,7 +5,7 @@
 ** Login   <prenat_h@epitech.eu>
 **
 ** Started on  Wed Jun 17 18:04:44 2015 Hugo Prenat
-** Last update Thu Jul  2 15:33:45 2015 Hugo Prenat
+** Last update Fri Jul  3 17:34:46 2015 Hugo Prenat
 */
 
 #include "zappy.h"
@@ -80,9 +80,9 @@ int	check_param(int ac, char **av, t_master *content)
       if (opt == 'p')
 	content->port = optarg;
       if (opt == 'x')
-	content->width = atoi(optarg);
+	content->width = (size_t)atol(optarg);
       if (opt == 'y')
-	content->height = atoi(optarg);
+	content->height = (size_t)atol(optarg);
       if (opt == 'c')
 	content->max_clients = atoi(optarg);
       if (opt == 't')

@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Tue Jun 16 11:27:54 2015 Emmanuel Chambon
-** Last update Fri Jul  3 05:51:39 2015 Emmanuel Chambon
+** Last update Fri Jul  3 16:26:08 2015 Hugo Prenat
 */
 
 #ifndef _SERVER_H_
@@ -129,14 +129,14 @@ t_case		*getNextCase(t_case *, t_master *, int);
 /*
 **	prend.c
 */
-int	checkPossibleTake(t_case *, char *, t_client *);
-void	prend_graphic(t_client *, t_master *, int);
-char	*transformCoord(t_client *);
+int		checkPossibleTake(t_case *, char *, t_client *);
+void		prend_graphic(t_client *, t_master *, int);
+char		*transformCoord(t_client *);
 /*
 **	pose.c
 */
-int	checkPossibleSend(t_case *, char *, t_client *);
-void	pose_graphic(t_client *, t_master *, int);
+int		checkPossibleSend(t_case *, char *, t_client *);
+void		pose_graphic(t_client *, t_master *, int);
 /*
 **	broadcast.c
 */
@@ -146,14 +146,14 @@ void		translateMapRight(int *, int *, t_master *);
 int		checkBasicYAxis(t_client *, t_client *, t_master *);
 int		multipleCases(t_client *, t_client *, t_master *);
 int		calculateOrientation(int, int, int, int);
-void		select_position_watch(t_client *client, t_master *all);
+void		select_position_watch(t_client *, t_master *);
 int		checkBasicCase(t_client *, t_client *, t_master *);
 /*
 **	incantation.c
 */
-void	do_incantation(t_client *, t_master *);
-int	check_stones(t_client *, t_case *, t_client *);
-void	incantation(char *, t_client *, t_master *);
-void	incantation_graphic(t_client *, t_master *, char *);
+void		do_incantation(t_client *, t_master *);
+int		check_stones(t_client *, t_case *, t_client *);
+void		incantation(char *, t_client *, t_master *);
+void		incantation_graphic(t_client *, t_master *, char *);
 
 #endif /* !_SERVER_H_ */

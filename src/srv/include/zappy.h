@@ -63,8 +63,8 @@ struct		s_team
 struct		s_master
 {
   int		max_clients;
-  int		width;
-  int		height;
+  size_t	width;
+  size_t	height;
   int		delay;
   size_t	nbr_player;
   size_t	nbr_egg;
@@ -93,7 +93,7 @@ void		release_delays(t_master *);
 /*
 **	pos.c
 */
-void		set_pos(t_master *, t_client *, int, int);
+void		set_pos(t_master *, t_client *, size_t, size_t);
 /*
 **	egg.c
 */
