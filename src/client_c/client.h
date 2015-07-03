@@ -5,7 +5,7 @@
 ** Login   <milox_t@epitech.eu>
 **
 ** Started on  Sat Jun 27 20:42:45 2015 TommyStarK
-** Last update Tue Jun 30 23:43:29 2015 TommyStarK
+** Last update Fri Jul  3 13:20:24 2015 TommyStarK
 */
 
 #ifndef _CLIENT_H_
@@ -21,6 +21,7 @@
 # include <string.h>
 # include <stdint.h>
 # include <signal.h>
+# include <sys/time.h>
 # include <arpa/inet.h>
 # include <sys/types.h>
 # include <sys/types.h>

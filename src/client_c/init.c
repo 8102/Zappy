@@ -5,7 +5,7 @@
 ** Login   <milox_t@epitech.eu>
 **
 ** Started on  Tue Jun 30 23:34:42 2015 TommyStarK
-** Last update Tue Jun 30 23:43:54 2015 TommyStarK
+** Last update Fri Jul  3 19:28:32 2015 TommyStarK
 */
 
 #include "client.h"
@@ -40,22 +40,22 @@ char            **init_ia()
 
   if (!(ret = malloc(sizeof(char *) * 10)))
      return (NULL);
-  for (i = 0; i < 10; i++)
+  for (i = 0; i < 10; ++i)
   {
     if (!(ret[i] = malloc(sizeof(BUFF_SIZE / 8))))
       return (NULL);
     if (!(memset(ret[i], 0, BUFF_SIZE / 8)))
       error("memset");
   }
-  ret[i] = NULL;
-  !(ret[0] = strdup("avance")) ? error("strdup") : 0;
-  !(ret[1] = strdup("droite")) ? error("strdup") : 0;
-  !(ret[2] = strdup("gauche")) ? error("strdup") : 0;
-  !(ret[3] = strdup("voir")) ? error("strdup") : 0;
-  !(ret[4] = strdup("inventaire")) ? error("strdup") : 0;
-  !(ret[5] = strdup("prend objet")) ? error("strdup") : 0;
-  !(ret[6] = strdup("pose objet")) ? error("strdup") : 0;
-  !(ret[7] = strdup("expulse")) ? error("strdup") : 0;
-  !(ret[8] = strdup("incantation")) ? error("strdup") : 0;
+  !(ret[0] = strdup("avance\n")) ? error("strdup") : 0;
+  !(ret[1] = strdup("droite\n")) ? error("strdup") : 0;
+  !(ret[2] = strdup("gauche\n")) ? error("strdup") : 0;
+  !(ret[3] = strdup("voir\n")) ? error("strdup") : 0;
+  !(ret[4] = strdup("inventaire\n")) ? error("strdup") : 0;
+  !(ret[5] = strdup("prend objet\n")) ? error("strdup") : 0;
+  !(ret[6] = strdup("pose objet\n")) ? error("strdup") : 0;
+  !(ret[7] = strdup("expulse\n")) ? error("strdup") : 0;
+  !(ret[8] = strdup("incantation\n")) ? error("strdup") : 0;
+  ret[9] = NULL;
   return (ret);
 }
