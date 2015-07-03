@@ -31,8 +31,8 @@ void		input_interpret(t_client *client, t_master *content)
     {
       if (!client->trigger[AUTH])
   	continue ;
-      if (!(strcmp(content->server.cmd[i],
-		   input)))
+      if (!(strncmp(content->server.cmd[i],
+		    input, strlen(content->server.cmd[i]))))
 	{
 	  content->server.cmd_handler[i](epur_str(strchr(input, ' ')),
 					 client, content);

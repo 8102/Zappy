@@ -28,7 +28,7 @@ char		*check_level(t_client *client, t_client *clients)
   char		*nbr;
 
   nbC = 1;
-  if (!(str = malloc(1)))
+  if (!(str = malloc(2)))
     return (NULL);
   str[0] = 0;
   while (clients)
@@ -38,7 +38,7 @@ char		*check_level(t_client *client, t_client *clients)
 	{
 	  if (!(nbr = transform_int(clients->id)))
 	    return (NULL);
-	  str = realloc(str, strlen(str) + strlen(nbr) + 2);
+	  str = realloc(str, strlen(str) + strlen(nbr) + 5);
 	  strcat(str, nbr);
 	  strcat(str, " ");
 	  free(nbr);
@@ -55,13 +55,14 @@ void	do_incantation(t_client *client, t_master *content)
   char	*players;
 
   players = check_level(client, content->clients);
+  ssend(client->socket, "elevation en cours\n");
   if (client->trigger[GRAPHIC])
     players ? ssend(client->socket, "pic %u %u %d %s\n",
 		    client->pos[0], client->pos[1], client->level, players) :
       ssend(client->socket, "pic %u %u %d\n", client->pos[0], client->pos[1],
 	    client->level);
-  ssend(client->socket, "elevation en cours\nniveau actuel : %d\n",
-	client->level);
+  client->level += (!players) ? 0 : 1;
+  ssend(client->socket, "niveau actuel : %d\n", client->level);
   if (client->trigger[GRAPHIC])
     {
       if (!players)

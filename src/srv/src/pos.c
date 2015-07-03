@@ -26,6 +26,8 @@ void		set_pos(t_master *content, t_client *client, size_t x, size_t y)
       tmp->nbr_player--;
     }
   tmp = content->cases;
+  x = ((int)x >= content->width) ? 0 : x;
+  y = ((int)y >= content->height) ? 0 : y;
   while (tmp)
     {
       if (tmp->x == x && tmp->y == y)
