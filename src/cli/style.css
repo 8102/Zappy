@@ -30,7 +30,7 @@
     z-index: 5000;
     background-image: url(ressources/images/Victory.png);
     background-size: 100% 100%;
- /*   display: none;*/
+    display: none;
 }
 
 #victory-content {
