@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Wed Jun 17 22:07:25 2015 Emmanuel Chambon
-** Last update Fri Jun 19 16:47:49 2015 Emmanuel Chambon
+** Last update Fri Jul  3 03:40:24 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
@@ -44,6 +44,7 @@ void		delete_client(t_client *client)
     free(client->ip);
   cb_free(client->buffer);
   rb_free(client->recv);
+  timespec_release(client->clock);
   if (client->socket)
     close(client->socket);
   free(client);

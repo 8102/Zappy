@@ -5,10 +5,41 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Tue Jun 16 20:14:21 2015 Emmanuel Chambon
-** Last update Wed Jun 24 13:43:36 2015 Emmanuel Chambon
+** Last update Fri Jul  3 03:46:58 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
+
+void		set_timeout(t_master *content)
+{
+  double	x;
+
+  x = (1 / (double)(content->delay)) * 1000000;
+  content->timeout = timespec_convert((ull)x);
+}
+
+void		set_delays(t_master *content)
+{
+  double	x;
+  double	y;
+  double	z;
+
+  x = (7 / (double)(content->delay)) * 1000000;
+  y = (300 / (double)(content->delay)) * 1000000;
+  z = (42 / (double)(content->delay)) * 1000000;
+  content->delays[0] = timespec_convert((ull)x);
+  content->delays[1] = timespec_convert((ull)x);
+  content->delays[2] = timespec_convert((ull)x);
+  content->delays[3] = timespec_convert((ull)x);
+  content->delays[4] = timespec_convert((ull)x);
+  content->delays[5] = timespec_convert((ull)x);
+  content->delays[6] = timespec_convert((ull)x);
+  content->delays[7] = timespec_convert((ull)x);
+  content->delays[8] = timespec_convert((ull)x);
+  content->delays[9] = timespec_convert((ull)y);
+  content->delays[10] = timespec_convert((ull)z);
+  content->delays[11] = NULL;
+}
 
 int		init_zappy(t_master *content, int ac, char **av)
 {
@@ -30,6 +61,8 @@ int		init_zappy(t_master *content, int ac, char **av)
 	      av[0]);
       return (-1);
   }
+  set_timeout(content);
+  set_delays(content);
   create_map(content);
   init_server(&(content->server),
 	      (content->port == NULL ? "4242" : content->port));
@@ -85,9 +118,17 @@ void		del_case(t_case **list)
     }
 }
 
+void		release_delays(t_master *content)
+{
+  for (int i = 0; content->delays[i]; i++)
+    timespec_release(content->delays[i]);
+  timespec_release(content->timeout);
+}
+
 void		release_zappy(t_master *content)
 {
   release_clients(&(content->clients));
+  release_delays(content);
   release_server(&(content->server));
   del_team(&content->teams);
   del_case(&content->cases);

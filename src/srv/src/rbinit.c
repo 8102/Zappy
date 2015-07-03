@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Fri Jun 19 14:38:38 2015 Emmanuel Chambon
-** Last update Fri Jun 19 14:44:41 2015 Emmanuel Chambon
+** Last update Fri Jul  3 03:30:47 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
@@ -37,10 +37,8 @@ unsigned int		rb_available(t_ring_buffer *ring)
 
 void			rb_write(t_ring_buffer *ring, char *str)
 {
-  int			i;
-
   ring->wrb = (ring->wrb) ? ring->wrb : ring->rb;
-  for (i = 0; str[i]; i++)
+  for (int i = 0; str[i]; i++)
     {
       *ring->wrb = str[i];
       ring->wrb = &ring->rb[(((size_t)ring->wrb + 1)
@@ -52,7 +50,6 @@ char			*rb_read(t_ring_buffer *ring)
 {
   char			*str;
   int			size;
-  int			i;
 
   size = ((ring->wrb >= ring->rrb)
 	  ? (int)(ring->wrb - ring->rrb)
@@ -60,7 +57,7 @@ char			*rb_read(t_ring_buffer *ring)
   if (!(str = malloc(size + 1)))
     error("malloc");
   memset(str, 0, size + 1);
-  for (i = 0; i < size; i++)
+  for (int i = 0; i < size; i++)
     {
       str[i] = *ring->rrb;
       ring->rrb = &ring->rb[(((size_t)ring->rrb + 1)
