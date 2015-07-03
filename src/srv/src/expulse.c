@@ -40,7 +40,7 @@ void		expulse(char UNUSED*params,
   t_client	*tmp;
   int		orient;
 
-  timespec_add(client->clock, content->delays[EXPULSE], true);
+  timespec_add(client->clock, content->time.delays[EXPULSE], true);
   tmp = content->clients;
   orient = client->orient - 2;
   if (client->trigger[GRAPHIC])

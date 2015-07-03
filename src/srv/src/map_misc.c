@@ -62,7 +62,7 @@ void		prend(char *params,
   t_case	*position;
   int		resource;
 
-  timespec_add(client->clock, content->delays[PREND], true);
+  timespec_add(client->clock, content->time.delays[PREND], true);
   if (!(position = getCaseFromCoord(client->pos[0], client->pos[1],
 				    content->cases)))
     ssend(client->socket, "ko\n");
@@ -85,7 +85,7 @@ void		pose(char *params,
   t_case	*position;
   int		resource;
 
-  timespec_add(client->clock, content->delays[POSE], true);
+  timespec_add(client->clock, content->time.delays[POSE], true);
   if (!(position = getCaseFromCoord(client->pos[0], client->pos[1],
 				    content->cases)))
     ssend(client->socket, "ko\n");

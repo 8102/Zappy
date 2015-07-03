@@ -87,6 +87,6 @@ void			voir(char UNUSED*params,
 			     t_client *client,
 			     t_master *content)
 {
-  timespec_add(client->clock, content->delays[VOIR], true);
+  timespec_add(client->clock, content->time.delays[VOIR], true);
   select_position_watch(client, content);
 }

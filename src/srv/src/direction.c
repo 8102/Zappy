@@ -55,7 +55,7 @@ void		avance(char UNUSED*params,
 {
   t_client	*tmp;
 
-  timespec_add(client->clock, content->delays[AVANCE], true);
+  timespec_add(client->clock, content->time.delays[AVANCE], true);
   tmp = content->clients;
   change_pos(content, client, client->orient);
   while (tmp)
@@ -76,7 +76,7 @@ void		droite(char UNUSED*params,
 {
   t_client	*tmp;
 
-  timespec_add(client->clock, content->delays[DROITE], true);
+  timespec_add(client->clock, content->time.delays[DROITE], true);
   tmp = content->clients;
   if (client->orient != WEST)
     client->orient++;
@@ -100,7 +100,7 @@ void		gauche(char UNUSED*params,
 {
   t_client	*tmp;
 
-  timespec_add(client->clock, content->delays[GAUCHE], true);
+  timespec_add(client->clock, content->time.delays[GAUCHE], true);
   tmp = content->clients;
   if (client->orient != NORTH)
     client->orient--;

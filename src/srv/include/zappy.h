@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Tue Jun 16 11:35:49 2015 Emmanuel Chambon
-** Last update Fri Jul  3 06:11:37 2015 Emmanuel Chambon
+** Last update Sat Jul  4 00:03:28 2015 Emmanuel Chambon
 */
 
 #ifndef _ZAPPY_H_
@@ -16,6 +16,7 @@ typedef struct  s_team		t_team;
 typedef struct  s_master	t_master;
 typedef struct	s_case		t_case;
 typedef struct	s_egg		t_egg;
+typedef struct	s_time		t_time;
 typedef enum    Orientation     e_Orientation;
 typedef unsigned long long int	ull;
 
@@ -60,6 +61,14 @@ struct		s_team
   t_team	*next;
 };
 
+struct		s_time
+{
+  timespec_t	*timeout;
+  timespec_t	*delays[MAX_CMD];
+  timespec_t	*io_now;
+  timespec_t	*pl_now;
+};
+
 struct		s_master
 {
   int		max_clients;
@@ -69,8 +78,7 @@ struct		s_master
   size_t	nbr_player;
   size_t	nbr_egg;
   char		*port;
-  timespec_t	*timeout;
-  timespec_t	*delays[MAX_CMD];
+  t_time	time;
   t_server	server;
   t_team	*teams;
   t_client	*clients;
