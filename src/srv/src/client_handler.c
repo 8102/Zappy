@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Thu Jun 18 14:42:29 2015 Emmanuel Chambon
-** Last update Fri Jul  3 05:39:22 2015 Emmanuel Chambon
+** Last update Fri Jul  3 06:21:55 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
@@ -63,6 +63,7 @@ void		handle_io(char *tmp, t_client *client, t_master *content)
 	    input_interpret(client, content);
 	}
     }
+  timespec_release(now);
   free(tmp);
 }
 
