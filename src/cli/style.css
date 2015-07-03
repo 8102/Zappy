@@ -20,6 +20,31 @@
     src: url("ressources/fonts/OldLondon.ttf");
 }
 
+#victory {
+    height: 60%;
+    width: 35%;
+    left: 32%;
+    top: 20%;
+    text-align: center;
+    position: absolute;
+    z-index: 5000;
+    background-image: url(ressources/images/Victory.png);
+    background-size: 100% 100%;
+    display: none;
+}
+
+#victory-content {
+    position: absolute;
+    text-align: center;
+    width: 40%;
+    height: 8%;
+    left: 30%;
+    top: 55%;
+    font-family: medieval;
+    font-size: 200%;
+    color: black;
+}
+
 #GUI-TeamContainer {
     height: 40%;
     width: 83%;
