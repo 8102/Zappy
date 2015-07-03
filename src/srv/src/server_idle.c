@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Tue Jun 16 11:48:27 2015 Emmanuel Chambon
-** Last update Fri Jul  3 04:23:59 2015 Emmanuel Chambon
+** Last update Fri Jul  3 05:55:48 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
@@ -64,18 +64,17 @@ void		idle_server(t_master *content)
   while (g_run)
     {
       catch = serv->master;
-      if ((r = (pselect(max + 1, &catch, NULL, NULL, content->timeout, NULL))) == -1)
+      if ((r = (pselect(max + 1, &catch, NULL, NULL,
+			content->timeout, NULL))) == -1)
 	{
 	  if (!g_run)
 	    return ;
 	  error("select");
 	}
       if (!r)
-	{
 	  client_lookup(content);
-	  continue ;
-	}
-      for (int i = 0; i <= max; i++)
-	watch_sockets(&i, &max, &catch, content);
+      else
+	for (int i = 0; i <= max; i++)
+	  watch_sockets(&i, &max, &catch, content);
     }
 }

@@ -5,7 +5,7 @@
 ** Login   <prenat_h@epitech.eu>
 **
 ** Started on  Wed Jun 24 19:02:16 2015 Hugo Prenat
-** Last update Thu Jul  2 16:13:34 2015 Hugo Prenat
+** Last update Fri Jul  3 05:52:57 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
@@ -55,6 +55,7 @@ void		avance(char UNUSED*params,
 {
   t_client	*tmp;
 
+  timespec_add(client->clock, content->delays[AVANCE], true);
   tmp = content->clients;
   change_pos(content, client, client->orient);
   while (tmp)
@@ -75,6 +76,7 @@ void		droite(char UNUSED*params,
 {
   t_client	*tmp;
 
+  timespec_add(client->clock, content->delays[DROITE], true);
   tmp = content->clients;
   if (client->orient != WEST)
     client->orient++;
@@ -98,6 +100,7 @@ void		gauche(char UNUSED*params,
 {
   t_client	*tmp;
 
+  timespec_add(client->clock, content->delays[GAUCHE], true);
   tmp = content->clients;
   if (client->orient != NORTH)
     client->orient--;

@@ -5,7 +5,7 @@
 ** tran_0  <david.tran@epitech.eu>
 **
 ** Started on  Wed Jun 17 08:31:10 2015 David Tran
-** Last update Thu Jul  2 17:15:25 2015 Hugo Prenat
+** Last update Fri Jul  3 05:53:32 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
@@ -87,5 +87,6 @@ void			voir(char UNUSED*params,
 			     t_client *client,
 			     t_master *content)
 {
+  timespec_add(client->clock, content->delays[VOIR], true);
   select_position_watch(client, content);
 }
