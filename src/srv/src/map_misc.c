@@ -60,33 +60,41 @@ void		prend(char *params,
 		      t_master *content)
 {
   t_case	*position;
+  int		resource;
 
   if (!(position = getCaseFromCoord(client->pos[0], client->pos[1],
 				    content->cases)))
     ssend(client->socket, "ko\n");
   else
     {
-      if (checkPossibleTake(position, params, client) == 0)
+      if ((resource = checkPossibleTake(position, params, client)) == 0)
 	ssend(client->socket, "ko\n");
       else
-	ssend(client->socket, "ok\n");
+	{
+	  ssend(client->socket, "ok\n");
+	  prend_graphic(client, content, resource);
+	}
     }
 }
 
 void		pose(char *params,
 		     t_client *client,
-		     UNUSED t_master *content)
+		     t_master *content)
 {
   t_case	*position;
+  int		resource;
 
   if (!(position = getCaseFromCoord(client->pos[0], client->pos[1],
 				    content->cases)))
     ssend(client->socket, "ko\n");
   else
     {
-      if (checkPossibleSend(position, params, client) == 0)
+      if ((resource = checkPossibleSend(position, params, client)) == 0)
 	ssend(client->socket, "ko\n");
       else
-	ssend(client->socket, "ok\n");
+	{
+	  ssend(client->socket, "ok\n");
+	  pose_graphic(client, content, resource);
+	}
     }
 }

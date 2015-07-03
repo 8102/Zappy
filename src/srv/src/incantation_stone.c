@@ -99,3 +99,31 @@ int	check_stones(t_client *client, t_case *tmp, t_client *all)
     }
   return (check_stones_medium(client, tmp, all));
 }
+
+void		incantation_graphic(t_client *client, t_master *content,
+				    char *players)
+{
+  t_client	*clients;
+
+  if (!players && client->trigger[GRAPHIC])
+    ssend(client->socket, "pie %u %u %d\n", client->pos[0], client->pos[1],
+	  0);
+  else if (client->trigger[GRAPHIC])
+    ssend(client->socket, "pie %u %u %d\n", client->pos[0], client->pos[1],
+	  check_stones(client, getCaseFromCoord
+		       (client->pos[0], client->pos[1], content->cases),
+		       content->clients));
+  clients = content->clients;
+  while (clients && players)
+    {
+      if (client->id != clients->id && clients->pos[0] == client->pos[0] &&
+	  clients->pos[1] == client->pos[1] && (client->level - 1)
+	  == clients->level)
+	{
+	  clients->level++;
+	  if (client->trigger[GRAPHIC])
+	    plv(transform_int(client->level), client, content);
+	}
+      clients = clients->next;
+    }
+}

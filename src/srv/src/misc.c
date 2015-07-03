@@ -41,6 +41,7 @@ char		*revstr(char *str)
   int		i;
   int		j;
 
+  j = 0;
   if (!(revd = malloc(strlen(str) + 1)))
     return (NULL);
   i = strlen(str) - 1;
@@ -77,5 +78,5 @@ char		*transform_int(int tmp)
       tmp /= 10;
     }
   str[i] = 0;
-  return (str);
+  return (revstr(str));
 }

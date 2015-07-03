@@ -119,10 +119,13 @@ t_case		*getNextCase(t_case *, t_master *, int);
 **	prend.c
 */
 int	checkPossibleTake(t_case *, char *, t_client *);
+void	prend_graphic(t_client *, t_master *, int);
+char	*transformCoord(t_client *);
 /*
 **	pose.c
 */
 int	checkPossibleSend(t_case *, char *, t_client *);
+void	pose_graphic(t_client *, t_master *, int);
 /*
 **	broadcast.c
 */
@@ -139,6 +142,7 @@ int		checkBasicCase(t_client *, t_client *, t_master *);
 */
 void	do_incantation(t_client *, t_master *);
 int	check_stones(t_client *, t_case *, t_client *);
-void		incantation(char *, t_client *, t_master *);
+void	incantation(char *, t_client *, t_master *);
+void	incantation_graphic(t_client *, t_master *, char *);
 
 #endif /* !_SERVER_H_ */

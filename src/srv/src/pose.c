@@ -17,25 +17,25 @@ int	checkOtherSend(t_case *position, char *param,
     {
       position->sibur++;
       client->resources[SIBUR]--;
-      possible = 1;
+      possible = SIBUR;
     }
   if (strstr(param, "mendiane") && client->resources[MENDIANE] > 0)
     {
       position->mendiane++;
       client->resources[MENDIANE]--;
-      possible = 1;
+      possible = MENDIANE;
     }
   if (strstr(param, "phiras") && client->resources[PHIRAS] > 0)
     {
       client->resources[PHIRAS]--;
       position->phiras++;
-      possible = 1;
+      possible = PHIRAS;
     }
   if (strstr(param, "thystame") && client->resources[THYSTAME] > 0)
     {
       position->thystame++;
       client->resources[THYSTAME]--;
-      possible = 1;
+      possible = THYSTAME;
     }
   return (possible);
 }
@@ -49,19 +49,35 @@ int	checkPossibleSend(t_case *position, char *param, t_client *client)
     {
       position->meal++;
       client->resources[MEAL]--;
-      possible = 1;
+      possible = MEAL;
     }
   if (strstr(param, "linemate") && client->resources[LINEMATE] > 0)
     {
       position->linemate++;
       client->resources[LINEMATE]--;
-      possible = 1;
+      possible = LINEMATE;
     }
   if (strstr(param, "deraumere") && client->resources[DERAUMERE] > 0)
     {
       position->deraumere++;
       client->resources[DERAUMERE]--;
-      possible = 1;
+      possible = DERAUMERE;
     }
   return (checkOtherSend(position, param, client, possible));
+}
+
+void	pose_graphic(t_client *client, t_master *content, int resource)
+{
+  char		*transform;
+
+  if (client->trigger[GRAPHIC])
+    {
+      transform = transform_int(client->id);
+      ssend(client->socket, "pdr #%d %d\n", client->id, resource);
+      pin(transform, client, content);
+      free(transform);
+      transform = transformCoord(client);
+      bct(transform, client, content);
+      free(transform);
+    }
 }

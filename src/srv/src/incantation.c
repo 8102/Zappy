@@ -46,7 +46,7 @@ char		*check_level(t_client *client, t_client *clients)
 	}
       clients = clients->next;
     }
-  str[strlen(str) - 1] = 0;
+  str[(strlen(str) > 0) ? strlen(str) - 1 : 0] = 0;
   return (check_string(str, client, nbC));
 }
 
@@ -63,17 +63,7 @@ void	do_incantation(t_client *client, t_master *content)
 	    client->level);
   client->level += (!players) ? 0 : 1;
   ssend(client->socket, "niveau actuel : %d\n", client->level);
-  if (client->trigger[GRAPHIC])
-    {
-      if (!players)
-	ssend(client->socket, "pie %u %u %d\n", client->pos[0], client->pos[1],
-	      0);
-      else
-	ssend(client->socket, "pie %u %u %d\n", client->pos[0], client->pos[1],
-	      check_stones(client, getCaseFromCoord
-			   (client->pos[0], client->pos[1], content->cases),
-			   content->clients));
-    }
+  incantation_graphic(client, content, players);
   if (players)
     free(players);
 }
