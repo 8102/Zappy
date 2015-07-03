@@ -5,7 +5,7 @@
 ** Login   <prenat_h@epitech.eu>
 **
 ** Started on  Mon Jun 22 22:25:56 2015 Hugo Prenat
-** Last update Thu Jul  2 19:20:25 2015 Hugo Prenat
+** Last update Fri Jul  3 03:42:17 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
@@ -37,6 +37,7 @@ void	init_client(t_client *client, t_master *content)
   client->orient = NORTH;
   client->buffer = cb_init();
   client->recv = rb_init();
+  client->clock = timespec_init(NULL);
   client->trigger[AUTH] = false;
   client->trigger[GRAPHIC] = false;
   client->team = NULL;

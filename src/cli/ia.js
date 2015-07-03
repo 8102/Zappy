@@ -5,7 +5,7 @@ var spellbook = require('./spellbook.json');
 /*
 ** debug
 */
-var debug = true;
+var debug = false;
 
 var actions = Actions;
 var IA = Ia;
@@ -22,7 +22,8 @@ var goal = {
 	SEARCH: 5,
 	WAIT: 6,
 	CALL: 7,
-	EAT: 8
+	EAT: 8,
+	JOIN: 9
 };
 
 var brain = {
@@ -61,15 +62,16 @@ var entity = {
 function calcCoord(pos, to) {
 	var tmpRight = 0, tmpLeft = 0;
 	for (var y = 0; y < 10; y++) {
-		if (y * y <= pos && y * y * (y + 2)) {
+		if (y * y <= pos && y * y * (y + 2) >= pos) {
 			to.y = y;
 			tmpRight = y * y * (y + 2);
-			tmpLeft = y *y;
+			tmpLeft = y * y;
 			break;
 		}
 	}
-	var middle = (tmpRight - tmpLeft) / 2;
+	var middle = (tmpRight + tmpLeft) / 2;
 	to.x = pos - middle;
+	if (debug) console.log('[CALC_COORD] i = ' + pos + ' --> (' + to.x + ',' + to.y + ')');
 }
 
 function dumpFOV() {
@@ -138,6 +140,7 @@ function findGoal() {
 			continue;
 		}
 		if (compos[compo] > 0 && inInventory(compo) < compos[compo]) {
+			console.log('il me manque: ' + compo);
 			brain.objective = goal.SEARCH;
 			brain.obj = compo;
 			return (false);
@@ -192,8 +195,11 @@ IA.on('callTeam', function(playersRequired) {
 	var currentCase = brain.fov[0];
 	var nbPlayer = 0;
 
+	if (currentCase == undefined) {
+		return (false);
+	}
 	for (var i = 0; i < currentCase.length; i++) {
-		if (currentCase[i] == 'player') {
+		if (currentCase[i] == 'joueur') {
 			nbPlayer += 1;
 		}
 	}
@@ -204,10 +210,29 @@ IA.on('callTeam', function(playersRequired) {
 	} else {
 		action.sayToEveryone('incantation-' + brain.level);
 	}
+	return (true);
 });
 
-IA.on('notification', function(msg) {
-	console.log('I\'m earing a sound: [' + msg + ']');
+IA.on('notification', function(msg, direction) {
+	if (debug) console.log('I\'m earing a sound: [' + msg + '] provenant de ' + direction);
+	if (brain.objective != goal.WAIT && brain.objective != goal.EAT && msg.split('-')[0] == 'incantation' && msg.split('-')[1] == brain.level) {
+		brain.pos.x = brain.pos.y = 0;
+		if (direction == 1 || direction == 2 || direction == 8) {
+			brain.pos.y = 1;
+		} else if (direction >= 4 && direction <= 6) {
+			brain.pos.y = -1;
+		}
+		if (direction >= 3 && direction <= 4) {
+			brain.pos.x = 1;
+		} else if (direction >= 6 && direction <= 8) {
+			brain.pos.x = -1;
+		}
+		if (brain.pos.y < 0) {
+			action.right();
+			action.right();
+		}
+		brain.objective = goal.JOIN;
+	}
 });
 
 IA.on('saw', function(cmd) {
@@ -221,7 +246,8 @@ IA.on('saw', function(cmd) {
 });
 
 IA.on('updateInventory', function(action, compoName, quantity) {
-	if (action == 'prendre') {
+	console.log('+++++++++++++++++++++++++++++++++++ 1');
+	if (action == 'prend') {
 		var added = false;
 		for (var i = 0; i < brain.inventory.length; i++) {
 			if (brain.inventory[i][0] == compoName) {
@@ -232,7 +258,6 @@ IA.on('updateInventory', function(action, compoName, quantity) {
 		if (!added) {
 			brain.inventory.push([compoName, quantity]);
 		}
-		brain.inventory.push([compoName, quantity]);
 		brain.objective = goal.NONE;
 		if (compoName == 'nourriture') {
 			brain.hp += quantity;
@@ -266,6 +291,14 @@ IA.on('bump', function() {
 	updateInventory();
 });
 
+IA.on('update', function(part) {
+	if (part == 'prend' || part == 'pose') {
+		updateFov();
+	} else {
+		updateInventory();
+	}
+});
+
 IA.on('move', function() {
 	if (brain.pos.y != brain.to.y) {
 		action.forward();
@@ -291,6 +324,7 @@ IA.on('move', function() {
 		return (true);
 	}
 	console.log('Take it Take it !');
+	console.log(brain.inventory);
 	action.takeItem(brain.obj);
 	brain.objective = goal.NONE;
 	brain.obj = undefined;
@@ -306,7 +340,7 @@ IA.on('launch', function() {
 });
 
 IA.on('wait', function() {
-	if (brain.prevObjective != goal.WAIT) {
+	if (brain.objective != goal.WAIT) {
 		console.log('OOOOOOOOh Waaaaaaaaait !')
 		console.log('avant: ' + brain.prevObjective);
 		brain.prevObjective = brain.objective;
@@ -326,10 +360,14 @@ IA.on('wakeUp', function() {
 
 function brainManagement() {
 	if (debug)	console.log('objectif = ' + brain.objective);
-	if (brain.objective == goal.NONE && brain.hp < 20) {
+	if (brain.objective == goal.NONE) {
+		updateFov();
+	}
+	if (debug) console.log('HP = ' + brain.hp);
+	if (brain.objective == goal.NONE && brain.hp < 15) {
 		brain.objective = goal.EAT;
 	}
-	if (brain.objective == goal.EAT && brain.hp > 20) {
+	if (brain.objective == goal.EAT && brain.hp > 15) {
 		brain.objective = goal.NONE;
 	}
 	switch (brain.objective) {
@@ -342,8 +380,8 @@ function brainManagement() {
 		case goal.MOVE:
 			IA.emit('move');
 			break;
-		case goal.FIGHT:
-			//IA.emit('');
+		case goal.JOIN:
+			// IA.emit('notification');
 			break;
 		case goal.SEARCH:
 			findResource(brain.obj);
@@ -364,7 +402,6 @@ function brainManagement() {
 
 function run() {
 	if (debug) console.log('Here we gooo !');
-	updateFov();
 	var intervall = setInterval(brainManagement, 1000);
 }
 

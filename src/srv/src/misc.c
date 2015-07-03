@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Tue Jun 16 11:59:24 2015 Emmanuel Chambon
-** Last update Thu Jul  2 23:23:26 2015 Emmanuel Chambon
+** Last update Fri Jul  3 03:31:22 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
@@ -18,9 +18,7 @@ _Noreturn void		error(char *error)
 
 char		*str_replace(char *str, char target, char replace)
 {
-  int		i;
-
-  for (i = 0; str[i]; i++)
+  for (int i = 0; str[i]; i++)
     if (str[i] == target)
       str[i] = replace;
   return (str);

@@ -1,8 +1,8 @@
 #! /bin/sh
 
-if [ $# != 4 ] && [ $# != 6 ]
+if [ $# < 4 -o $# > 7 ]
 then
-    echo "Usage: ${0} -n team_name -p port [-h hostname]"
+    echo "Usage: ${0} -n team_name -p port [-h hostname] [-g | --gui]"
 else
     ./src/cli/node_modules/electron-prebuilt/dist/electron ./src/cli/client.js $# $@
 fi

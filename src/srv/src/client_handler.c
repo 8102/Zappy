@@ -5,16 +5,14 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Thu Jun 18 14:42:29 2015 Emmanuel Chambon
-** Last update Thu Jul  2 19:12:46 2015 Emmanuel Chambon
+** Last update Fri Jul  3 04:29:12 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
 
 t_client	*get_client(int socket, t_client **clients)
 {
-  t_client	*tmp;
-
-  for (tmp = *clients; tmp; tmp = tmp->next)
+  for (t_client *tmp = *clients; tmp; tmp = tmp->next)
     if (tmp->socket == socket)
       return (tmp);
   return (NULL);
@@ -61,13 +59,13 @@ void		handle_io(char *tmp, t_client *client, t_master *content)
 	  input_interpret(client, content);
 	}
     }
+  free(tmp);
 }
 
 void		handle_io_connection(t_client *client, t_master *content)
 {
   char		tmp[RB_SIZE];
   int		rc;
-  int		i;
   int		x;
 
   if (!client)
@@ -79,7 +77,7 @@ void		handle_io_connection(t_client *client, t_master *content)
 	rb_write(client->recv, tmp);
       else {
 	x = -1;
-	for (i = 0; tmp[i]; i++)
+	for (int i = 0; tmp[i]; i++)
 	  if (tmp[i] == '\n')
 	    {
 	      handle_io(strndup(&tmp[x + 1], i - x), client, content);
