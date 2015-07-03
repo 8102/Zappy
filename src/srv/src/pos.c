@@ -10,7 +10,7 @@
 
 #include "zappy.h"
 
-void		set_pos(t_master *content, t_client *client, size_t x, size_t y)
+void		reset_previous(t_client *client, t_master *content)
 {
   t_case	*tmp;
 
@@ -25,12 +25,21 @@ void		set_pos(t_master *content, t_client *client, size_t x, size_t y)
 	}
       tmp->nbr_player--;
     }
+}
+
+void		set_pos(t_master *content, t_client *client, int x, int y)
+{
+  t_case	*tmp;
+
+  reset_previous(client, content);
   tmp = content->cases;
-  x = ((int)x >= content->width) ? 0 : x;
-  y = ((int)y >= content->height) ? 0 : y;
+  x = (x >= content->width) ? 0 : x;
+  y = (y >= content->height) ? 0 : y;
+  x = (x < 0) ? content->width : x;
+  y = (y < 0) ? content->height : y;
   while (tmp)
     {
-      if (tmp->x == x && tmp->y == y)
+      if ((int)tmp->x == x && (int)tmp->y == y)
 	break ;
       tmp = tmp->next;
     }

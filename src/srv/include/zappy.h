@@ -84,7 +84,7 @@ int		create_map(t_master *content);
 /*
 **	pos.c
 */
-void		set_pos(t_master *, t_client *, size_t , size_t);
+void		set_pos(t_master *, t_client *, int , int);
 /*
 **	egg.c
 */
