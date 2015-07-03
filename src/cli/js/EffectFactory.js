@@ -8,7 +8,7 @@ var EFFECT = {
     expulse: {name: SpriteNames[2], parameters: {nbFrameH: 11, nbFrameV: 1, nbFrame: 11, duration: 100, totalDuration: 75, scale: {x: 2.0, y: 2.0, z: 1.0}, rpos: {x: 0, y: 0, z: 0}}},
     death: {name: SpriteNames[3], parameters: null},
     expulsion: {name: SpriteNames[4]},
-    decors: {name: SpriteNames[5], parameters: {nbFrameH: 14, nbFrameV: 1, nbFrame: 14, duration: 0.03, totalDuration: 75, scale: {x: 5.0, y: 5.0, z: 1.0}, rpos: {x: 0, y: 0, z: 0}}},
+    decors: {name: SpriteNames[5], parameters: {nbFrameH: 14, nbFrameV: 1, nbFrame: 14, duration: 100, totalDuration: 75, scale: {x: 5.0, y: 5.0, z: 1.0}, rpos: {x: 0, y: 0, z: 0}}},
     appear: {name: SpriteNames[6], parameters: {nbFrameH: 14, nbFrameV: 1, nbFrame: 14, duration: 100, totalDuration: 800, scale: {x: 1.5, y: 2.0, z: 1.0}, rpos: {x: 0, y: 0.25, z: 0}}},
     tesla: {name: SpriteNames[7], parameters: {nbFrameH: 8, nbFrameV: 1, nbFrame: 8, duration: 100, totalDuration: 800, scale: {x: 1.0, y: 1.0, z: 1.0}, rpos: {x: 0, y: 0, z: 0}}}
 };

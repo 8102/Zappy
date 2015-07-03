@@ -1,4 +1,4 @@
-/*global THREE, VideoContext, Factory, Effects */
+/*global THREE, VideoContext, Factory, Effects, manager */
 /*jslint browser: true*/
 
 var Effect = function (mesh, videoContext, target, params) {
@@ -35,16 +35,24 @@ var Effect = function (mesh, videoContext, target, params) {
 
 
     /* To make it blink */
-    this.update = function () {
-        if (target.alive !== true) {self.exist = false; videoContext.scene.remove(self.mesh); }
-        if (self.exist === true) {
-            self.perioder -= videoContext.clock.getDelta();
-            if (self.load <= 0) { self.exist = false;
-                if (self.witness === true) {videoContext.scene.remove(self.mesh); }
-                } else if (self.perioder <= 0.0) { self.show = !self.show; self.perioder = self.period; self.load -= 1; }
-            if (self.show === true && self.witness === false) {videoContext.scene.add(self.mesh); self.witness = true;
-                } else if (self.show === false && self.witness === true) { videoContext.scene.remove(self.mesh); self.witness = false; }
-            return true;
-        } else { return false; }
+    this.update = function (delta) {
+        if (params.blink === true) {
+            if (target.alive !== true) {self.exist = false; videoContext.scene.remove(self.mesh); }
+            if (self.exist === true) {
+                self.perioder -= delta;
+                if (self.load <= 0) { self.exist = false;
+                    if (self.witness === true) {videoContext.scene.remove(self.mesh); }
+                    } else if (self.perioder <= 0.0) { self.show = !self.show; self.perioder = self.period; self.load -= 1; }
+                if (self.show === true && self.witness === false) {videoContext.scene.add(self.mesh); self.witness = true;
+                    } else if (self.show === false && self.witness === true) { videoContext.scene.remove(self.mesh); self.witness = false; }
+                return true;
+            } else { return false; }
+        } else {
+            if (self.exist === false) {manager.context.scene.remove(self.mesh);
+                } else {self.perioder -= delta;
+                  if (self.perioder <= 0.0) {self.perioder = self.period; self.load -= 1; }
+                  if (self.load <= 0) {self.exist = false; }
+                }
+        }
     };
 };

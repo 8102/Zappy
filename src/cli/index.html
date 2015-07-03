@@ -16,8 +16,13 @@
         <script src="ThreeJs/examples/js/wip/IndexedTypedGeometry.js"></script>
         <script src="ThreeJs/examples/js/wip/PlaneTypedGeometry.js"></script>
         <script src="ThreeJs/examples/js/ImprovedNoise.js"></script>
+        <script src="ThreeJs/buzz.js"></script>
+        <script src="buzz.js"></script>
+        <script src="buzz.min.js"></script>
+        <script src="ThreeJs/soundjs-0.6.1.min.js"></script>
 
         <script src="js/Network.js"></script>
+        <script src="js/SoundManager.js"></script>
         <script src="js/VideoContext.js"></script>
         <script src="js/GeometryFactory.js"></script>
         <script src="js/EffectFactory.js"></script>
@@ -29,6 +34,9 @@
         <script src="js/Player.js"></script>
         <script src="js/Egg.js"></script>
         <script src="js/GameManager.js"></script>
+        <script src="js/Animation.js"></script>
+
+        <audio id="audio-background" src="ressources/audio/AdhesiveWombat%20-%208%20Bit%20Adventure.mp3" autoplay=false></audio>
 
     </head>
     <body>
@@ -64,17 +72,49 @@
                 </div>
             </div>
         </div>
-        <div id="GUI-TeamContainer">
+    <div id="GUI-TeamContainer"></div>
+    <div id="logBook">
+        <div id="logBook-leftPage">
+            <div id=left-page-title>
+                Commands Log
+            </div>
+            <div id="left-page-content"></div>
         </div>
-        <script src="http://127.0.0.1:1081/socket.io/socket.io.js"></script>
+        <div id="logBook-rightPage">
+            <div id=right-page-title>
+                Mapemonde Informations
+            </div>
+            <div id="right-page-content">
+                <div id="right-page-size">Width : 31   Height : 31</div>
+                <div id="logBook-r-Icon-Food" class="logBook-rIcon"></div>
+                <div id="logBook-r-Icon-Linemate" class="logBook-rIcon"></div>
+                <div id="logBook-r-Icon-Deraumere" class="logBook-rIcon"></div>
+                <div id="logBook-r-Icon-Sibur" class="logBook-rIcon"></div>
+                <div id="logBook-r-Icon-Mendiane" class="logBook-rIcon"></div>
+                <div id="logBook-r-Icon-Phiras" class="logBook-rIcon"></div>
+                <div id="logBook-r-Icon-Thystame" class="logBook-rIcon"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="http://127.0.0.1:1081/socket.io/socket.io.js"></script>
 
     <script>
-            /*global VideoContext, GameEngine, GameManager, dat, animate, Effects, requestAnimationFrame*/
-
+            /*global VideoContext, GameEngine, GameManager, dat, animate, Effects, requestAnimationFrame, buzz*/
             var network;
             var manager;
+/*
+            var test = new buzz.sound("ressources/audio/assets/click",  {formats: ["mp3"]});
+*/
             window.onload = function () {
                 'use strict';
+
+                var audiobck = document.getElementById("audio-background");
+                audiobck.volume = 0.1;
+                audiobck.currentTime = 6;
+/*
+                audiobck.pause();
+*/
 
                 manager = new GameManager();
                 manager.init();
@@ -83,26 +123,13 @@
                 socket.on('message', function(data) {
                     manager.treatMessage(data);
                 });
-            
+
 /*
                 manager.treatMessage('msz 31 31\n');
-*/
-/*
-                manager.treatMessage('tna team1\n');
-                manager.treatMessage('tna team2\n');
-                manager.treatMessage('tna team3\n');
-                manager.treatMessage('tna team4\n');
-                manager.treatMessage('pnw 1 16 16 2 1 team1\n');
-                manager.treatMessage('pnw 5 12 16 2 5 team1\n');
-                manager.treatMessage('pnw 2 16 16 2 1 team2\n');
-                manager.treatMessage('pnw 3 8 16 2 5 team3\n');
-                manager.treatMessage('pnw 4 20 20 2 1 team4\n');
                 manager.treatMessage('enw 1 1 20 20\n');
                 manager.treatMessage('enw 2 2 10 10\n');
                 manager.treatMessage('enw 3 3 30 30\n');
                 manager.treatMessage('enw 4 4 10 30\n');
-*/
-/*
 
                 for (var x = 0; x < manager.mapWidth; x += 1) {
                     for (var y =0; y < manager.mapHeight; y += 1) {
@@ -112,11 +139,16 @@
                         }
                     }
                 }
-*/
-/*
+                for (var k = 0; k < 5; k += 1) {
+                    manager.treatMessage("tna team" + k + "\n");
+                    manager.treatMessage("pnw " + k + " " + k * 2 + " " + k * 3 + " 1 2 team" +k +"\n");
+                }
+                manager.treatMessage("pnw 5 2 3 1 1 team4\n");
+                manager.treatMessage("bct 2 3 1 1 1 1 1 1 1\n");
                 manager.debugTeam();
                 manager.debugPlayer();
                 manager.testEffect(EFFECT.decors);
+                network = new NetworkDevice(manager, {address: 'localhost', port: 1081});
 */
                 manager.context.scene.fog = new THREE.Fog(0xffffffff, 10, 50);
 
@@ -133,6 +165,5 @@
             }
         </script>
 
-            <!--<audio src="ressources/audio/AdhesiveWombat%20-%208%20Bit%20Adventure.mp3" autoplay=true></audio>-->
     </body>
     </html>

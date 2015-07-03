@@ -1,5 +1,6 @@
 /*global manager, THREE,  Team, Factory, PLAYERCOLOR: true, PLAYER: true*/
 /*jslint browser: true*/
+/*global Animation*/
 
 var Player = function (playerTeam, parameters) {
     'use strict';
@@ -14,7 +15,7 @@ var Player = function (playerTeam, parameters) {
     this.model = null;
     this.alive = true;
     this.inventory = [];
-    this.moving = true;
+    this.moving = false;
     this.params = {
         animOffset: 0,
         walking: false,
@@ -25,7 +26,6 @@ var Player = function (playerTeam, parameters) {
         currentKeyframe: 0
     };
 
-//    playerTeam.addPlayer(this.ID);
     this.reorient = function () {
         if (self.model !== null) {
             self.model.rotation.y = (Math.PI / 2) * (self.orientation - 1);
@@ -33,7 +33,9 @@ var Player = function (playerTeam, parameters) {
     };
 
     this.getStringInventory = function () {
-        var invent = "Player #" + self.ID, i;
+        var invent = "P " + self.ID, i;
+
+        invent += " lvl : " + self.level + " O : " + self.orientation + " - ";
         for (i = 0; i < 7; i += 1) {
             invent += " " + self.inventory[i];
         }
@@ -41,19 +43,57 @@ var Player = function (playerTeam, parameters) {
     };
 
     /*jslint bitwise: true*/
-    this.move = function (x, y) {
+    this.move = function (x, y, z) {
         self.position[0] = x | 0;
-        self.position[1] = y | 0;
+        self.position[1] = z | 0;
         if (self.model !== null) {
-            self.model.position.set(self.position[0], 0.0, self.position[1]);
+            self.model.position.set(self.position[0], y, self.position[1]);
+            self.reorient();
         }
+        self.moving = false;
     };
     /*jslint bitwise: false*/
+
+    this.moveToward = function (x, y, z) {
+        if (self.model === null) { return false; }
+        var targetPosition = {x: x, y: y, z: z},
+            parameters,
+            anima;
+        self.moving = true;
+        if (targetPosition.x > self.position[0]) {self.orientation = 2;
+            } else if (targetPosition.x < self.position[0]) {self.orientation = 4;
+            } else if (targetPosition.y < self.position[1]) {self.orientation = 1;
+            } else if (targetPosition.y > self.position[1]) {self.orientation = 3;
+            }
+        self.reorient();
+        parameters = {targetP: targetPosition, delay: 1, modifyer: {x: 0, y: 0, z: 0}, frames: 55, rotate: false, callback: self.move};
+        anima = new Animation(self, parameters);
+        manager.animations.push(anima);
+        return true;
+    };
+
+    this.getExpulsed = function (orientation) {
+        if (self.model === null) {return false; }
+        var targetPosition = {x: self.model.position.x,
+                              y: self.model.position.y,
+                              z: self.model.position.z
+                             },
+            parameters,
+            anima,
+            angle = (orientation - 1) * (Math.PI / 2);
+
+        targetPosition.x += Math.sin(angle);
+        targetPosition.z += Math.cos(angle);
+        parameters = {targetP: targetPosition, delay: 1, modifyer: {x: 0, y: 4, z: 0}, frames: 100, rotate: true, callback: self.move};
+        anima = new Animation(self, parameters);
+        manager.animations.push(anima);
+        return true;
+    };
 
     this.selfLoader = function () {
 
         var jsonLoader = new THREE.JSONLoader();
-        jsonLoader.load('ressources/models/android.js', function (geometry, materials) {
+        jsonLoader.load('ressources/models/android.json', function (geometry, materials) {
             for (i = 0; i < materials.length; i += 1) {
                 if (i !== 2 && i !== 3) {
                     materials[i].color.set(self.color);
@@ -87,8 +127,13 @@ var Player = function (playerTeam, parameters) {
             }
             self.model.morphTargetInfluences[keyframe] = (time / self.params.interpolation) / self.params.interpolation;
             self.model.morphTargetInfluences[self.params.lastKeyframe] = 1 - self.model.morphTargetInfluences[keyframe];
+        } else if (self.moving === false && self.model) {
+            self.params.lastKeyframe = 0;
+            self.params.currentKeyframe = 0;
+
         }
     };
+
     this.inventory[0] = 10;
     for (i = 1; i < 7; i += 1) {this.inventory[i] = 0; }
     this.selfLoader();

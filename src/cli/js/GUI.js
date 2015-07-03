@@ -1,6 +1,7 @@
-/*global dat*/
+/*global dat, createjs*/
 /*jslint browser: true*/
 
+//var pageSound = new buzz.sound("ressources/audio/assets/page", { formats: ["mp3"]});
 var GUI = function (manager) {
     'use strict';
     var self = this;
@@ -67,15 +68,16 @@ var GUI = function (manager) {
     };
 
     this.displayInventory = function (event) {
-        var players, ressources, position, i;
+        var players, ressources, position, i, displayer = document.getElementById("GuiDisplayer");
+
         if (self.describerIconArray.length === 0) { self.initDescriberIconArray(); }
 
         if ((position = self.manager.engine.selectedCell()) === null) {
-            document.getElementById("GuiDisplayer").style.display = 'none';
+            if (displayer.style.display !== 'none') {createjs.Sound.play("page"); displayer.style.display = 'none'; }
             return false;
         }
 
-        document.getElementById("GuiDisplayer").style.display = 'block';
+        if (displayer.style.display !== 'block') { createjs.Sound.play("page"); displayer.style.display = 'block'; }
         document.getElementById("describer-Title").innerHTML = "Cell (" + position.x + ", " + position.y + ")" + "<br>" + "<br>";
 
         ressources = self.manager.getRessourcesOnCell(position.x, position.y);
@@ -92,6 +94,27 @@ var GUI = function (manager) {
         for (i = 0; i < players.length; i += 1) {
             document.getElementById("describer-Players").innerHTML += players[i].getStringInventory() + "<br><br>";
         }
+    };
+
+    this.setLogRecordContent = function () {
+        var log = document.getElementById("left-page-content"), i, j;
+
+        log.innerHTML = "";
+        for (i = 0; i < 10; i += 1) {
+            log.innerHTML += "#" + i + "    " + self.manager.commandRecords[i] + "<br><br>";
+        }
+    };
+    this.setRigthPageContent = function () {
+        var field = document.getElementById("right-page-size");
+
+        field.innerHTML = "Width : " + manager.mapWidth + "    Height : " + manager.mapHeight;
+        document.getElementById("logBook-r-Icon-Food").innerHTML = manager.mapInformations.ressources[0] + "    Food";
+        document.getElementById("logBook-r-Icon-Linemate").innerHTML = manager.mapInformations.ressources[1] + "    Linemates";
+        document.getElementById("logBook-r-Icon-Deraumere").innerHTML = manager.mapInformations.ressources[2] + "    Deraumeres";
+        document.getElementById("logBook-r-Icon-Sibur").innerHTML = manager.mapInformations.ressources[3] + "    Siburs";
+        document.getElementById("logBook-r-Icon-Phiras").innerHTML = manager.mapInformations.ressources[4] + "    Phiras";
+        document.getElementById("logBook-r-Icon-Mendiane").innerHTML = manager.mapInformations.ressources[5] + "    Mendianes";
+        document.getElementById("logBook-r-Icon-Thystame").innerHTML = manager.mapInformations.ressources[6] + "    Thystames";
     };
 };
 
