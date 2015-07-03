@@ -9,7 +9,7 @@ var EventEmitter = require('events').EventEmitter;
 /*
 ** debug
 */
-var debug = true;
+var debug = false;
 
 /*
 ** variable scope
@@ -61,10 +61,12 @@ function treatQueue() {
 		full = true;
 	}
 	if (cmdQueue[0] && (cmdQueue[0].state == 'ok' || cmdQueue[0].state == 'ko')) {
-		if (cmdQueue[0].command.slice(0, 7) == 'prendre' && cmdQueue[0].state == 'ok') {
-			IA.emit('updateInventory', 'prendre', cmdQueue[0].command.slice(8), 1);
+		if (cmdQueue[0].command.slice(0, 5) == 'prend' && cmdQueue[0].state == 'ok') {
+			IA.emit('updateInventory', 'prend', cmdQueue[0].command.slice(6), 1);
 		} else if (cmdQueue[0].command.slice(0, 4) == 'pose' && cmdQueue[0].state == 'ok') {
 			IA.emit('updateInventory', 'pose', cmdQueue[0].command.slice(5), 1);
+		} else if (cmdQueue[0].state == 'ko') {
+			IA.emit('update', cmdQueue[0].command.split(' ')[0]);
 		}
 		cmdQueue.shift();
 	} else if (cmdQueue[0] && cmdQueue[0].command == 'voir' && cmdQueue[0].state) {
@@ -129,10 +131,6 @@ module.exports = function(addr, port, team_name) {
 				}
 			} else if (graphicCmd.indexOf(res[i].slice(0, 3)) > -1) {
 				if (res[i].length > 0) {
-					if (res[i].slice(0, 3) == 'pie' && res[i].split(' ')[3] == '1') {
-						console.log('#######################################################################################');
-						IA.emit('levelUp');
-					}
 					if (debug) console.log('Comand send to graphical [' + res[i] + '\n]');
 					graphicSocket.emit('message', res[i] + '\n');
 				}
@@ -141,9 +139,10 @@ module.exports = function(addr, port, team_name) {
 				if (res[i].search('deplacement') != -1) {
 					IA.emit('bump');
 				} else if (res[i].search('message') != -1) {
-					IA.emit('notification', res[i].substring(res[i].indexOf('message'), res[i].length));
-				} else if (res[i] == 'elevation en cours') {
-					continue;
+					console.log('notif --> \\' + res[i] + '/');
+					IA.emit('notification', res[i].split(',')[1], res[i].substring(res[i].indexOf('message') + 8, res[i].indexOf(',')));
+				} else if (res[i].split(' ')[0] == 'niveau') {
+					IA.emit('levelUp');
 				} else {
 					updateQueue(res[i]);
 					if (debug) dumpQueue();
