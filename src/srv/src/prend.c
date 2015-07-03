@@ -17,25 +17,25 @@ int	checkOthers(t_case *position, char *param, t_client *client,
     {
       position->sibur--;
       client->resources[SIBUR]++;
-      possible = 1;
+      possible = SIBUR;
     }
   if (strstr(param, "mendiane") && position->mendiane > 0)
     {
       position->mendiane--;
       client->resources[MENDIANE]++;
-      possible = 1;
+      possible = MENDIANE;
     }
   if (strstr(param, "phiras") && position->phiras > 0)
     {
       client->resources[PHIRAS]++;
       position->phiras--;
-      possible = 1;
+      possible = PHIRAS;
     }
   if (strstr(param, "thystame") && position->thystame > 0)
     {
       position->thystame--;
       client->resources[THYSTAME]++;
-      possible = 1;
+      possible = THYSTAME;
     }
   return (possible);
 }
@@ -49,19 +49,54 @@ int	checkPossibleTake(t_case *position, char *param, t_client *client)
     {
       position->meal--;
       client->resources[MEAL]++;
-      possible = 1;
+      possible = MEAL;
     }
   if (strstr(param, "linemate") && position->linemate > 0)
     {
       position->linemate--;
       client->resources[LINEMATE]++;
-      possible = 1;
+      possible = LINEMATE;
     }
   if (strstr(param, "deraumere") && position->deraumere > 0)
     {
       position->deraumere--;
       client->resources[DERAUMERE]++;
-      possible = 1;
+      possible = DERAUMERE;
     }
   return (checkOthers(position, param, client, possible));
+}
+
+char	*transformCoord(t_client *client)
+{
+  char	*send;
+  char	*x;
+  char	*y;
+
+  x = transform_int(client->pos[0]);
+  y = transform_int(client->pos[1]);
+  if (!(send = malloc(10 + strlen(x) + strlen(y))))
+    return (NULL);
+  send[0] = 0;
+  strcat(send, x);
+  strcat(send, " ");
+  strcat(send, y);
+  free(x);
+  free(y);
+  return (send);
+}
+
+void	prend_graphic(t_client *client, t_master *content, int resource)
+{
+  char		*transform;
+
+  if (client->trigger[GRAPHIC])
+    {
+      transform = transform_int(client->id);
+      ssend(client->socket, "pgt #%d %d\n", client->id, resource);
+      pin(transform, client, content);
+      free(transform);
+      transform = transformCoord(client);
+      bct(transform, client, content);
+      free(transform);
+    }
 }

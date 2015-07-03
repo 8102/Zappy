@@ -13,28 +13,28 @@
 int		returnOrientation(float angle, int type)
 {
   if (type == 0 && angle <= 22.5f)
-    return (7);
+    return (3);
   else if (type == 0 && angle >= 67.5f)
     return (1);
   else if (type == 0)
-    return (8);
+    return (2);
   if (type == 1 && angle <= 22.5f)
-    return (3);
+    return (7);
   else if (type == 1 && angle >= 67.5f)
     return (1);
   else if (type == 1)
-    return (2);
+    return (8);
   if (type == 2 && angle <= 22.5f)
-    return (7);
+    return (3);
   else if (type == 2 && angle >= 67.5f)
     return (5);
   else if (type == 2)
     return (6);
   if (type == 3 && angle <= 22.5f)
-    return (3);
+    return (7);
   else if (type == 3 && angle >= 67.5f)
     return (5);
-  return (2);
+  return (8);
 }
 
 int		calculateOrientation(int x, int y, int xc, int yc)
