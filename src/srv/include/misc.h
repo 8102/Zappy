@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Tue Jun 16 11:36:38 2015 Emmanuel Chambon
-** Last update Fri Jun 19 16:53:26 2015 Emmanuel Chambon
+** Last update Thu Jul  2 23:16:30 2015 Emmanuel Chambon
 */
 
 #pragma once
@@ -23,6 +23,7 @@
 # include <sys/types.h>
 # include <stdarg.h>
 # include <math.h>
+# include <getopt.h>
 
 void		error(char *);
 char		*epur_str(char *);

@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Tue Jun 16 11:35:49 2015 Emmanuel Chambon
-** Last update Wed Jun 24 13:33:44 2015 Emmanuel Chambon
+** Last update Thu Jul  2 22:27:16 2015 Emmanuel Chambon
 */
 
 #ifndef _ZAPPY_H_
@@ -19,6 +19,7 @@ typedef struct	s_egg		t_egg;
 typedef enum    Orientation     e_Orientation;
 
 # include "misc.h"
+# include "timespec_lib.h"
 # include "server.h"
 # include "rb.h"
 # include "client.h"

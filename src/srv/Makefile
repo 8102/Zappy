@@ -5,7 +5,7 @@
 ## chambo_e  <chambon.emmanuel@gmail.com>
 ##
 ## Started on  Wed Apr  8 22:49:16 2015 Emmanuel Chambon
-## Last update Thu Jul  2 15:48:29 2015 Hugo Prenat
+## Last update Thu Jul  2 23:59:44 2015 Emmanuel Chambon
 ##
 
 DEBUG		=	yes
@@ -50,6 +50,7 @@ SRC_SERVER	=	main.c			\
 			broadcast.c		\
 			broadcast_orient.c	\
 			incantation.c		\
+			timespec_lib.c		\
 			incantation_stone.c
 
 OBJ_DIR		=	obj/
@@ -58,7 +59,7 @@ SRC_DIR		=	src/
 
 INC_DIR		=	include/
 
-CFLAGS		=	-W -Wall -Wextra -I$(INC_DIR) -lm
+CFLAGS		=	-std=c11 -W -Wall -Wextra -I$(INC_DIR) -lm -D_DEFAULT_SOURCE
 
 ifeq ($(DEBUG),yes)
 

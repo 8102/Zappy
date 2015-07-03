@@ -5,7 +5,7 @@ var spellbook = require('./spellbook.json');
 /*
 ** debug
 */
-var debug = false;
+var debug = true;
 
 var actions = Actions;
 var IA = Ia;
@@ -159,6 +159,7 @@ function updateInventory() {
 }
 
 function updateFov() {
+	brain.fov.length = 0;
 	action.see();
 }
 
@@ -269,14 +270,15 @@ IA.on('move', function() {
 	if (brain.pos.y != brain.to.y) {
 		action.forward();
 		brain.pos.y += 1;
+		console.log('je sors ici');
 		return (true);
 	}
 	if (brain.to.x < 0) {
-		action.left;
-		return (true);
+		action.left();
+		console.log('je sors la');
 	} else if (brain.to.x > 0 ){
-		action.right;
-		return (true);
+		action.right();
+		console.log('nan ici');
 	}
 	if (brain.pos.x != brain.to.x) {
 		action.forward();
@@ -285,8 +287,10 @@ IA.on('move', function() {
 		} else {
 			brain.pos.x += 1;
 		}
+		console.log('en fait là');
 		return (true);
 	}
+	console.log('Take it Take it !');
 	action.takeItem(brain.obj);
 	brain.objective = goal.NONE;
 	brain.obj = undefined;
@@ -302,13 +306,22 @@ IA.on('launch', function() {
 });
 
 IA.on('wait', function() {
-	brain.prevObjective = brain.objective;
-	brain.objective = goal.WAIT;
+	if (brain.prevObjective != goal.WAIT) {
+		console.log('OOOOOOOOh Waaaaaaaaait !')
+		console.log('avant: ' + brain.prevObjective);
+		brain.prevObjective = brain.objective;
+		brain.objective = goal.WAIT;
+	}
 });
 
 IA.on('wakeUp', function() {
-	brain.objective = brain.prevObjective;
-	brain.prevObjective = goal.NONE;
+	console.log('on se réveiiiiiiiiiiiiiillllllllllllllle !');
+	if (brain.objective == goal.WAIT) {
+		console.log('avant : ' + brain.objective);
+		console.log('apres : ' + brain.prevObjective);
+		brain.objective = brain.prevObjective;
+		brain.prevObjective = goal.NONE;
+	}
 });
 
 function brainManagement() {
@@ -352,7 +365,7 @@ function brainManagement() {
 function run() {
 	if (debug) console.log('Here we gooo !');
 	updateFov();
-	var intervall = setInterval(brainManagement, 50);
+	var intervall = setInterval(brainManagement, 1000);
 }
 
 };

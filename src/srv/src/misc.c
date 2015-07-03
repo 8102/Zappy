@@ -5,12 +5,12 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Tue Jun 16 11:59:24 2015 Emmanuel Chambon
-** Last update Fri Jun 19 16:50:54 2015 Emmanuel Chambon
+** Last update Thu Jul  2 23:23:26 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
 
-void		error(char *error)
+_Noreturn void		error(char *error)
 {
   perror(error);
   exit(EXIT_FAILURE);
