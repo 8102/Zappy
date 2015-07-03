@@ -5,7 +5,7 @@
 ## chambo_e  <chambon.emmanuel@gmail.com>
 ##
 ## Started on  Wed Apr  8 22:49:16 2015 Emmanuel Chambon
-## Last update Fri Jul  3 06:01:04 2015 Emmanuel Chambon
+## Last update Fri Jul  3 18:13:04 2015 Hugo Prenat
 ##
 
 DEBUG		=	yes
@@ -51,6 +51,7 @@ SRC_SERVER	=	main.c			\
 			broadcast.c		\
 			broadcast_orient.c	\
 			incantation.c		\
+			creation.c		\
 			timespec_lib.c		\
 			timespec_utils.c	\
 			timespec_add.c		\

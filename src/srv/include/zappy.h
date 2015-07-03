@@ -99,5 +99,9 @@ void		set_pos(t_master *, t_client *, size_t, size_t);
 */
 void		add_egg(t_team *, t_master *, size_t[2], int);
 void		pop_egg(t_egg **, t_egg *);
+/*
+**	creation.c
+*/
+void		print_creation(t_master *);
 
 #endif /* !_ZAPPY_H_ */

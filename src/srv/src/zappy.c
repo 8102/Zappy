@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Tue Jun 16 20:14:21 2015 Emmanuel Chambon
-** Last update Fri Jul  3 06:11:14 2015 Emmanuel Chambon
+** Last update Fri Jul  3 18:09:48 2015 Hugo Prenat
 */
 
 #include "zappy.h"
@@ -35,6 +35,7 @@ int		init_zappy(t_master *content, int ac, char **av)
   create_map(content);
   init_server(&(content->server),
 	      (content->port == NULL ? "4242" : content->port));
+  print_creation(content);
   return (0);
 }
 
