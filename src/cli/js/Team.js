@@ -123,10 +123,15 @@ var Team = function (parameters) {
     };
 
     this.updateNbPlayersOnBanner = function () {
+        var i, nbEggsReady = 0;
+
         self.banner.content.innerHTML = self.nbPlayers + " Players Alive<br><br>";
         self.banner.content.innerHTML += "Higher Level : " + self.getHigherLevel() + "<br><br>";
         self.banner.content.innerHTML += "Deads : " + self.nbDead + "<br><br>";
-        self.banner.content.innerHTML += "Eggs : " + self.eggs.length;
+        for (i = 0; i < self.eggs.length; i += 1) {
+            if (self.eggs[i].isReady === true) {nbEggsReady += 1; }
+        }
+        self.banner.content.innerHTML += "Eggs : " + self.eggs.length + (nbEggsReady > 0 ? "<br> - (" + nbEggsReady + " ready) - " : "");
     };
 
 

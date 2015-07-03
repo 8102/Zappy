@@ -219,13 +219,19 @@ var GameManager = function (Context, Engine) {
     };
     /*pbc*/
     this.playerBroadcast = function (message) {
-        var playerID, player, parser = message.split(' ').map(String);
+        var playerID, player, parser = message.split(' ').map(String), parameters, anima;
 
         playerID = parseInt(parser[1], 10);/*.split('#').map(Number)[1];*/
         if ((player = self.getPlayerByID(playerID)) === null) { return false; }
 
         /************/
+/*
         window.console.log('Player #' + playerID + 'says : \"' + parser[2] + '\" !');
+*/
+        parameters = {targetP: {x: player.position[0], y: 0.0, z: player.position[1]}, delay: 1, modifyer: {x: 0, y: 0.5, z: 0}, frames: 100, rotate: true, callback: self.move};
+        anima = new Animation(player, parameters);
+        self.animations.push(anima);
+
         /************/
         return true;
     };
@@ -647,6 +653,10 @@ var GameManager = function (Context, Engine) {
         return null;
     };
 
+    this.getTeamNbEggs = function (teamName) {
+        var teamEggs = {nb: 0, ready: 0};
+
+    };
     /* return an array containing eggs(object) found on cell x, y */
     this.getEggsOnCell = function (x, y) {
         var eggArray = [], i;
