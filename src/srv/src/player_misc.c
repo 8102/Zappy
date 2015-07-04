@@ -5,7 +5,7 @@
 ** Login   <prenat_h@epitech.eu>
 **
 ** Started on  Thu Jul  2 15:37:37 2015 Hugo Prenat
-** Last update Thu Jul  2 17:13:26 2015 Hugo Prenat
+** Last update Sat Jul  4 01:31:21 2015 Hugo Prenat
 */
 
 #include "zappy.h"
@@ -35,7 +35,7 @@ void		ppo(char *params,
       ssend(client->socket, "sbp\n");
       return ;
     }
-  ssend(client->socket, "ppo %d %d %d %d\n", tmp->id,
+  ssend(client->socket, "ppo %d %lu %lu %d\n", tmp->id,
 	tmp->pos[X], tmp->pos[Y], tmp->orient);
 }
 
@@ -83,8 +83,8 @@ void		pin(char *params,
     {
       if (clients->id == nbrP)
 	{
-	  ssend(client->socket, "pin %d %u %u %d %d %d %d %d %d\n",
-		clients->id, clients->pos[0], clients->pos[1],
+	  ssend(client->socket, "pin %d %lu %lu %d %d %d %d %d %d\n",
+		clients->id, clients->pos[X], clients->pos[Y],
 		clients->resources[MEAL], clients->resources[LINEMATE],
 		clients->resources[DERAUMERE], clients->resources[SIBUR],
 		clients->resources[MENDIANE], clients->resources[MENDIANE],

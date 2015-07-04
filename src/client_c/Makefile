@@ -1,26 +1,51 @@
 ##
-## Makefile for Zappy in /home/tommy/Dropbox/Epitech/2ème Année/PSU_2014_zappy/src/client_c/
+## Makefile for  in /home/chambo_e/epitech/PSU_2014_myirc
 ##
-## Made by TommyStarK
-## Login   <milox_t@epitech.eu>
+## Made by Emmanuel Chambon
+## chambo_e  <chambon.emmanuel@gmail.com>
 ##
-## Started on  Sat Jun 27 23:15:04 2015 TommyStarK
-## Last update Tue Jun 30 23:45:28 2015 Milox Thomas
+## Started on  Wed Apr  8 22:49:16 2015 Emmanuel Chambon
+## Last update Sat Jul  4 01:49:24 2015 Emmanuel Chambon
 ##
 
-NAME 	=	zappy_client_c
+CC		=	gcc
 
-SRC 	= 	client.c				\
-		network.c				\
-		init.c					\
-		utils.c
+RM		=	rm -fr
 
-OBJ	=	$(SRC:.c=.o)
+NAME_CLIENT	=	zappy_ai
 
+SRC_CLIENT	=	client.c			\
+			init.c				\
+			network.c			\
+			utils.c				\
 
-name:		$(OBJ)
-		gcc -W -Wall -Wextra -Werror $(SRC) -o $(NAME) -g
+OBJ_DIR		=	obj/
 
+SRC_DIR		=	src/
 
-clean:
-		rm -rf $(OBJ)
+INC_DIR		=	include/
+
+CFLAGS		=	-W -Wall -Wextra -I$(INC_DIR)
+
+BUILD_PRINT	=	\e[1;34mBuilding\e[0m \e[1;33m$<\e[0m
+
+OBJS		=	$(patsubst %.c,${OBJ_DIR}%.o, $(SRC_CLIENT))
+
+FIRST		:=	$(shell test -d $(OBJ_DIR) || mkdir $(OBJ_DIR))
+
+$(OBJ_DIR)%.o	:	$(patsubst %.c, ${SRC_DIR}%.c, %.c)
+			@echo -e "$(BUILD_PRINT)" && $(CC) $(CFLAGS) -c $< -o $@
+
+$(NAME_CLIENT)	:	$(OBJS)
+			$(CC) $(OBJS) -o $(NAME_CLIENT)
+
+all		:
+			@$(MAKE) --no-print-directory $(NAME_CLIENT)
+
+clean		:
+			$(RM) $(OBJS) $(OBJ_DIR)
+
+fclean		:	clean
+			$(RM) $(NAME_CLIENT)
+
+re		:	fclean all

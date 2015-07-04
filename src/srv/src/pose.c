@@ -73,7 +73,7 @@ void	pose_graphic(t_client *client, t_master *content, int resource)
   if (client->trigger[GRAPHIC])
     {
       transform = transform_int(client->id);
-      ssend(client->socket, "pdr #%d %d\n", client->id, resource);
+      ssend(client->socket, "pdr %d %d\n", client->id, resource);
       pin(transform, client, content);
       free(transform);
       transform = transformCoord(client);

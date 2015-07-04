@@ -5,10 +5,26 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Tue Jun 16 11:46:03 2015 Emmanuel Chambon
-** Last update Fri Jun 19 16:52:29 2015 Emmanuel Chambon
+** Last update Sat Jul  4 01:54:23 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
+
+void		ssend_graphics(t_master *content, char *msg, ...)
+{
+  va_list	args;
+  t_client	*client_tmp;
+
+  va_start(args, msg);
+  client_tmp = content->clients;
+  while (client_tmp)
+    {
+      if (client_tmp->trigger[GRAPHIC])
+	ssend(client_tmp->socket, msg, args);
+      client_tmp = client_tmp->next;
+    }
+  va_end(args);
+}
 
 void		ssend(int socket, char *msg, ...)
 {

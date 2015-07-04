@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Tue Jun 16 11:35:49 2015 Emmanuel Chambon
-** Last update Fri Jul  3 06:11:37 2015 Emmanuel Chambon
+** Last update Sat Jul  4 05:20:29 2015 Emmanuel Chambon
 */
 
 #ifndef _ZAPPY_H_
@@ -16,6 +16,7 @@ typedef struct  s_team		t_team;
 typedef struct  s_master	t_master;
 typedef struct	s_case		t_case;
 typedef struct	s_egg		t_egg;
+typedef struct	s_time		t_time;
 typedef enum    Orientation     e_Orientation;
 typedef unsigned long long int	ull;
 
@@ -55,35 +56,53 @@ struct		s_case
 struct		s_team
 {
   char		*name;
+  int		leveled_pl;
   int		slot;
   t_egg		*eggs;
   t_team	*next;
 };
 
+struct		s_time
+{
+  timespec_t	*timeout;
+  timespec_t	*delays[MAX_CMD];
+  timespec_t	*io_now;
+  timespec_t	*pl_now;
+};
+
 struct		s_master
 {
   int		max_clients;
-  int		width;
-  int		height;
+  size_t	width;
+  size_t	height;
   int		delay;
   size_t	nbr_player;
   size_t	nbr_egg;
   char		*port;
-  timespec_t	*timeout;
-  timespec_t	*delays[MAX_CMD];
+  t_time	time;
   t_server	server;
   t_team	*teams;
   t_client	*clients;
   t_case	*cases;
 };
 
+
+/*
+**	main.c
+*/
+int		usage(char *);
 /*
 **	zappy.c
 */
 int		init_zappy(t_master *, int, char **);
 void		release_zappy(t_master *);
-int		check_param(int, char **, t_master *);
+bool		check_param(t_master *);
+bool		get_param(int, char **, t_master *);
 int		create_map(t_master *);
+/*
+**	init.c
+*/
+bool		add_team(char **, int, t_master *);
 /*
 **	zappy_init.c
 */
@@ -93,11 +112,21 @@ void		release_delays(t_master *);
 /*
 **	pos.c
 */
-void		set_pos(t_master *, t_client *, int, int);
+void		set_pos(t_master *, t_client *, size_t, size_t);
 /*
 **	egg.c
 */
 void		add_egg(t_team *, t_master *, size_t[2], int);
 void		pop_egg(t_egg **, t_egg *);
+/*
+**	creation.c
+*/
+void		print_creation(t_master *);
+/*
+**	win.c
+*/
+void		team_win(t_team *, t_master *);
+void		reset_leveled(t_master *);
+void		check_leveled(t_master *);
 
 #endif /* !_ZAPPY_H_ */

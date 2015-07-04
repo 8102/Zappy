@@ -5,7 +5,7 @@
 ** Login   <milox_t@epitech.eu>
 **
 ** Started on  Sat Jun 27 20:40:47 2015 TommyStarK
-** Last update Tue Jun 30 23:56:52 2015 TommyStarK
+** Last update Sat Jul  4 01:59:25 2015 Emmanuel Chambon
 */
 
 #include "client.h"
@@ -14,15 +14,11 @@ void		ia(t_client *it)
 {
   int 		random;
 
-  printf("#### DEBUG IA #####\n");
-  // usleep(rand() % 1000 + 400000);
+  usleep(rand() % 1000 + 400000);
   if (it->size > 0)
   {
-    printf(" SIZE ARRAY:  %d\n", it->size);
     random = rand() % it->size;
-    printf("RANDOM: %d\n", random);
     ssend(it->client->fd, it->ia[random]);
-    printf("SENT: %s\n", it->ia[random]);
   }
 }
 
@@ -32,7 +28,7 @@ int             make_coffe(t_client *it)
   char          tmp[BUFF_SIZE] = {0};
   static int 	flag = 0;
 
-
+  ret = 1;
   memset(tmp, 0, BUFF_SIZE);
   if (!flag)
   {
@@ -44,7 +40,7 @@ int             make_coffe(t_client *it)
   else
   {
     ret = recv(it->client->fd, tmp, BUFF_SIZE, 0);
-    if (ret > 0)
+    if (ret >= 0)
       printf("%s\n", tmp);
   }
   return (!ret ? 0 : ret > 0 ? 1 : -1);
@@ -56,7 +52,9 @@ void            run_client(t_client *it)
   int          ret;
   int          fdmax;
   fd_set       read_fds;
+  struct timeval	t;
 
+  t.tv_usec = 500;
   fdmax = it->client->fd + 1;
   FD_ZERO(&read_fds);
   it->fdmax = &fdmax;
@@ -65,7 +63,7 @@ void            run_client(t_client *it)
   {
     FD_ZERO(it->rfds);
     FD_SET(it->client->fd, it->rfds);
-    if (select(fdmax, it->rfds, NULL, NULL, NULL) == -1)
+    if (select(fdmax, it->rfds, NULL, NULL, &t) == -1)
       error("select");
     for (i = 0; i < *it->fdmax; i++)
     {

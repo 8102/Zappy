@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Tue Jun 16 11:48:27 2015 Emmanuel Chambon
-** Last update Fri Jul  3 06:20:37 2015 Emmanuel Chambon
+** Last update Sat Jul  4 02:13:16 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
@@ -22,17 +22,17 @@ void		watch_sockets(int *i, int *max, fd_set *catch,
     }
 }
 
-void		client_lookup(t_master *content)
+void			client_lookup(t_master *content)
 {
-  static ull	time_unit = 0;
-  bool		remove_food;
-  timespec_t	*now;
+  static ull		time_unit = 0;
+  bool			remove_food;
 
   remove_food = false;
   time_unit++;
-  if (!(time_unit % 1260))
+  if (!(time_unit % 126))
     remove_food = !remove_food;
-  now = timespec_now();
+  reset_leveled(content);
+  timespec_update(content->time.pl_now);
   for (t_client *tmp = content->clients; tmp; tmp = tmp->next)
     {
       if (!tmp->trigger[AUTH])
@@ -42,10 +42,12 @@ void		client_lookup(t_master *content)
       /* if (tmp->resources[MEAL]--) */
       /* 	die_player_die(tmp); */
       if (cb_available(tmp->buffer) < CB_SIZE &&
-	  timespec_is_greater(now, tmp->clock))
+	  timespec_is_greater(content->time.pl_now, tmp->clock))
 	input_interpret(tmp, content);
+      if (tmp->level == MAX_LEVEL)
+	tmp->team->leveled_pl++;
     }
-  timespec_release(now);
+  check_leveled(content);
 }
 
 void		idle_server(t_master *content)
@@ -62,7 +64,7 @@ void		idle_server(t_master *content)
     {
       catch = serv->master;
       if ((r = (pselect(max + 1, &catch, NULL, NULL,
-			content->timeout, NULL))) == -1)
+			content->time.timeout, NULL))) == -1)
 	{
 	  if (!g_run)
 	    return ;

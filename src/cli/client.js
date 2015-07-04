@@ -13,7 +13,7 @@ var options = new Array();
 options['team_name'] = null;
 options['port'] = null;
 options['hostname'] = "localhost";
-options['GUI'] = false;
+options['GUI'] = '';
 for (var i = 0; i < argc; i++) {
     if (argv[i] == '-n') {
         options.team_name = argv[i + 1];
@@ -24,8 +24,11 @@ for (var i = 0; i < argc; i++) {
     if (i < argc - 1 && argv[i] == '-h') {
         options.hostname = argv[i + 1];
     }
-    if (argv[i] == '-g' || argv[i] == '--gui') {
-        options.GUI = true;
+    if (argv[i].slice(0, 2) == '-g' || argv[i].slice(0, 2) == '--gui') {
+        options.GUI = 'ia';
+        if (argv[i].split('=')[1] == 'only') {
+            options.GUI = 'only';
+        }
     }
 }
 
@@ -36,12 +39,14 @@ for (var opt in options) {
     }
 }
 
-if (options.GUI) {
+if (options.GUI.length > 0) {
+    console.log('launch http server');
     require('./http_server.js')(1081);
 }
-require('./tcp_client.js')(options.hostname, options.port, options.team_name);
+require('./tcp_client.js')(options.hostname, options.port, options.team_name, options.GUI);
 
-if (options.GUI) {
+if (options.GUI.length > 0) {
+    console.log('launch interface');
     graphicalInterface();
 }
 

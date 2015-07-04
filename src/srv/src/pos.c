@@ -5,7 +5,7 @@
 ** Login   <prenat_h@epitech.eu>
 **
 ** Started on  Mon Jun 29 17:29:07 2015 Hugo Prenat
-** Last update Thu Jul  2 19:25:46 2015 Hugo Prenat
+** Last update Fri Jul  3 17:53:46 2015 Hugo Prenat
 */
 
 #include "zappy.h"
@@ -27,7 +27,7 @@ void		reset_previous(t_client *client, t_master *content)
     }
 }
 
-void		set_pos(t_master *content, t_client *client, int x, int y)
+void		set_pos(t_master *content, t_client *client, size_t x, size_t y)
 {
   t_case	*tmp;
 
@@ -35,11 +35,9 @@ void		set_pos(t_master *content, t_client *client, int x, int y)
   tmp = content->cases;
   x = (x >= content->width) ? 0 : x;
   y = (y >= content->height) ? 0 : y;
-  x = (x < 0) ? content->width : x;
-  y = (y < 0) ? content->height : y;
   while (tmp)
     {
-      if ((int)tmp->x == x && (int)tmp->y == y)
+      if (tmp->x == x && tmp->y == y)
 	break ;
       tmp = tmp->next;
     }

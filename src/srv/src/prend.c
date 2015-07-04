@@ -5,7 +5,7 @@
 ** tran_0  <david.tran@epitech.eu>
 **
 ** Started on  Wed Jun 17 08:31:10 2015 David Tran
-** Last update Wed Jun 24 15:26:13 2015 David Tran
+** Last update Sat Jul  4 00:23:59 2015 Hugo Prenat
 */
 
 #include "zappy.h"
@@ -44,7 +44,7 @@ int	checkPossibleTake(t_case *position, char *param, t_client *client)
 {
   int	possible;
 
-  possible = 0;
+  possible = -1;
   if (strstr(param, "nourriture") && position->meal > 0)
     {
       position->meal--;
@@ -85,14 +85,21 @@ char	*transformCoord(t_client *client)
   return (send);
 }
 
-void	prend_graphic(t_client *client, t_master *content, int resource)
+void		prend_graphic(t_client *client, t_master *content, int resource)
 {
   char		*transform;
+  t_client	*client_tmp;
 
+  client_tmp = content->clients;
+  while (client_tmp)
+    {
+      if (client_tmp->trigger[GRAPHIC])
+	ssend(client_tmp->socket, "pgt %d %d\n", client->id, resource);
+      client_tmp = client_tmp->next;
+    }
   if (client->trigger[GRAPHIC])
     {
       transform = transform_int(client->id);
-      ssend(client->socket, "pgt #%d %d\n", client->id, resource);
       pin(transform, client, content);
       free(transform);
       transform = transformCoord(client);

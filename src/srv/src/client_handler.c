@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Thu Jun 18 14:42:29 2015 Emmanuel Chambon
-** Last update Fri Jul  3 06:21:55 2015 Emmanuel Chambon
+** Last update Sat Jul  4 00:00:41 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
@@ -44,11 +44,9 @@ void		input_interpret(t_client *client, t_master *content)
   free(input);
 }
 
-void		handle_io(char *tmp, t_client *client, t_master *content)
+void			handle_io(char *tmp, t_client *client, t_master *content)
 {
-  timespec_t	*now;
-
-  now = timespec_now();
+  timespec_update(content->time.io_now);
   rb_write(client->recv, tmp);
   if (rb_at(client->recv, -1) == '\n')
     {
@@ -59,11 +57,10 @@ void		handle_io(char *tmp, t_client *client, t_master *content)
 	{
 	  cb_write(client->buffer, epur_str(str_replace(rb_read(client->recv),
 	  						'\n', '\0')), false);
-	  if (timespec_is_greater(now, client->clock))
+	  if (timespec_is_greater(content->time.io_now, client->clock))
 	    input_interpret(client, content);
 	}
     }
-  timespec_release(now);
   free(tmp);
 }
 

@@ -5,7 +5,7 @@
 ** Login   <prenat_h@epitech.eu>
 **
 ** Started on  Thu Jul  2 15:40:37 2015 Hugo Prenat
-** Last update Fri Jul  3 05:54:34 2015 Emmanuel Chambon
+** Last update Fri Jul  3 22:40:01 2015 Hugo Prenat
 */
 
 #include "zappy.h"
@@ -62,13 +62,13 @@ void		prend(char *params,
   t_case	*position;
   int		resource;
 
-  timespec_add(client->clock, content->delays[PREND], true);
+  timespec_add(client->clock, content->time.delays[PREND], true);
   if (!(position = getCaseFromCoord(client->pos[0], client->pos[1],
 				    content->cases)))
     ssend(client->socket, "ko\n");
   else
     {
-      if ((resource = checkPossibleTake(position, params, client)) == 0)
+      if ((resource = checkPossibleTake(position, params, client)) == -1)
 	ssend(client->socket, "ko\n");
       else
 	{
@@ -85,7 +85,7 @@ void		pose(char *params,
   t_case	*position;
   int		resource;
 
-  timespec_add(client->clock, content->delays[POSE], true);
+  timespec_add(client->clock, content->time.delays[POSE], true);
   if (!(position = getCaseFromCoord(client->pos[0], client->pos[1],
 				    content->cases)))
     ssend(client->socket, "ko\n");

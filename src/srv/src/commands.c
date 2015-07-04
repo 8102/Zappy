@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Wed Jun 17 08:31:10 2015 Emmanuel Chambon
-** Last update Fri Jul  3 05:54:02 2015 Emmanuel Chambon
+** Last update Fri Jul  3 23:57:07 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
@@ -14,9 +14,9 @@ void			inventaire(char UNUSED*params,
 				   t_client *client,
 				   UNUSED t_master *content)
 {
-  timespec_add(client->clock, content->delays[INVENTAIRE], true);
-  ssend(client->socket, "{linemate %d, deraumère %d, sibur %d, mendiane %d,\
- phiras %d, thystame %d}\n", client->resources[LINEMATE],
+  timespec_add(client->clock, content->time.delays[INVENTAIRE], true);
+  ssend(client->socket, "{linemate %d, deraumère %d, sibur %d, mendiane %d,"
+	"phiras %d, thystame %d}\n", client->resources[LINEMATE],
 	client->resources[DERAUMERE],
 	client->resources[SIBUR],
 	client->resources[MENDIANE],
@@ -30,7 +30,7 @@ void		broadcast(char *params,
 {
   t_client	*parsing;
 
-  timespec_add(client->clock, content->delays[BROADCAST], true);
+  timespec_add(client->clock, content->time.delays[BROADCAST], true);
   parsing = content->clients;
   ssend(client->socket, "ok\n");
   while (parsing)

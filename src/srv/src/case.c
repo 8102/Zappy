@@ -5,7 +5,7 @@
 ** Login   <prenat_h@epitech.eu>
 **
 ** Started on  Thu Jun 18 22:08:05 2015 Hugo Prenat
-** Last update Thu Jul  2 21:44:10 2015 Emmanuel Chambon
+** Last update Fri Jul  3 17:32:22 2015 Hugo Prenat
 */
 
 #include "zappy.h"
@@ -62,8 +62,8 @@ int		add_one_case(t_master *content, size_t x, size_t y)
 
 int	create_map(t_master *content)
 {
-  int	x;
-  int	y;
+  size_t	x;
+  size_t	y;
 
   x = 0;
   while (x != content->width)

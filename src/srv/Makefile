@@ -5,7 +5,7 @@
 ## chambo_e  <chambon.emmanuel@gmail.com>
 ##
 ## Started on  Wed Apr  8 22:49:16 2015 Emmanuel Chambon
-## Last update Fri Jul  3 06:01:04 2015 Emmanuel Chambon
+## Last update Sat Jul  4 05:19:25 2015 Emmanuel Chambon
 ##
 
 DEBUG		=	yes
@@ -17,6 +17,7 @@ RM		=	rm -fr
 NAME_SERVER	=	zappy_server
 
 SRC_SERVER	=	main.c			\
+			params.c		\
 			zappy.c			\
 			zappy_init.c		\
 			init.c			\
@@ -51,11 +52,13 @@ SRC_SERVER	=	main.c			\
 			broadcast.c		\
 			broadcast_orient.c	\
 			incantation.c		\
+			creation.c		\
 			timespec_lib.c		\
 			timespec_utils.c	\
 			timespec_add.c		\
 			timespec_sub.c		\
 			timespec_cmp.c		\
+			win.c			\
 			incantation_stone.c
 
 OBJ_DIR		=	obj/
