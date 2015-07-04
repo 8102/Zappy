@@ -52,6 +52,7 @@ var GameEngine = function (videoContext) {
             for (y = 0; y < this.mapHeight; y += 1) {
                 self.map[y * this.mapWidth + x] = new GameObject(LIGHT_SHAPE.BOX, PREFAB_MATERIAL.GROUND);
                 self.map[y * this.mapWidth + x].mesh.position.set(x, -0.5, y);
+                if (x % 2 === 0) {self.map[y * this.mapWidth + x].mesh.rotation.y = Math.PI / 2; }
                 this.add(this.map[y * this.mapWidth + x]);
                 self.targets.push(self.map[y * this.mapWidth + x].mesh);
             }
@@ -59,14 +60,13 @@ var GameEngine = function (videoContext) {
     };
 
     this.addLights = function (nbLight) {
-        var i;
+        var i = 0;
         if (self.lights.length !== 0) { for (i = 0; i < self.lights.length; i += 1) {videoContext.scene.remove(self.lights[i]); } }
-        for (i = 0; i < nbLight; i += 1) {
+
+        for (i = 0; i < 4; i += 1) {
             self.lights[i] = new THREE.DirectionalLight(0xffffffff, 1);
-            if (i % 3 ===  0) {
-                self.lights[i].position.set(i * 100, i * 250, 0);
-            } else if (i % 3 === 1) { self.lights[i].position.set(-i * 100, i * 250 * Math.random(), -i * 100);
-                } else { self.lights[i].position.set(i * 100 * Math.random() * Math.cos(Math.PI / 4), i * 50 * Math.random(), i * 50 * Math.random()); }
+            self.lights[i].position.set(Math.cos((Math.PI / 2) * i) * 200, 200, Math.sin((Math.PI / 2) * i) * 200);
+            self.lights[i].intensity = 0.8;
             videoContext.scene.add(self.lights[i]);
         }
     };

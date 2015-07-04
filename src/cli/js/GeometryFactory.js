@@ -20,7 +20,7 @@ var GeometryFactory = function () {
         "checkerboard.jpg", "grass.jpg", "grass.png", "ground.jpg", "water.jpg", "glow.png", "skyboxTextures/dawnMountain/xneg.png", "skyboxTextures/dawnMountain/xpos.png",
         "skyboxTextures/dawnMountain/yneg.png", "skyboxTextures/dawnMountain/ypos.png", "skyboxTextures/dawnMountain/zneg.png", "skyboxTextures/dawnMountain/zpos.png",                                         "skyboxTextures/stormySky/xneg.png", "skyboxTextures/stormySky/xpos.png", "skyboxTextures/stormySky/yneg.png", "skyboxTextures/stormySky/ypos.png",                                                     "skyboxTextures/stormySky/zneg.png", "skyboxTextures/stormySky/zpos.png", "skyboxTextures/oneDayInHell/xneg.png", "skyboxTextures/oneDayInHell/xpos.png",                                               "skyboxTextures/oneDayInHell/yneg.png", "skyboxTextures/oneDayInHell/ypos.png", "skyboxTextures/oneDayInHell/zneg.png", "skyboxTextures/oneDayInHell/zpos.png", "minecraft_surface.png",
         "minecraft_side.png", "skyboxTextures/darkSea/xneg.png", "skyboxTextures/darkSea/xpos.png", "chocolate.png",
-        "skyboxTextures/darkSea/yneg.png", "skyboxTextures/darkSea/ypos.png", "skyboxTextures/darkSea/zneg.png", "skyboxTextures/darkSea/zpos.png"
+        "skyboxTextures/darkSea/yneg.png", "skyboxTextures/darkSea/ypos.png", "skyboxTextures/darkSea/zneg.png", "skyboxTextures/darkSea/zpos.png", "grass-free-texture.jpg"
     ];
 
     for (i = 0; i < this.texturesFileName.length; i += 1) {
@@ -70,7 +70,7 @@ var GeometryFactory = function () {
     for (i = 0; i < 6; i += 1) {
         this.groundMaterialArray.push(i === 2 || i === 3 ? this.mat1 : this.mat2);
     }
-    this.prefabMaterials[PREFAB_MATERIAL.GROUND] = new this.materials[MATERIAL.BASIC]({transparent: false, opacity: 0.4, side: THREE.DoubleSide, map: this.textures['grass.png']});
+    this.prefabMaterials[PREFAB_MATERIAL.GROUND] = new this.materials[MATERIAL.BASIC]({transparent: false, opacity: 0.4, side: THREE.DoubleSide, map: this.textures['grass-free-texture.jpg']});
     this.prefabMaterials[PREFAB_MATERIAL.FOOD] = new this.materials[MATERIAL.BASIC]({side: THREE.FrontSide, map: this.textures['chocolate.png']});
     this.prefabMaterials[PREFAB_MATERIAL.LINEMATE] = new this.materials[MATERIAL.PHONG]({side: THREE.FrontSide, color: 'lime'});
     this.prefabMaterials[PREFAB_MATERIAL.DERAUMERE] = new this.materials[MATERIAL.PHONG]({side: THREE.FrontSide, color: 'red'});

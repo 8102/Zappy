@@ -29,6 +29,7 @@ var GUI = function (manager) {
     this.controler.close();
     this.effects = ['Incantation - en cours', 'Incantation - success', 'Incantation - failure'];
     this.skyBoxChoices = ['darkSea', 'dawnMountain', 'oneDayInHell', 'stormySky'];
+/*
     this.controler.add(this.settings, 'width').name('Map Width');
     this.controler.add(this.settings, 'height').name('Map Height');
     this.controler.add(this.settings, 'targetX').min(0).max(manager.mapWidth).step(1).name('target : X coordinate');
@@ -58,6 +59,7 @@ var GUI = function (manager) {
     });
     this.controler.add(this.settings, 'commandResult').name('Last command result :').onChange(function (value) {if (manager.commandROM.status !== value) {self.settings.commandResult = manager.commandROM.status; } });
     this.controler.add(this.settings, 'command').name('Server Order').onFinishChange(function (value) {manager.treatMessage(value + '\n'); });
+*/
 
     this.initDescriberIconArray = function () {
         var i;
