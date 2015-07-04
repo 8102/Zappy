@@ -5,7 +5,7 @@
 ** Login   <prenat_h@epitech.eu>
 **
 ** Started on  Thu Jul  2 15:40:37 2015 Hugo Prenat
-** Last update Fri Jul  3 22:40:01 2015 Hugo Prenat
+** Last update Sat Jul  4 20:48:29 2015 Hugo Prenat
 */
 
 #include "zappy.h"
@@ -42,10 +42,10 @@ void		bct(char *params,
   y = atoi(&params[i]);
   (!(case_tmp = getCaseFromCoord(x, y, content->cases))) ?
     ssend(client->socket, "sbp\n") :
-    ssend(client->socket, "bct %d %d %d %d %d %d %d %d %d\n",
-	  case_tmp->x, case_tmp->y, case_tmp->meal, case_tmp->linemate,
-	  case_tmp->deraumere, case_tmp->sibur, case_tmp->mendiane,
-	  case_tmp->phiras, case_tmp->thystame);
+    ssend(client->socket, "bct %lu %lu %d %d %d %d %d %d %d\n",
+	  case_tmp->x, case_tmp->y, case_tmp->content[1],
+	  case_tmp->content[2], case_tmp->content[3], case_tmp->content[4],
+	  case_tmp->content[5], case_tmp->content[6], case_tmp->content[7]);
 }
 
 void	mct(char UNUSED*params,

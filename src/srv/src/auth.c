@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Thu Jun 18 15:01:28 2015 Emmanuel Chambon
-** Last update Sat Jul  4 00:23:25 2015 Hugo Prenat
+** Last update Sat Jul  4 20:34:29 2015 Hugo Prenat
 */
 
 #include "zappy.h"
@@ -39,9 +39,13 @@ void				handle_new_connection(int *max,
 
 void		remove_connection(t_client *client, t_master *content, int rc)
 {
+  t_case	*case_tmp;
+
   (rc == 0) ? printf("%s%s%s Disconnected%s\n", BOLDCYAN, client->ip,
 		     BOLDYELLOW, RESET) : perror("recv");
   FD_CLR(client->socket, &content->server.master);
+  case_tmp = getCaseFromCoord(client->pos[X], client->pos[Y], content->cases);
+  case_tmp->content[0]--;
   pop_client(&content->clients, client);
 }
 

@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Tue Jun 16 11:35:49 2015 Emmanuel Chambon
-** Last update Sat Jul  4 05:20:29 2015 Emmanuel Chambon
+** Last update Sat Jul  4 20:27:42 2015 Hugo Prenat
 */
 
 #ifndef _ZAPPY_H_
@@ -41,14 +41,15 @@ struct		s_case
 {
   size_t	x;
   size_t	y;
-  int		meal;
-  int		linemate;
-  int		deraumere;
-  int		sibur;
-  int		mendiane;
-  int		phiras;
-  int		thystame;
-  int		nbr_player;
+  int		content[8];
+  /* int		meal; */
+  /* int		linemate; */
+  /* int		deraumere; */
+  /* int		sibur; */
+  /* int		mendiane; */
+  /* int		phiras; */
+  /* int		thystame; */
+  /* int		nbr_player; */
   t_case	*prev;
   t_case	*next;
 };

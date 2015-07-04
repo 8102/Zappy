@@ -5,7 +5,7 @@
 ** Login   <prenat_h@epitech.eu>
 **
 ** Started on  Thu Jun 18 22:08:05 2015 Hugo Prenat
-** Last update Fri Jul  3 17:32:22 2015 Hugo Prenat
+** Last update Sat Jul  4 20:32:41 2015 Hugo Prenat
 */
 
 #include "zappy.h"
@@ -47,14 +47,11 @@ int		add_one_case(t_master *content, size_t x, size_t y)
     return (-1);
   new->x = x;
   new->y = y;
-  new->meal = rand() % 2;
-  new->linemate = rand() % 2;
-  new->deraumere = rand() % 2;
-  new->sibur = rand() % 2;
-  new->mendiane = rand() % 2;
-  new->phiras = rand() % 2;
-  new->thystame = rand() % 2;
-  new->nbr_player = 0;
+  new->content[0] = 0;
+  for (int i = 1; i <= 7; i++)
+    {
+      new->content[i] = (rand() % 2 == 1) ? (rand() % 8) : 0;
+    }
   push_case(&content->cases, new, &last);
   last = new;
   return (0);

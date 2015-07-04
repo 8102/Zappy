@@ -5,7 +5,7 @@
 ** tran_0  <david.tran@epitech.eu>
 **
 ** Started on  Wed Jun 17 08:31:10 2015 David Tran
-** Last update Wed Jun 24 15:26:13 2015 David Tran
+** Last update Sat Jul  4 20:46:40 2015 Hugo Prenat
 */
 
 #include "zappy.h"
@@ -15,25 +15,25 @@ int	checkOtherSend(t_case *position, char *param,
 {
   if (strstr(param, "sibur") && client->resources[SIBUR] > 0)
     {
-      position->sibur++;
+      position->content[4]++;
       client->resources[SIBUR]--;
       possible = SIBUR;
     }
   if (strstr(param, "mendiane") && client->resources[MENDIANE] > 0)
     {
-      position->mendiane++;
+      position->content[5]++;
       client->resources[MENDIANE]--;
       possible = MENDIANE;
     }
   if (strstr(param, "phiras") && client->resources[PHIRAS] > 0)
     {
       client->resources[PHIRAS]--;
-      position->phiras++;
+      position->content[6]++;
       possible = PHIRAS;
     }
   if (strstr(param, "thystame") && client->resources[THYSTAME] > 0)
     {
-      position->thystame++;
+      position->content[7]++;
       client->resources[THYSTAME]--;
       possible = THYSTAME;
     }
@@ -47,19 +47,19 @@ int	checkPossibleSend(t_case *position, char *param, t_client *client)
   possible = 0;
   if (strstr(param, "nourriture") && client->resources[MEAL] > 0)
     {
-      position->meal++;
+      position->content[1]++;
       client->resources[MEAL]--;
       possible = MEAL;
     }
   if (strstr(param, "linemate") && client->resources[LINEMATE] > 0)
     {
-      position->linemate++;
+      position->content[2]++;
       client->resources[LINEMATE]--;
       possible = LINEMATE;
     }
   if (strstr(param, "deraumere") && client->resources[DERAUMERE] > 0)
     {
-      position->deraumere++;
+      position->content[3]++;
       client->resources[DERAUMERE]--;
       possible = DERAUMERE;
     }

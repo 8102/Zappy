@@ -5,7 +5,7 @@
 ** tran_0  <david.tran@epitech.eu>
 **
 ** Started on  Wed Jun 17 08:31:10 2015 David Tran
-** Last update Wed Jun 24 15:26:13 2015 David Tran
+** Last update Sat Jul  4 22:17:27 2015 Hugo Prenat
 */
 
 #include "zappy.h"
@@ -26,74 +26,89 @@ t_case		*getNextCase(t_case *tmp, t_master *all, int type)
 t_case		*getCaseInMap(t_client *client, int tmp, int lvl, t_master *all)
 {
   t_case	*parse;
-  size_t		x;
-  size_t		y;
+  lli		x;
+  lli		y;
 
-  x = client->pos[0] + tmp;
-  if (x >= all->width)
+  printf(BOLDMAGENTA"======{On fait un tour}======\n"RESET);
+  printf("BOUM = %lld\n", (lli)client->pos[X] + tmp);
+  if ((x = (lli)client->pos[X] + tmp) < 0)
+    {
+      x = all->width + tmp;
+      while (x < 0)
+	x = all->width + (tmp - x);
+    }
+  printf("X == %lld\n"RESET, x);
+  if ((size_t)x >= all->width)
     x -= all->width;
-  y = client->pos[1] + lvl;
-  if (y >= all->height)
+  printf(RED"After X == %lld\n"RESET, x);
+  if ((y = (lli)client->pos[Y] + lvl) < 0)
+    {
+      y = all->height + lvl;
+      while (y < 0)
+	y = all->height + (lvl - y);
+    }
+  printf(RED"Y == %lld\n"RESET, y);
+  if ((size_t)y >= all->height)
     y-= all->height;
+  printf(RED"After Y == %lld\n"RESET, y);
   parse = all->cases;
-  while (parse && (parse->x != (size_t)x || parse->y != (size_t)y))
-    parse = parse->next;
+  while (parse)
+    {
+      if (parse->x == (size_t)x && parse->y == (size_t)y)
+	break ;
+      parse = parse->next;
+    }
   return (parse);
 }
 
 int		countHowMany(t_case *tmp)
 {
   int		count;
+  static int	value[] = {8, 11, 10, 10, 6, 9, 7, 10};
 
   count = 0;
-  if (tmp->nbr_player > 0)
-    count += 8;
-  if (tmp->meal > 0)
-    count += 11;
-  if (tmp->linemate > 0)
-    count += 10;
-  if (tmp->deraumere > 0)
-    count += 10;
-  if (tmp->sibur > 0)
-    count += 6;
-  if (tmp->mendiane > 0)
-    count += 9;
-  if (tmp->phiras > 0)
-    count += 7;
-  if (tmp->thystame > 0)
-    count += 10;
+  for (int i = 0; i <= 7; i++)
+    {
+      if (tmp->content[i] > 0)
+	count += (value[i] * tmp->content[i]);
+    }
   return (count);
 }
 
-char		*fillStringCase(t_case *tmp, char *str)
+char		*add_content_case(t_case *cur, char *str)
 {
-  str = realloc(str, countHowMany(tmp) + 3 + strlen(str));
-  if (tmp->nbr_player > 0)
-    strcat(str, " joueur");
-  if (tmp->meal > 0)
-    strcat(str, " nourriture");
-  if (tmp->linemate > 0)
-    strcat(str, " linemate");
-  if (tmp->deraumere > 0)
-    strcat(str, " deraumere");
-  if (tmp->sibur > 0)
-    strcat(str, " sibur");
-  if (tmp->mendiane > 0)
-    strcat(str, " mendiane");
-  if (tmp->phiras > 0)
-    strcat(str, " phiras");
-  if (tmp->thystame > 0)
-    strcat(str, " thystame");
-  return (str);
+  int		i;
+  char		*ret;
+  static char	*content[] = {" joueur", " nourriture", " linemate",
+			      " deraumere", " sibur", " mendiane"
+			      " phiras", " thystame", NULL};
+
+  i = 0;
+  if (!(ret = malloc(sizeof(*str) * (strlen(str) + countHowMany(cur) + 1))))
+    return (NULL);
+  strcpy(ret, str);
+  while (content[i])
+    {
+      for (int num = 0; num != cur->content[i]; num++)
+	strcat(ret, content[i]);
+      i++;
+    }
+  free(str);
+  return (ret);
 }
 
-char		*fillFirstTime()
+char	*first_case(t_master *content, t_client *client)
 {
-  char		*to_write;
+  char	*str;
+  char	*ret;
 
-  if (!(to_write = malloc(5)))
+  str = strdup("{");
+  str = add_content_case(getCaseFromCoord(client->pos[X],
+					  client->pos[Y], content->cases), str);
+  if (!(ret = malloc(sizeof(*str) * (strlen(str) + 2))))
     return (NULL);
-  bzero(to_write, 4);
-  to_write[0] = '{';
-  return (to_write);
+  strcpy(ret, str);
+  strcat(ret, ",");
+  free(str);
+  return (ret);
 }
