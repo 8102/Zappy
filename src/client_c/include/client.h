@@ -5,7 +5,7 @@
 ** Login   <milox_t@epitech.eu>
 **
 ** Started on  Sat Jun 27 20:42:45 2015 TommyStarK
-** Last update Fri Jul  3 13:20:24 2015 TommyStarK
+** Last update Sat Jul  4 22:30:11 2015 Emmanuel Chambon
 */
 
 #ifndef _CLIENT_H_
@@ -30,7 +30,7 @@
 
 # define BUFF_SIZE 		512
 # define LOCALHOST		"127.0.0.1"
-# define USAGE			"[USAGE] ./client -m teamName -p port -h machine (set by default to localhost)."
+# define USAGE			"[USAGE] ./client -n teamName -p port -h machine (set by default to localhost)."
 # define ERR_CONNECT		"00PS: Cannot connect specified IP/PORT."
 # define BYEBYE			"You have been disconnected from specified server. Goodbye :)"
 

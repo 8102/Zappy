@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Sat Jul  4 05:18:34 2015 Emmanuel Chambon
-** Last update Sat Jul  4 05:19:10 2015 Emmanuel Chambon
+** Last update Sat Jul  4 23:05:48 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
@@ -27,6 +27,14 @@ bool	check_param(t_master *content)
   return (true);
 }
 
+void		update_team_max(t_master *content)
+{
+  t_team	*tmp;
+
+  for (tmp = content->teams; tmp; tmp = tmp->next)
+    tmp->slot = content->max_clients;
+}
+
 bool	get_param(int ac, char **av, t_master *content)
 {
   int	opt;
@@ -39,7 +47,10 @@ bool	get_param(int ac, char **av, t_master *content)
     else if (opt == 'y')
       content->height = (size_t)atol(optarg);
     else if (opt == 'c')
-      content->max_clients = atoi(optarg);
+      {
+	content->max_clients = atoi(optarg);
+	update_team_max(content);
+      }
     else if (opt == 't')
       content->delay = atoi(optarg);
     else if (opt == 'n')

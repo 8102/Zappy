@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Tue Jun 16 11:46:03 2015 Emmanuel Chambon
-** Last update Sat Jul  4 01:54:23 2015 Emmanuel Chambon
+** Last update Sat Jul  4 23:00:15 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
@@ -20,7 +20,10 @@ void		ssend_graphics(t_master *content, char *msg, ...)
   while (client_tmp)
     {
       if (client_tmp->trigger[GRAPHIC])
-	ssend(client_tmp->socket, msg, args);
+	{
+	  if (!(vdprintf(client_tmp->socket, msg, args)))
+	    error("dprintf");
+	}
       client_tmp = client_tmp->next;
     }
   va_end(args);

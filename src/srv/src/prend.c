@@ -5,7 +5,7 @@
 ** tran_0  <david.tran@epitech.eu>
 **
 ** Started on  Wed Jun 17 08:31:10 2015 David Tran
-** Last update Sat Jul  4 20:44:54 2015 Hugo Prenat
+** Last update Sat Jul  4 22:33:03 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
@@ -88,15 +88,8 @@ char	*transformCoord(t_client *client)
 void		prend_graphic(t_client *client, t_master *content, int resource)
 {
   char		*transform;
-  t_client	*client_tmp;
 
-  client_tmp = content->clients;
-  while (client_tmp)
-    {
-      if (client_tmp->trigger[GRAPHIC])
-	ssend(client_tmp->socket, "pgt %d %d\n", client->id, resource);
-      client_tmp = client_tmp->next;
-    }
+  ssend_graphics(content, "pgt %d %d\n", client->id, resource);
   if (client->trigger[GRAPHIC])
     {
       transform = transform_int(client->id);
