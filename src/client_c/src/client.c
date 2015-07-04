@@ -5,7 +5,7 @@
 ** Login   <milox_t@epitech.eu>
 **
 ** Started on  Sat Jun 27 20:40:47 2015 TommyStarK
-** Last update Sat Jul  4 01:59:25 2015 Emmanuel Chambon
+** Last update Sat Jul  4 21:01:00 2015 TommyStarK
 */
 
 #include "client.h"
@@ -33,6 +33,7 @@ int             make_coffe(t_client *it)
   if (!flag)
   {
     ret = recv(it->client->fd, tmp, BUFF_SIZE, 0);
+    ssend(it->client->fd, it->team);
     !ret ? printf("00PS: connection closed by server.\n")
     : ret > 0 ? printf("%s\n", tmp) : 0;
     flag = 1;
