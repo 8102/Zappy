@@ -5,7 +5,7 @@
 ## chambo_e  <chambon.emmanuel@gmail.com>
 ##
 ## Started on  Wed Apr  8 22:49:16 2015 Emmanuel Chambon
-## Last update Sat Jul  4 02:15:05 2015 Emmanuel Chambon
+## Last update Sat Jul  4 05:19:25 2015 Emmanuel Chambon
 ##
 
 DEBUG		=	yes
@@ -17,6 +17,7 @@ RM		=	rm -fr
 NAME_SERVER	=	zappy_server
 
 SRC_SERVER	=	main.c			\
+			params.c		\
 			zappy.c			\
 			zappy_init.c		\
 			init.c			\

@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Tue Jun 16 20:14:21 2015 Emmanuel Chambon
-** Last update Fri Jul  3 18:09:48 2015 Hugo Prenat
+** Last update Sat Jul  4 05:21:42 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
@@ -22,19 +22,12 @@ int		init_zappy(t_master *content, int ac, char **av)
   content->teams = NULL;
   content->clients = NULL;
   content->cases = NULL;
-  if (check_param(ac, av, content) == -1)
-    {
-      fprintf(stderr,
-	      "Usage: %s [-p port] [-x world_x] [-y world_y]"
-	      " [-c max_clients] [-t speed] -n team_name_1 team_name_2 ...\n",
-	      av[0]);
-      return (-1);
-  }
+  if (!get_param(ac, av, content) || !check_param(content))
+    return (usage(av[0]));
   set_timeout(content);
   set_delays(content);
   create_map(content);
-  init_server(&(content->server),
-	      (content->port == NULL ? "4242" : content->port));
+  init_server(&(content->server), content->port);
   print_creation(content);
   return (0);
 }

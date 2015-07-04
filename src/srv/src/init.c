@@ -5,7 +5,7 @@
 ** Login   <prenat_h@epitech.eu>
 **
 ** Started on  Wed Jun 17 18:04:44 2015 Hugo Prenat
-** Last update Sat Jul  4 01:37:35 2015 Emmanuel Chambon
+** Last update Sat Jul  4 05:19:16 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
@@ -50,48 +50,36 @@ int		add_one_team(char *team, t_master *content)
   return (0);
 }
 
-int	add_team(char **av, int ac, t_master *content)
+void		multiple_team(char *team)
 {
-  int	i;
+  fprintf(stderr,
+	  "%sDuplicate team: {%s}. Will only be counted once%s\n",
+	  BOLDRED, team, RESET);
+}
+
+bool		add_team(char **av, int ac, t_master *content)
+{
+  int		i;
+  t_team	*tmp;
 
   i = optind - 1;
+  if (av[i][0] == '-')
+    return (false);
   while (i < ac)
     {
       if (av[i][0] == '-')
+	return (true);
+      for (tmp = content->teams; tmp; tmp = tmp->next)
 	{
-	  optind = i - 1;
-	  return (0);
+	  if (!strcmp(tmp->name, av[i]))
+	    {
+	      multiple_team(tmp->name);
+	      break ;
+	    }
 	}
-      add_one_team(av[i], content);
+      if (!tmp)
+	add_one_team(av[i], content);
       i++;
     }
-  return (0);
-}
-
-int	check_param(int ac, char **av, t_master *content)
-{
-  int	opt;
-  int	ret;
-
-  ret = 0;
-  while ((opt = getopt(ac, av, "p:x:y:c:t:n:")) != -1)
-    {
-      if (opt == '?')
-	ret = -1;
-      if (opt == 'p')
-	content->port = optarg;
-      if (opt == 'x')
-	content->width = (size_t)atol(optarg);
-      if (opt == 'y')
-	content->height = (size_t)atol(optarg);
-      if (opt == 'c')
-	content->max_clients = atoi(optarg);
-      if (opt == 't')
-	content->delay = atoi(optarg);
-      if (opt == 'n')
-	ret = add_team(av, ac, content);
-    }
-  if (ac < 13)
-    ret = -1;
-  return (ret);
+  return (true);
 }

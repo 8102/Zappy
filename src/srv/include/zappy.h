@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Tue Jun 16 11:35:49 2015 Emmanuel Chambon
-** Last update Sat Jul  4 02:14:53 2015 Emmanuel Chambon
+** Last update Sat Jul  4 05:20:29 2015 Emmanuel Chambon
 */
 
 #ifndef _ZAPPY_H_
@@ -86,13 +86,23 @@ struct		s_master
   t_case	*cases;
 };
 
+
+/*
+**	main.c
+*/
+int		usage(char *);
 /*
 **	zappy.c
 */
 int		init_zappy(t_master *, int, char **);
 void		release_zappy(t_master *);
-int		check_param(int, char **, t_master *);
+bool		check_param(t_master *);
+bool		get_param(int, char **, t_master *);
 int		create_map(t_master *);
+/*
+**	init.c
+*/
+bool		add_team(char **, int, t_master *);
 /*
 **	zappy_init.c
 */
