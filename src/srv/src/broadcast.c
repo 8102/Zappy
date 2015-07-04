@@ -14,7 +14,7 @@ int	horizontalVerticalOrient(int c1, int c2, int type)
 {
   if (type == 0)
     return ((c1 < c2) ? 5 : 1);
-  return ((c1 < c2) ? 7 : 3);
+  return ((c1 < c2) ? 3 : 7);
 }
 
 int	checkBasicCase(t_client *src, t_client *client, t_master *all)
