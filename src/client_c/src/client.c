@@ -5,7 +5,7 @@
 ** Login   <milox_t@epitech.eu>
 **
 ** Started on  Sat Jun 27 20:40:47 2015 TommyStarK
-** Last update Fri Jul  3 19:29:29 2015 TommyStarK
+** Last update Sat Jul  4 01:59:25 2015 Emmanuel Chambon
 */
 
 #include "client.h"
@@ -27,7 +27,6 @@ int             make_coffe(t_client *it)
   int           ret;
   char          tmp[BUFF_SIZE] = {0};
   static int 	flag = 0;
-
 
   ret = 1;
   memset(tmp, 0, BUFF_SIZE);

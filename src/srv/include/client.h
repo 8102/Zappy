@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Tue Jun 16 11:35:49 2015 Emmanuel Chambon
-** Last update Fri Jul  3 16:26:35 2015 Hugo Prenat
+** Last update Sat Jul  4 01:35:34 2015 Emmanuel Chambon
 */
 
 #pragma once
@@ -23,6 +23,8 @@
 # define	GRAPHIC		1
 # define	X		0
 # define	Y		1
+# define	MAX_LEVEL	8
+# define	PLAYERS_REQ_WIN	6
 
 typedef		struct timespec	timespec_t;
 

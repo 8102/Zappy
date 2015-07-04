@@ -5,7 +5,7 @@
 ## chambo_e  <chambon.emmanuel@gmail.com>
 ##
 ## Started on  Wed Apr  8 22:49:16 2015 Emmanuel Chambon
-## Last update Fri Jul  3 18:13:04 2015 Hugo Prenat
+## Last update Sat Jul  4 02:15:05 2015 Emmanuel Chambon
 ##
 
 DEBUG		=	yes
@@ -57,6 +57,7 @@ SRC_SERVER	=	main.c			\
 			timespec_add.c		\
 			timespec_sub.c		\
 			timespec_cmp.c		\
+			win.c			\
 			incantation_stone.c
 
 OBJ_DIR		=	obj/

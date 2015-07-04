@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Tue Jun 16 11:48:27 2015 Emmanuel Chambon
-** Last update Sat Jul  4 00:00:09 2015 Emmanuel Chambon
+** Last update Sat Jul  4 02:13:16 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
@@ -29,8 +29,9 @@ void			client_lookup(t_master *content)
 
   remove_food = false;
   time_unit++;
-  if (!(time_unit % 1260))
+  if (!(time_unit % 126))
     remove_food = !remove_food;
+  reset_leveled(content);
   timespec_update(content->time.pl_now);
   for (t_client *tmp = content->clients; tmp; tmp = tmp->next)
     {
@@ -43,7 +44,10 @@ void			client_lookup(t_master *content)
       if (cb_available(tmp->buffer) < CB_SIZE &&
 	  timespec_is_greater(content->time.pl_now, tmp->clock))
 	input_interpret(tmp, content);
+      if (tmp->level == MAX_LEVEL)
+	tmp->team->leveled_pl++;
     }
+  check_leveled(content);
 }
 
 void		idle_server(t_master *content)

@@ -5,7 +5,7 @@
 ** Login   <prenat_h@epitech.eu>
 **
 ** Started on  Wed Jun 17 18:04:44 2015 Hugo Prenat
-** Last update Fri Jul  3 17:34:46 2015 Hugo Prenat
+** Last update Sat Jul  4 01:37:35 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
@@ -43,6 +43,7 @@ int		add_one_team(char *team, t_master *content)
   if ((new = malloc(sizeof(*new))) == NULL)
     return (-1);
   new->name = team;
+  new->leveled_pl = 0;
   new->slot = content->max_clients;
   new->eggs = NULL;
   push_team(&content->teams, new);

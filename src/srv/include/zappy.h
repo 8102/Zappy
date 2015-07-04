@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Tue Jun 16 11:35:49 2015 Emmanuel Chambon
-** Last update Sat Jul  4 00:03:28 2015 Emmanuel Chambon
+** Last update Sat Jul  4 02:14:53 2015 Emmanuel Chambon
 */
 
 #ifndef _ZAPPY_H_
@@ -56,6 +56,7 @@ struct		s_case
 struct		s_team
 {
   char		*name;
+  int		leveled_pl;
   int		slot;
   t_egg		*eggs;
   t_team	*next;
@@ -111,5 +112,11 @@ void		pop_egg(t_egg **, t_egg *);
 **	creation.c
 */
 void		print_creation(t_master *);
+/*
+**	win.c
+*/
+void		team_win(t_team *, t_master *);
+void		reset_leveled(t_master *);
+void		check_leveled(t_master *);
 
 #endif /* !_ZAPPY_H_ */

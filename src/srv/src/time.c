@@ -5,7 +5,7 @@
 ** Login   <prenat_h@epitech.eu>
 **
 ** Started on  Thu Jul  2 15:35:30 2015 Hugo Prenat
-** Last update Thu Jul  2 15:35:41 2015 Hugo Prenat
+** Last update Sat Jul  4 01:10:35 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
@@ -31,4 +31,6 @@ void	sst(char *params,
   newT = atoi(params);
   ssend(client->socket, "sgt %d\n", newT);
   content->delay = newT;
+  set_timeout(content);
+  set_delays(content);
 }
