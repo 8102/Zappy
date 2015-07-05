@@ -5,64 +5,69 @@
 ** tran_0  <david.tran@epitech.eu>
 **
 ** Started on  Wed Jun 17 08:31:10 2015 David Tran
-** Last update Sun Jul  5 20:56:39 2015 Hugo Prenat
+** Last update Sun Jul  5 22:42:14 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
 
-char		*check_string(char *str, t_client *client, int nbC)
+bool	check_level(t_client *client, t_master *content, int need[7][7])
 {
-  if (client->level == 1)
-    return (nbC >= 1 ? str : NULL);
-  if (client->level <= 3)
-    return (nbC >= 2 ? str : NULL);
-  if (client->level <= 5)
-    return (nbC >= 4 ? str : NULL);
-  return (nbC >= 6 ? str : NULL);
-}
+  t_client	*tmp;
+  int		tot;
 
-char		*check_level(t_client *client, t_client *clients)
-{
-  int		nbC;
-  char		*str;
-  char		*nbr;
-
-  nbC = 1;
-  if (!(str = malloc(2)))
-    return (NULL);
-  str[0] = 0;
-  while (clients)
+  tot = 0;
+  for (tmp = content->clients; tmp; tmp = tmp->next)
     {
-      if (client->id != clients->id && clients->pos[X] == client->pos[X] &&
-	  clients->pos[Y] == client->pos[Y] && client->level == clients->level)
-	{
-	  if (!(nbr = transform_int(clients->id)))
-	    return (NULL);
-	  str = realloc(str, strlen(str) + strlen(nbr) + 5);
-	  strcat(str, nbr);
-	  strcat(str, " ");
-	  free(nbr);
-	  nbC++;
-	}
-      clients = clients->next;
+      if (!tmp->trigger[AUTH])
+	continue ;
+      if (tmp->pos[X] == client->pos[X] && tmp->pos[Y] == client->pos[Y]
+	  && tmp->level == client->level)
+	tot++;
     }
-  str[(strlen(str) > 0) ? strlen(str) - 1 : 0] = 0;
-  return (check_string(str, client, nbC));
+  if (need[client->level - 1][0] == tot)
+    return (true);
+  return (false);
 }
 
-void	do_incantation(t_client *client, t_master *content)
+bool	check_stones(t_client *client, t_master *content, int need[7][7])
 {
-  char	*players;
+  t_case	*tmp;
+  int		i;
 
-  players = check_level(client, content->clients);
-  ssend(client->socket, "elevation en cours\n");
-  client->level += (!players) ? 0 : 1;
-  ssend_graphics(content, "pic %lu %lu %d %s\n",
-		 client->pos[X], client->pos[Y], client->level, players);
-  ssend(client->socket, "niveau actuel : %d\n", client->level);
-  incantation_graphic(client, content, players);
-  if (players)
-    free(players);
+  if (!(tmp = getCaseFromCoord(client->pos[X], client->pos[Y], content->cases)))
+    return (false);
+  for (i = 1; i < 7; i++)
+    if (tmp->content[i] != need[client->level - 1][i])
+      return (false);
+  return (true);
+}
+
+char		*incantation_done(t_client *client, t_master *content,
+				  int need[7][7])
+{
+  t_client	*tmp;
+  char		*ids;
+  char		ttmp[25];
+
+  if (!(ids = malloc(need[client->level - 1][0] * 10 * sizeof(char))))
+    error("malloc");
+  memset(ids, 0, need[client->level - 1][0] * 10 * sizeof(char));
+  for (tmp = content->clients; tmp; tmp = tmp->next)
+    {
+      memset(ttmp, 0, 25);
+      if (tmp->level != client->level)
+	continue ;
+      ssend(tmp->socket, "elevation en cours\nniveau actuel: %d\n", tmp->level);
+      sprintf(ttmp, "%d ", tmp->id);
+      strcat(ids, ttmp);
+      tmp->level++;
+    }
+  return (ids);
+}
+
+void	incantation_graphic_done(t_client *client, t_master *content)
+{
+
 }
 
 void		incantation(char UNUSED*params,
@@ -75,8 +80,19 @@ void		incantation(char UNUSED*params,
 			      {4, 1, 1, 2, 0, 1, 0},
 			      {4, 1, 2, 1, 3, 0, 0},
 			      {6, 1, 2, 3, 0, 1, 0},
-			      {6, 2, 2, 2, 2, 2, 0}};
+			      {6, 2, 2, 2, 2, 2, 1}};
+  bool		ok;
+  char		*ids;
 
-
-  do_incantation(client, content);
+  if ((ok = check_level(client, content, need)))
+    ok = check_stones(client, content, need);
+  if (!ok)
+    ssend(client->socket, "ko\n");
+  else
+    {
+      ids = incantation_done(client, content, need);
+      ssend_graphics(content, "pic %d %d %d %s\n", client->pos[X],
+		     client->pos[Y], client->level - 1, ids);
+      incantation_graphic_done(client, content);
+    }
 }

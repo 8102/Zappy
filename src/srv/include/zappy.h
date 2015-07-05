@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Tue Jun 16 11:35:49 2015 Emmanuel Chambon
-** Last update Sun Jul  5 19:59:42 2015 Hugo Prenat
+** Last update Sun Jul  5 22:41:31 2015 Emmanuel Chambon
 */
 
 #ifndef _ZAPPY_H_
@@ -130,5 +130,8 @@ void		team_win(t_team *, t_master *);
 void		reset_leveled(t_master *);
 void		check_leveled(t_master *);
 void		send_update_graphic(t_master *);
-
+/*
+**
+*/
+void		incantation(char *, t_client *, t_master *);
 #endif /* !_ZAPPY_H_ */
