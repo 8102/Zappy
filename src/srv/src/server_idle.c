@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Tue Jun 16 11:48:27 2015 Emmanuel Chambon
-** Last update Sat Jul  4 02:13:16 2015 Emmanuel Chambon
+** Last update Sun Jul  5 03:25:23 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
@@ -38,7 +38,10 @@ void			client_lookup(t_master *content)
       if (!tmp->trigger[AUTH])
 	continue ;
       if (remove_food)
-	tmp->resources[MEAL]--;
+	{
+	  send_update_graphic(content);
+	  tmp->resources[MEAL]--;
+	}
       /* if (tmp->resources[MEAL]--) */
       /* 	die_player_die(tmp); */
       if (cb_available(tmp->buffer) < CB_SIZE &&

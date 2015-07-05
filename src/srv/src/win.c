@@ -5,10 +5,15 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Sat Jul  4 02:12:44 2015 Emmanuel Chambon
-** Last update Sat Jul  4 02:14:12 2015 Emmanuel Chambon
+** Last update Sun Jul  5 03:25:06 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
+
+void		send_update_graphic(t_master *content)
+{
+
+}
 
 void		team_win(t_team *team, t_master *content)
 {
