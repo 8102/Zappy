@@ -5,7 +5,7 @@
 ## chambo_e  <chambon.emmanuel@gmail.com>
 ##
 ## Started on  Wed Apr  8 22:49:16 2015 Emmanuel Chambon
-## Last update Sat Jul  4 05:19:25 2015 Emmanuel Chambon
+## Last update Sat Jul  4 23:13:31 2015 Hugo Prenat
 ##
 
 DEBUG		=	yes
@@ -43,6 +43,7 @@ SRC_SERVER	=	main.c			\
 			misc.c			\
 			voir.c			\
 			voir_misc.c		\
+			voir_poss.c		\
 			prend.c			\
 			pose.c			\
 			fork.c			\

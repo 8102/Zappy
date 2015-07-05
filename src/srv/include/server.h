@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Tue Jun 16 11:27:54 2015 Emmanuel Chambon
-** Last update Fri Jul  3 16:26:08 2015 Hugo Prenat
+** Last update Sun Jul  5 02:51:22 2015 Hugo Prenat
 */
 
 #ifndef _SERVER_H_
@@ -123,16 +123,28 @@ void		pin(char *, t_client *, t_master *);
 **	voir.c
 */
 void		voir(char *, t_client *, t_master *);
-t_case		*getCaseInMap(t_client *, int, int, t_master *);
-char		*fillStringCase(t_case *, char *);
-char		*fillFirstTime();
-t_case		*getNextCase(t_case *, t_master *, int);
+char		*voir_nord(t_master *, t_client *, int, char *);
+char		*voir_ouest(t_master *, t_client *, int, char *);
+char		*voir_est(t_master *, t_client *, int, char *);
+char		*voir_sud(t_master *, t_client *, int, char *);
 /*
 **	voir_misc.c
 */
 int		countHowMany(t_case *);
-char	*first_case(t_master *, t_client *);
-char	*add_content_case(t_case *, char *);
+char		*first_case(t_master *, t_client *);
+char		*add_content_case(t_case *, char *);
+char		*add_coma(char *);
+char		*voir_ligne(t_master *, t_client *,
+			    int, char *);
+size_t		get_real_pos(t_master *, size_t ,
+			     int , size_t (*)(t_master *, size_t));
+/*
+**	voir_poss.c
+*/
+size_t		voir_gauche(t_master *, size_t);
+size_t		voir_droite(t_master *, size_t);
+size_t		voir_haut(t_master *, size_t);
+size_t		voir_bas(t_master *, size_t);
 /*
 **	prend.c
 */

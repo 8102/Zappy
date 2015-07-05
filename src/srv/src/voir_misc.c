@@ -5,72 +5,50 @@
 ** tran_0  <david.tran@epitech.eu>
 **
 ** Started on  Wed Jun 17 08:31:10 2015 David Tran
-** Last update Sat Jul  4 22:17:27 2015 Hugo Prenat
+** Last update Sun Jul  5 02:55:29 2015 Hugo Prenat
 */
 
 #include "zappy.h"
 
-t_case		*getNextCase(t_case *tmp, t_master *all, int type)
+char	*voir_ligne(t_master *content, t_client *client,
+		    int level, char *str)
 {
-  if (type == 0)
-    {
-      if (tmp->x + 1 >= all->width)
-	return (getCaseFromCoord(0, tmp->y, all->cases));
-      return (getCaseFromCoord(tmp->x + 1, tmp->y, all->cases));
-    }
-  if (tmp->y + 1 >= all->height)
-    return (getCaseFromCoord(tmp->x, 0, all->cases));
-  return (getCaseFromCoord(tmp->x, tmp->y + 1, all->cases));
+  if (client->orient == NORTH)
+    str = voir_nord(content, client, level, str);
+  else if (client->orient == EAST)
+    str = voir_est(content, client, level, str);
+  else if (client->orient == WEST)
+    str = voir_ouest(content, client, level, str);
+  else
+    str = voir_sud(content, client, level, str);
+  return (str);
 }
 
-t_case		*getCaseInMap(t_client *client, int tmp, int lvl, t_master *all)
+char	*add_coma(char *str)
 {
-  t_case	*parse;
-  lli		x;
-  lli		y;
+  char	*tmp;
 
-  printf(BOLDMAGENTA"======{On fait un tour}======\n"RESET);
-  printf("BOUM = %lld\n", (lli)client->pos[X] + tmp);
-  if ((x = (lli)client->pos[X] + tmp) < 0)
-    {
-      x = all->width + tmp;
-      while (x < 0)
-	x = all->width + (tmp - x);
-    }
-  printf("X == %lld\n"RESET, x);
-  if ((size_t)x >= all->width)
-    x -= all->width;
-  printf(RED"After X == %lld\n"RESET, x);
-  if ((y = (lli)client->pos[Y] + lvl) < 0)
-    {
-      y = all->height + lvl;
-      while (y < 0)
-	y = all->height + (lvl - y);
-    }
-  printf(RED"Y == %lld\n"RESET, y);
-  if ((size_t)y >= all->height)
-    y-= all->height;
-  printf(RED"After Y == %lld\n"RESET, y);
-  parse = all->cases;
-  while (parse)
-    {
-      if (parse->x == (size_t)x && parse->y == (size_t)y)
-	break ;
-      parse = parse->next;
-    }
-  return (parse);
+  if (!(tmp = malloc(sizeof(*str) * (strlen(str) + 2))))
+    return (NULL);
+  strcpy(tmp, str);
+  strcat(tmp, ",");
+  free(str);
+  return (tmp);
 }
 
 int		countHowMany(t_case *tmp)
 {
   int		count;
-  static int	value[] = {8, 11, 10, 10, 6, 9, 7, 10};
+  int		i;
+  static int	value[] = {7, 11, 9, 10, 6, 9, 7, 9};
 
   count = 0;
-  for (int i = 0; i <= 7; i++)
+  i = 0;
+  while (i <= 7)
     {
       if (tmp->content[i] > 0)
 	count += (value[i] * tmp->content[i]);
+      i++;
     }
   return (count);
 }
@@ -78,37 +56,32 @@ int		countHowMany(t_case *tmp)
 char		*add_content_case(t_case *cur, char *str)
 {
   int		i;
-  char		*ret;
+  char		*tmp;
   static char	*content[] = {" joueur", " nourriture", " linemate",
-			      " deraumere", " sibur", " mendiane"
+			      " deraumere", " sibur", " mendiane",
 			      " phiras", " thystame", NULL};
 
   i = 0;
-  if (!(ret = malloc(sizeof(*str) * (strlen(str) + countHowMany(cur) + 1))))
+  if (!(tmp = malloc(sizeof(*str) * (strlen(str) + countHowMany(cur) + 2))))
     return (NULL);
-  strcpy(ret, str);
+  strcpy(tmp, str);
   while (content[i])
     {
       for (int num = 0; num != cur->content[i]; num++)
-	strcat(ret, content[i]);
+	strcat(tmp, content[i]);
       i++;
     }
   free(str);
-  return (ret);
+  return (tmp);
 }
 
 char	*first_case(t_master *content, t_client *client)
 {
   char	*str;
-  char	*ret;
 
   str = strdup("{");
   str = add_content_case(getCaseFromCoord(client->pos[X],
 					  client->pos[Y], content->cases), str);
-  if (!(ret = malloc(sizeof(*str) * (strlen(str) + 2))))
-    return (NULL);
-  strcpy(ret, str);
-  strcat(ret, ",");
-  free(str);
-  return (ret);
+  str = add_coma(str);
+  return (str);
 }
