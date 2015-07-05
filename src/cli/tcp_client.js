@@ -72,7 +72,6 @@ function treatQueue() {
 		cmdQueue.shift();
 	} else {
 		if (cmdQueue[0]) {
-			console.log('Command not taken into account: ' + cmdQueue[0].command);
 			cmdQueue.shift();
 		}
 	}
@@ -138,7 +137,6 @@ module.exports = function(addr, port, team_name, gui) {
 				if (res[i].search('deplacement') != -1) {
 					IA.emit('bump');
 				} else if (res[i].search('message') != -1) {
-					console.log('notif --> \\' + res[i] + '/');
 					IA.emit('notification', res[i].split(',')[1], res[i].substring(res[i].indexOf('message') + 8, res[i].indexOf(',')));
 				} else if (res[i].split(' ')[0] == 'niveau') {
 					IA.emit('levelUp');
