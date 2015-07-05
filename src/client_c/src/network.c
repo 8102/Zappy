@@ -5,7 +5,7 @@
 ** Login   <milox_t@epitech.eu>
 **
 ** Started on  Sat Jun 27 20:48:42 2015 TommyStarK
-** Last update Tue Jun 30 23:21:36 2015 TommyStarK
+** Last update Sun Jul  5 21:09:25 2015 Emmanuel Chambon
 */
 
 #include "client.h"
@@ -17,7 +17,7 @@ void		*ipvx(struct sockaddr *s)
   return &(((struct sockaddr_in6*)s)->sin6_addr);
 }
 
-void             disconnect(t_client *it)
+void		disconnect(t_client *it)
 {
    if (it->status)
      close(it->client->fd);

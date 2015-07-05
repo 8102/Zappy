@@ -5,37 +5,32 @@
 ** Login   <milox_t@epitech.eu>
 **
 ** Started on  Tue Jun 30 23:34:42 2015 TommyStarK
-** Last update Sun Jul  5 02:58:11 2015 Emmanuel Chambon
+** Last update Sun Jul  5 21:08:55 2015 Emmanuel Chambon
 */
 
 #include "client.h"
 
-t_socket	*init_client(t_client *it, char **arg)
+t_socket	*init_client(t_client *it)
 {
   t_socket	*sock;
 
   !(sock = malloc(sizeof(t_socket))) ? error("malloc") : 0;
-  !(it->team = malloc(strlen(arg[2]))) ? error("malloc")
-    		      : bzero(it->team, strlen(arg[2]));
-  !(it->team = strdup(arg[2])) ? error("strdup") : 0;
-  !(it->ia = init_ia()) ? error("initializion ia") : 0;
+  it->team = NULL;
+  it->host = LOCALHOST;
+  it->port = 0;
+  it->ia = init_ia();
   it->size = get_array_size(it->ia);
   it->fdmax = NULL;
   it->rfds = NULL;
   return (sock);
 }
 
-void 		init_time_handler()
+char		**init_ia()
 {
-  srand(time(NULL));
-}
-
-char            **init_ia()
-{
-  char          **ret;
+  char		**ret;
 
   if (!(ret = malloc(sizeof(char *) * 10)))
-     return (NULL);
+    error("malloc");
   ret[0] = "avance\n";
   ret[1] = "droite\n";
   ret[2] = "gauche\n";
