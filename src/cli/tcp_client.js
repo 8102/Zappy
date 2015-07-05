@@ -60,11 +60,7 @@ function treatQueue() {
 		full = true;
 	}
 	if (cmdQueue[0] && (cmdQueue[0].state == 'ok' || cmdQueue[0].state == 'ko')) {
-		if (cmdQueue[0].command.slice(0, 5) == 'prend' && cmdQueue[0].state == 'ok') {
-			IA.emit('updateInventory', 'prend', cmdQueue[0].command.slice(6), 1);
-		} else if (cmdQueue[0].command.slice(0, 4) == 'pose' && cmdQueue[0].state == 'ok') {
-			IA.emit('updateInventory', 'pose', cmdQueue[0].command.slice(5), 1);
-		} else if (cmdQueue[0].state == 'ko') {
+		if (cmdQueue[0].state == 'ko') {
 			IA.emit('update', cmdQueue[0].command.split(' ')[0]);
 		}
 		cmdQueue.shift();
@@ -148,6 +144,7 @@ module.exports = function(addr, port, team_name, gui) {
 					IA.emit('levelUp');
 				} else {
 					updateQueue(res[i]);
+					if (debug) dumpQueue();
 					treatQueue();
 				}
 			}			
