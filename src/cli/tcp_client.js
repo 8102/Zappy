@@ -151,6 +151,14 @@ module.exports = function(addr, port, team_name, gui) {
 		}
 	});
 
+/*
+                    var regexp = new RegExp("^[G][:]([a-zA-Z0-9 ])*[:]([0-9])*\n$$"), parser = message.split(':').map(String), ip;
+                console.log("[[ - " + parser[0] + " - " + parser[1] + " - " + parser[2] + " - " + message);
+                if (regexp.exec(message) === null) { gui = 'ia'; console.log("Laucnhing in spectator mode"); return true; }
+                team_name = parser[1];
+                port = parseInt(parser[2], 10);
+*/
+
 	/*
 	** Graphical communication to the server
 	*/

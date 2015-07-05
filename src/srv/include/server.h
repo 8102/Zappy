@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Tue Jun 16 11:27:54 2015 Emmanuel Chambon
-** Last update Sun Jul  5 21:33:37 2015 Hugo Prenat
+** Last update Sun Jul  5 22:44:00 2015 Emmanuel Chambon
 */
 
 #ifndef _SERVER_H_
@@ -173,12 +173,5 @@ int		multipleCases(t_client *, t_client *, t_master *);
 int		calculateOrientation(int, int, int, int);
 void		select_position_watch(t_client *, t_master *);
 int		checkBasicCase(t_client *, t_client *, t_master *);
-/*
-**	incantation.c
-*/
-void		do_incantation(t_client *, t_master *);
-int		check_stones(t_client *, t_case *, t_client *);
-void		incantation(char *, t_client *, t_master *);
-void		incantation_graphic(t_client *, t_master *, char *);
 
 #endif /* !_SERVER_H_ */

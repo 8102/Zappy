@@ -33,9 +33,9 @@ var Player = function (playerTeam, parameters) {
     };
 
     this.getStringInventory = function () {
-        var invent = "P " + self.ID, i;
+        var invent = "P " + self.ID, i,  orientTab = ["N", "E", "S", "W"];
 
-        invent += " lvl : " + self.level + " O : " + self.orientation + " - ";
+        invent += " lvl : " + self.level + " O : " + orientTab[self.orientation - 1] + " - ";
         for (i = 0; i < 7; i += 1) {
             invent += " " + self.inventory[i];
         }
