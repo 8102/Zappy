@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Tue Jun 16 11:48:27 2015 Emmanuel Chambon
-** Last update Sun Jul  5 03:25:23 2015 Emmanuel Chambon
+** Last update Sun Jul  5 18:48:35 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
@@ -22,10 +22,38 @@ void		watch_sockets(int *i, int *max, fd_set *catch,
     }
 }
 
+void			lookup(t_client **tmp, bool remove_food,
+			       t_master *content)
+{
+  t_client		*prev;
+
+  if (!(*tmp)->trigger[AUTH])
+    {
+      (*tmp) = (*tmp)->next;
+      return ;
+    }
+  if (remove_food)
+    (*tmp)->resources[MEAL]--;
+  if (!(*tmp)->resources[MEAL])
+    {
+      prev = (*tmp);
+      (*tmp) = (*tmp)->next;
+      remove_connection(prev, content, 0);
+      return ;
+    }
+  if (cb_available((*tmp)->buffer) < CB_SIZE &&
+      timespec_is_greater(content->time.pl_now, (*tmp)->clock))
+    input_interpret((*tmp), content);
+  if ((*tmp)->level == MAX_LEVEL)
+    (*tmp)->team->leveled_pl++;
+  (*tmp) = (*tmp)->next;
+}
+
 void			client_lookup(t_master *content)
 {
   static ull		time_unit = 0;
   bool			remove_food;
+  t_client		*tmp;
 
   remove_food = false;
   time_unit++;
@@ -33,23 +61,9 @@ void			client_lookup(t_master *content)
     remove_food = !remove_food;
   reset_leveled(content);
   timespec_update(content->time.pl_now);
-  for (t_client *tmp = content->clients; tmp; tmp = tmp->next)
-    {
-      if (!tmp->trigger[AUTH])
-	continue ;
-      if (remove_food)
-	{
-	  send_update_graphic(content);
-	  tmp->resources[MEAL]--;
-	}
-      /* if (tmp->resources[MEAL]--) */
-      /* 	die_player_die(tmp); */
-      if (cb_available(tmp->buffer) < CB_SIZE &&
-	  timespec_is_greater(content->time.pl_now, tmp->clock))
-	input_interpret(tmp, content);
-      if (tmp->level == MAX_LEVEL)
-	tmp->team->leveled_pl++;
-    }
+  tmp = content->clients;
+  while (tmp)
+    lookup(&tmp, remove_food, content);
   check_leveled(content);
 }
 

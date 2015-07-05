@@ -5,7 +5,7 @@
 ** Login   <prenat_h@epitech.eu>
 **
 ** Started on  Tue Jun 23 18:04:19 2015 Hugo Prenat
-** Last update Sun Jul  5 17:11:13 2015 Hugo Prenat
+** Last update Sun Jul  5 18:50:15 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
@@ -61,6 +61,16 @@ void		pop_egg(t_egg **list, t_egg *elem)
 	prev = prev->next;
       it = it->next;
     }
+}
+
+bool		has_egg_eclos(t_team *team)
+{
+  t_egg		*tmp;
+
+  for (tmp = team->eggs; tmp; tmp = tmp->next)
+    if (tmp->eclos)
+      return (true);
+  return (false);
 }
 
 t_egg	*add_egg(t_team *team, t_master *content, size_t pos[2], int id)

@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Tue Jun 16 11:35:49 2015 Emmanuel Chambon
-** Last update Sun Jul  5 17:11:32 2015 Hugo Prenat
+** Last update Sun Jul  5 19:59:42 2015 Hugo Prenat
 */
 
 #ifndef _ZAPPY_H_
@@ -80,7 +80,6 @@ struct		s_master
   t_case	*cases;
 };
 
-
 /*
 **	main.c
 */
@@ -111,6 +110,7 @@ void		set_pos(t_master *, t_client *, size_t, size_t);
 */
 t_egg		*add_egg(t_team *, t_master *, size_t[2], int);
 void		pop_egg(t_egg **, t_egg *);
+bool		has_egg_eclos(t_team *);
 /*
 **	creation.c
 */

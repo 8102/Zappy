@@ -5,7 +5,7 @@
 ** Login   <prenat_h@epitech.eu>
 **
 ** Started on  Tue Jun 30 21:06:34 2015 Hugo Prenat
-** Last update Sun Jul  5 17:15:01 2015 Hugo Prenat
+** Last update Sun Jul  5 18:49:51 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
@@ -27,5 +27,6 @@ void		_fork(char UNUSED*params,
   timespec_add(client->clock, time, true);
   ssend_graphics(content, "eht %d\n", egg->id);
   egg->eclos = true;
+  client->team->slot++;
   timespec_release(time);
 }
