@@ -5,7 +5,7 @@
 ** Login   <milox_t@epitech.eu>
 **
 ** Started on  Sat Jun 27 20:40:47 2015 TommyStarK
-** Last update Sat Jul  4 21:01:00 2015 TommyStarK
+** Last update Sun Jul  5 03:04:35 2015 Emmanuel Chambon
 */
 
 #include "client.h"
@@ -33,7 +33,7 @@ int             make_coffe(t_client *it)
   if (!flag)
   {
     ret = recv(it->client->fd, tmp, BUFF_SIZE, 0);
-    ssend(it->client->fd, it->team);
+    ssend(it->client->fd, "%s\n", it->team);
     !ret ? printf("00PS: connection closed by server.\n")
     : ret > 0 ? printf("%s\n", tmp) : 0;
     flag = 1;
@@ -55,6 +55,7 @@ void            run_client(t_client *it)
   fd_set       read_fds;
   struct timeval	t;
 
+  t.tv_sec = 0;
   t.tv_usec = 500;
   fdmax = it->client->fd + 1;
   FD_ZERO(&read_fds);

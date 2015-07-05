@@ -5,7 +5,7 @@
 ** Login   <milox_t@epitech.eu>
 **
 ** Started on  Sat Jun 27 20:42:45 2015 TommyStarK
-** Last update Sat Jul  4 22:30:11 2015 Emmanuel Chambon
+** Last update Sun Jul  5 03:05:41 2015 Emmanuel Chambon
 */
 
 #ifndef _CLIENT_H_
@@ -81,7 +81,7 @@ void 				disconnect(t_client *);
 */
 void				error(char *);
 void				snd(char *, int *, int);
-void 				ssend(int, char *);
+void 				ssend(int, char *, ...);
 int				get_array_size(char **);
 
 #endif /* end of include guard: _CLIENT_H_ */

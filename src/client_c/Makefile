@@ -5,10 +5,10 @@
 ## chambo_e  <chambon.emmanuel@gmail.com>
 ##
 ## Started on  Wed Apr  8 22:49:16 2015 Emmanuel Chambon
-## Last update Sat Jul  4 20:59:13 2015 Milox Thomas
+## Last update Sun Jul  5 02:55:34 2015 Emmanuel Chambon
 ##
 
-CC		=	gcc
+CC		=	gcc -g
 
 RM		=	rm -fr
 

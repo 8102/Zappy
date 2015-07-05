@@ -5,7 +5,7 @@
 ** Login   <milox_t@epitech.eu>
 **
 ** Started on  Tue Jun 30 23:34:42 2015 TommyStarK
-** Last update Fri Jul  3 19:28:32 2015 TommyStarK
+** Last update Sun Jul  5 02:58:11 2015 Emmanuel Chambon
 */
 
 #include "client.h"
@@ -27,35 +27,24 @@ t_socket	*init_client(t_client *it, char **arg)
 
 void 		init_time_handler()
 {
-  int		i;
-
-  i = time(NULL);
-  srand(i);
+  srand(time(NULL));
 }
 
 char            **init_ia()
 {
-  int           i;
   char          **ret;
 
   if (!(ret = malloc(sizeof(char *) * 10)))
      return (NULL);
-  for (i = 0; i < 10; ++i)
-  {
-    if (!(ret[i] = malloc(sizeof(BUFF_SIZE / 8))))
-      return (NULL);
-    if (!(memset(ret[i], 0, BUFF_SIZE / 8)))
-      error("memset");
-  }
-  !(ret[0] = strdup("avance\n")) ? error("strdup") : 0;
-  !(ret[1] = strdup("droite\n")) ? error("strdup") : 0;
-  !(ret[2] = strdup("gauche\n")) ? error("strdup") : 0;
-  !(ret[3] = strdup("voir\n")) ? error("strdup") : 0;
-  !(ret[4] = strdup("inventaire\n")) ? error("strdup") : 0;
-  !(ret[5] = strdup("prend objet\n")) ? error("strdup") : 0;
-  !(ret[6] = strdup("pose objet\n")) ? error("strdup") : 0;
-  !(ret[7] = strdup("expulse\n")) ? error("strdup") : 0;
-  !(ret[8] = strdup("incantation\n")) ? error("strdup") : 0;
+  ret[0] = "avance\n";
+  ret[1] = "droite\n";
+  ret[2] = "gauche\n";
+  ret[3] = "voir\n";
+  ret[4] = "inventaire\n";
+  ret[5] = "prend objet\n";
+  ret[6] = "pose objet\n";
+  ret[7] = "expulse\n";
+  ret[8] = "incantation\n";
   ret[9] = NULL;
   return (ret);
 }

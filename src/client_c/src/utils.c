@@ -5,7 +5,7 @@
 ** Login   <milox_t@epitech.eu>
 **
 ** Started on  Sat Jun 27 20:56:34 2015 TommyStarK
-** Last update Tue Jun 30 23:35:24 2015 TommyStarK
+** Last update Sun Jul  5 03:05:26 2015 Emmanuel Chambon
 */
 
 #include "client.h"
@@ -16,34 +16,14 @@ void		error(char *error)
   exit(EXIT_FAILURE);
 }
 
-void		ssend(int fd, char *data)
+void		ssend(int socket, char *msg, ...)
 {
-  int		len;
+  va_list	args;
 
-  len = strlen(data);
-  snd(data, &len, fd);
-}
-
-void		snd(char *buf, int *len, int sock)
-{
-  int		tot;
-  int		l;
-  int		r;
-
-  l = *len;
-  tot = 0;
-  while (tot < *len)
-    {
-      r = send(sock, buf + tot, l, 0);
-      if (r == -1)
-	{
-	  perror("recv");
-	  break ;
-	}
-      tot += r;
-      l -= r;
-    }
-  *len = tot;
+  va_start(args, msg);
+  if (!(vdprintf(socket, msg, args)))
+    error("dprintf");
+  va_end(args);
 }
 
 int 		get_array_size(char **array)
