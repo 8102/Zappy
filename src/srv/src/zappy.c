@@ -5,13 +5,14 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Tue Jun 16 20:14:21 2015 Emmanuel Chambon
-** Last update Sat Jul  4 05:21:42 2015 Emmanuel Chambon
+** Last update Sun Jul  5 02:00:27 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
 
 int		init_zappy(t_master *content, int ac, char **av)
 {
+  srand(time(NULL));
   content->max_clients = 0;
   content->width = 0;
   content->height = 0;
@@ -27,6 +28,7 @@ int		init_zappy(t_master *content, int ac, char **av)
   set_timeout(content);
   set_delays(content);
   create_map(content);
+  minerals_gen(content);
   init_server(&(content->server), content->port);
   print_creation(content);
   return (0);

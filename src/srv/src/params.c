@@ -5,10 +5,18 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Sat Jul  4 05:18:34 2015 Emmanuel Chambon
-** Last update Sat Jul  4 23:05:48 2015 Emmanuel Chambon
+** Last update Sun Jul  5 00:50:17 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
+
+void		update_team_max(t_master *content)
+{
+  t_team	*tmp;
+
+  for (tmp = content->teams; tmp; tmp = tmp->next)
+    tmp->slot = content->max_clients;
+}
 
 bool	check_param(t_master *content)
 {
@@ -19,20 +27,15 @@ bool	check_param(t_master *content)
   if (!content->height)
     content->height = 20;
   if (!content->max_clients)
-    content->max_clients = 1;
+    {
+      content->max_clients = 1;
+      update_team_max(content);
+    }
   if (!content->delay)
     content->delay = 100;
   if (!content->teams)
     return (false);
   return (true);
-}
-
-void		update_team_max(t_master *content)
-{
-  t_team	*tmp;
-
-  for (tmp = content->teams; tmp; tmp = tmp->next)
-    tmp->slot = content->max_clients;
 }
 
 bool	get_param(int ac, char **av, t_master *content)

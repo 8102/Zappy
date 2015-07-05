@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Thu Jun 18 15:01:28 2015 Emmanuel Chambon
-** Last update Sat Jul  4 20:34:29 2015 Hugo Prenat
+** Last update Sun Jul  5 02:31:23 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
@@ -35,6 +35,7 @@ void				handle_new_connection(int *max,
   init_client(client, content);
   push_client(&(content->clients), client);
   ssend(client->socket, "BIENVENUE\n");
+  set_mineral(((int)MEAL) + 1, content->nbr_player % 100, content);
 }
 
 void		remove_connection(t_client *client, t_master *content, int rc)
