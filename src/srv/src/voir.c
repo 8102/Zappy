@@ -5,7 +5,7 @@
 ** tran_0  <david.tran@epitech.eu>
 **
 ** Started on  Wed Jun 17 08:31:10 2015 David Tran
-** Last update Sun Jul  5 21:55:10 2015 Hugo Prenat
+** Last update Sun Jul  5 23:08:54 2015 Hugo Prenat
 */
 
 #include "zappy.h"
@@ -52,7 +52,8 @@ char		*voir_est(t_master *content, t_client *client,
   return (str);
 }
 
-char	*voir_sud(t_master *content, t_client *client, int level, char *str)
+char		*voir_sud(t_master *content, t_client *client,
+			  int level, char *str)
 {
   size_t	x;
   size_t	y;
@@ -72,7 +73,8 @@ char	*voir_sud(t_master *content, t_client *client, int level, char *str)
   return (str);
 }
 
-char	*voir_ouest(t_master *content, t_client *client, int level, char *str)
+char		*voir_ouest(t_master *content, t_client *client,
+			    int level, char *str)
 {
   size_t	x;
   size_t	y;
