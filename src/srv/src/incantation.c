@@ -5,12 +5,13 @@
 ** tran_0  <david.tran@epitech.eu>
 **
 ** Started on  Wed Jun 17 08:31:10 2015 David Tran
-** Last update Sun Jul  5 23:04:24 2015 Hugo Prenat
+** Last update Sun Jul  5 23:17:59 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
 
-bool	check_level(t_client *client, t_master *content, int need[7][7])
+bool		check_level(t_client *client, t_master *content,
+			    int need[7][7])
 {
   t_client	*tmp;
   int		tot;
@@ -29,12 +30,14 @@ bool	check_level(t_client *client, t_master *content, int need[7][7])
   return (false);
 }
 
-bool	check_stones(t_client *client, t_master *content, int need[7][7])
+bool		check_stones(t_client *client, t_master *content,
+			     int need[7][7])
 {
   t_case	*tmp;
   int		i;
 
-  if (!(tmp = getCaseFromCoord(client->pos[X], client->pos[Y], content->cases)))
+  if (!(tmp = getCaseFromCoord(client->pos[X],
+			       client->pos[Y], content->cases)))
     return (false);
   for (i = 1; i < 7; i++)
     if (tmp->content[i + 1] != need[client->level - 1][i])
@@ -57,7 +60,8 @@ char		*incantation_done(t_client *client, t_master *content,
       memset(ttmp, 0, 25);
       if (tmp->level != client->level)
 	continue ;
-      ssend(tmp->socket, "elevation en cours\nniveau actuel: %d\n", tmp->level);
+      ssend(tmp->socket, "elevation en cours\nniveau actuel: %d\n",
+	    tmp->level);
       sprintf(ttmp, "%d ", tmp->id);
       strcat(ids, ttmp);
       tmp->level++;
@@ -108,6 +112,7 @@ void		incantation(char UNUSED*params,
   bool		ok;
   char		*ids;
 
+  timespec_add(client->clock, content->time.delays[INCANTATION], true);
   if ((ok = check_level(client, content, need)))
     ok = check_stones(client, content, need);
   if (!ok)
