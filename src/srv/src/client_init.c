@@ -5,18 +5,35 @@
 ** Login   <prenat_h@epitech.eu>
 **
 ** Started on  Mon Jun 22 22:25:56 2015 Hugo Prenat
-** Last update Sun Jul  5 03:40:48 2015 Hugo Prenat
+** Last update Sun Jul  5 18:41:08 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
+
+void		get_egg_pos(t_team *team, size_t *x, size_t *y, t_master *content)
+{
+  t_egg         *tmp;
+
+  for (tmp = team->eggs; tmp; tmp = tmp->next)
+    {
+      if (tmp->eclos)
+	{
+	  *x = tmp->pos[X];
+	  *y = tmp->pos[Y];
+	  pop_egg(&team->eggs, tmp);
+	  break ;
+	}
+    }
+  *x = rand() % content->width;
+  *y = rand() % content->height;
+}
 
 void		place_player(t_master *content, t_client *client)
 {
   size_t	x;
   size_t	y;
 
-  x = rand() % content->width;
-  y = rand() % content->height;
+  get_egg_pos(client->team, &x, &y, content);
   set_pos(content, client, x, y);
   client->placed = true;
   client->resources[MEAL] = 10;
