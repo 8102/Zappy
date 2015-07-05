@@ -9,7 +9,7 @@ var EventEmitter = require('events').EventEmitter;
 /*
 ** debug
 */
-var debug = true;
+var debug = false;
 
 /*
 ** variable scope
@@ -61,7 +61,7 @@ function treatQueue() {
 	}
 	if (cmdQueue[0] && (cmdQueue[0].state == 'ok' || cmdQueue[0].state == 'ko')) {
 		if (cmdQueue[0].state == 'ko') {
-			IA.emit('update', cmdQueue[0].command.split(' ')[0]);
+			IA.emit('update');
 		}
 		cmdQueue.shift();
 	} else if (cmdQueue[0] && cmdQueue[0].command == 'voir' && cmdQueue[0].state) {
@@ -147,7 +147,7 @@ module.exports = function(addr, port, team_name, gui) {
 					if (debug) dumpQueue();
 					treatQueue();
 				}
-			}			
+			}
 		}
 	});
 
