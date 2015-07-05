@@ -5,7 +5,7 @@
 ** tran_0  <david.tran@epitech.eu>
 **
 ** Started on  Wed Jun 17 08:31:10 2015 David Tran
-** Last update Wed Jun 24 15:26:13 2015 David Tran
+** Last update Sun Jul  5 23:12:09 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
@@ -39,10 +39,9 @@ int	checkBasicCase(t_client *src, t_client *client, t_master *all)
       lastOrient = (distance > calculateDistance(x, y, cx, cy)) ?
 	horizontalVerticalOrient(y, cy, 0) :
 	horizontalVerticalOrient(src->pos[1], client->pos[1], 0);
-      if (client->orient == NORTH)
-	return (lastOrient);
-      return (lastOrient + ((int)client->orient - 1) * 2 == 8 ? 8 :
-	      ((lastOrient + ((int)client->orient - 1) * 2) % 8));
+      return (client->orient == NORTH) ? (lastOrient)
+	: (lastOrient + ((int)client->orient - 1) * 2 == 8 ? 8 :
+	   ((lastOrient + ((int)client->orient - 1) * 2) % 8));
     }
   return (checkBasicYAxis(src, client, all));
 }
