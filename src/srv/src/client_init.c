@@ -5,7 +5,7 @@
 ** Login   <prenat_h@epitech.eu>
 **
 ** Started on  Mon Jun 22 22:25:56 2015 Hugo Prenat
-** Last update Sun Jul  5 03:40:48 2015 Hugo Prenat
+** Last update Sun Jul  5 19:51:22 2015 Hugo Prenat
 */
 
 #include "zappy.h"
@@ -31,12 +31,12 @@ void		place_player(t_master *content, t_client *client)
   ssend_graphics(content, "pnw %d %lu %lu %d %d %s\n", client->id,
   		 client->pos[X], client->pos[Y], client->orient,
   		 client->level, client->team->name);
-  ssend_graphics(content, "pin %d %lu %lu %d %d %d %d %d %d\n",
+  ssend_graphics(content, "pin %d %lu %lu %d %d %d %d %d %d %d\n",
   		 client->id, client->pos[X], client->pos[Y],
   		 client->resources[MEAL], client->resources[LINEMATE],
   		 client->resources[DERAUMERE], client->resources[SIBUR],
-  		 client->resources[MENDIANE], client->resources[MENDIANE],
-  		 client->resources[PHIRAS], client->resources[THYSTAME]);
+  		 client->resources[MENDIANE], client->resources[PHIRAS],
+		 client->resources[THYSTAME]);
 }
 
 void	init_client(t_client *client, t_master *content)

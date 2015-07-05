@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Tue Jun 16 11:59:24 2015 Emmanuel Chambon
-** Last update Fri Jul  3 03:31:22 2015 Emmanuel Chambon
+** Last update Sun Jul  5 17:19:46 2015 Hugo Prenat
 */
 
 #include "zappy.h"
@@ -43,7 +43,7 @@ char		*revstr(char *str)
 
   j = 0;
   if (!(revd = malloc(strlen(str) + 1)))
-    return (NULL);
+    error("malloc");
   i = strlen(str) - 1;
   while (i >= 0)
     {
@@ -71,12 +71,13 @@ char		*transform_int(int tmp)
       mult *= 10;
     }
   if (!(str = malloc(size + 1)))
-    return (NULL);
+    error("malloc");
   while (i < size)
     {
       str[i++] = tmp % 10 + '0';
       tmp /= 10;
     }
   str[i] = 0;
+  printf("%s\n", str);
   return (revstr(str));
 }
