@@ -5,7 +5,7 @@
 ** tran_0  <david.tran@epitech.eu>
 **
 ** Started on  Wed Jun 17 08:31:10 2015 David Tran
-** Last update Sun Jul  5 22:47:10 2015 Hugo Prenat
+** Last update Sun Jul  5 23:04:24 2015 Hugo Prenat
 */
 
 #include "zappy.h"
@@ -37,7 +37,7 @@ bool	check_stones(t_client *client, t_master *content, int need[7][7])
   if (!(tmp = getCaseFromCoord(client->pos[X], client->pos[Y], content->cases)))
     return (false);
   for (i = 1; i < 7; i++)
-    if (tmp->content[i] != need[client->level - 1][i])
+    if (tmp->content[i + 1] != need[client->level - 1][i])
       return (false);
   return (true);
 }
