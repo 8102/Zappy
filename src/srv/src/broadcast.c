@@ -41,7 +41,8 @@ int	checkBasicCase(t_client *src, t_client *client, t_master *all)
 	horizontalVerticalOrient(src->pos[1], client->pos[1], 0);
       if (client->orient == NORTH)
 	return (lastOrient);
-      return (lastOrient - ((int)client->orient - 1));
+      return (lastOrient + ((int)client->orient - 1) * 2 == 8 ? 8 :
+	      ((lastOrient + ((int)client->orient - 1) * 2) % 8));
     }
   return (checkBasicYAxis(src, client, all));
 }
@@ -68,7 +69,8 @@ int	checkBasicYAxis(t_client *src, t_client *client, t_master *all)
 	horizontalVerticalOrient(src->pos[0], client->pos[0], 1);
       if (client->orient == NORTH)
 	return (lastOrient);
-      return (lastOrient - ((int)client->orient - 1));
+      return (lastOrient + ((int)client->orient - 1) * 2 == 8 ? 8 :
+	      ((lastOrient + ((int)client->orient - 1) * 2) % 8));
     }
   return (multipleCases(src, client, all));
 }
@@ -90,7 +92,8 @@ int	multipleFinalOpe(t_client *src, t_client *client, t_master *all)
 			 client->pos[1]);
   if (client->orient == NORTH)
     return (lastOrient);
-  return (lastOrient - ((int)client->orient - 1));
+  return (lastOrient + ((int)client->orient - 1) * 2 == 8 ? 8 :
+	  ((lastOrient + ((int)client->orient - 1) * 2) % 8));
 }
 
 int	multipleCases(t_client *src, t_client *client, t_master *all)
@@ -116,7 +119,8 @@ int	multipleCases(t_client *src, t_client *client, t_master *all)
       lastOrient = calculateOrientation(x, y, cx, cy);
       if (client->orient == NORTH)
 	return (lastOrient);
-      return (lastOrient - ((int)client->orient - 1));
+      return (lastOrient + ((int)client->orient - 1) * 2 == 8 ? 8 :
+	      ((lastOrient + ((int)client->orient - 1) * 2) % 8));
     }
   return (multipleFinalOpe(src, client, all));
 }
