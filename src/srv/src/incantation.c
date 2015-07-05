@@ -5,7 +5,7 @@
 ** tran_0  <david.tran@epitech.eu>
 **
 ** Started on  Wed Jun 17 08:31:10 2015 David Tran
-** Last update Sun Jul  5 22:42:14 2015 Emmanuel Chambon
+** Last update Sun Jul  5 22:47:10 2015 Hugo Prenat
 */
 
 #include "zappy.h"
@@ -65,9 +65,33 @@ char		*incantation_done(t_client *client, t_master *content,
   return (ids);
 }
 
-void	incantation_graphic_done(t_client *client, t_master *content)
+void		incantation_graphic_done(t_master *content, t_client *client,
+					 bool work)
 {
+  t_case	*case_tmp;
+  t_client	*client_tmp;
 
+  case_tmp = content->cases;
+  client_tmp = content->clients;
+  ssend_graphics(content, "pie %lu %lu %d\n", client->pos[X], client->pos[Y],
+		 work);
+  while (client_tmp)
+    {
+      if (client_tmp->pos[X] == client->pos[X] &&
+	  client_tmp->pos[Y] == client->pos[Y])
+	ssend_graphics(content, "plv %d %d\n",
+		       client_tmp->id, client_tmp->level);
+      client_tmp = client_tmp->next;
+    }
+  while (case_tmp)
+    {
+      ssend_graphics(content, "bct %lu %lu %d %d %d %d %d %d %d\n",
+		     case_tmp->x, case_tmp->y, case_tmp->content[1],
+		     case_tmp->content[2], case_tmp->content[3],
+		     case_tmp->content[4], case_tmp->content[5],
+		     case_tmp->content[6], case_tmp->content[7]);
+      case_tmp = case_tmp->next;
+    }
 }
 
 void		incantation(char UNUSED*params,
@@ -93,6 +117,7 @@ void		incantation(char UNUSED*params,
       ids = incantation_done(client, content, need);
       ssend_graphics(content, "pic %d %d %d %s\n", client->pos[X],
 		     client->pos[Y], client->level - 1, ids);
-      incantation_graphic_done(client, content);
+      free(ids);
     }
+  incantation_graphic_done(content, client, ok);
 }
