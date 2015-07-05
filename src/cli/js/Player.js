@@ -19,9 +19,9 @@ var Player = function (playerTeam, parameters) {
     this.params = {
         animOffset: 0,
         walking: false,
-        duration: 1000,
+        duration: 500,
         keyframes: 20,
-        interpolation: 1000 / 20,
+        interpolation: 500 / 20,
         lastKeyframe: 0,
         currentKeyframe: 0
     };
@@ -54,7 +54,7 @@ var Player = function (playerTeam, parameters) {
     };
     /*jslint bitwise: false*/
 
-    this.moveToward = function (x, y, z) {
+    this.moveToward = function (x, y, z, o) {
         if (self.model === null) { return false; }
         var targetPosition = {x: x, y: y, z: z},
             parameters,
@@ -62,11 +62,11 @@ var Player = function (playerTeam, parameters) {
         self.moving = true;
         if (targetPosition.x > self.position[0]) {self.orientation = 2;
             } else if (targetPosition.x < self.position[0]) {self.orientation = 4;
-            } else if (targetPosition.y < self.position[1]) {self.orientation = 1;
-            } else if (targetPosition.y > self.position[1]) {self.orientation = 3;
+            } else if (targetPosition.y < self.position[1]) {self.orientation = 3;
+            } else if (targetPosition.y > self.position[1]) {self.orientation = 1;
             }
         self.reorient();
-        parameters = {targetP: targetPosition, delay: 1, modifyer: {x: 0, y: 0, z: 0}, frames: 55, rotate: false, callback: self.move};
+        parameters = {targetP: targetPosition, delay: 0.0001, modifyer: {x: 0, y: 0, z: 0}, frames: 100, rotate: false, callback: function () {self.move(x, y, z); self.orientation = o; self.reorient(); }};
         anima = new Animation(self, parameters);
         manager.animations.push(anima);
         return true;

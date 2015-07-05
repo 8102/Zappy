@@ -119,7 +119,9 @@
 -->
                     </input>
                 </div>
+                <script src="http://127.0.0.1:1081/socket.io/socket.io.js"></script>
                 <script>
+                var socket  = io('http://localhost:1081');
                 function onGUIRemove (event) {
                         'use strict';
                         var openingSound = document.getElementById("GateOpening-Sound");
@@ -145,7 +147,6 @@
                             window.setTimeout(function () {audiobck.play();}, 1500);
                         }, false);
                     };
-
                 function connectAsSpectator (event) {
                     'use strict';
                     var communicationDiv;
@@ -157,6 +158,7 @@
                         communicationDiv = document.createElement("div");
                         communicationDiv.id = "transfer-div";
                         communicationDiv.innerHTML = "1"; /*0-[teamName]-[port] || 1*/
+                        socket.emit("GRAPHIC_LAUNCHER:NO-AI");
                     }
                 };
 
@@ -173,6 +175,7 @@
                             communicationDiv.id = "transfer-div";
                             document.getElementById("GUI-connection-back").appendChild(communicationDiv);
                             communicationDiv.innerHTML = "0-" + document.getElementById("GUI-connection-login-typing").value + "-" + document.getElementById("GUI-connection-port-typing").value;
+                            socket.emit("GRAPHIC_LAUNCHER:TEAM=" + document.getElementById("GUI-connection-login-typing").value + "******" + "PORT=" + document.getElementById("GUI-connection-port-typing").value + "\n");
                         }
                     };
                 </script>
@@ -190,10 +193,9 @@
         </div>
 
 
-    <script src="http://127.0.0.1:1081/socket.io/socket.io.js"></script>
 
         <script>
-                var manager, socket;
+                var manager;
                 function MainActivity () {
                     'use strict';
 
@@ -201,7 +203,9 @@
                     manager = new GameManager();
                     manager.init();
 
+/*
                     socket  = io('http://localhost:1081');
+*/
                     socket.emit('answer', 'GRAPHIC\n');
                     socket.on('message', function(data) {
                         manager.treatMessage(data);

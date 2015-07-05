@@ -166,10 +166,10 @@ var GameManager = function (Context, Engine) {
         destination.y = parseInt(parser[3], 10);
         if ((player = self.getPlayerByID(playerID)) === null) { return false; }
         if (destination.x !== player.position[0] || destination.y !== player.position[1]) {
-            player.moveToward(parseInt(parser[2], 10), 0.0, parseInt(parser[3], 10));
+            player.moveToward(parseInt(parser[2], 10), 0.0, parseInt(parser[3], 10), parseInt(parser[4], 10));
         }
-//        player.move(parseInt(parser[2], 10), 0.0, parseInt(parser[3], 10));
 /*
+        player.move(parseInt(parser[2], 10), 0.0, parseInt(parser[3], 10));
         player.orientation = parseInt(parser[4], 10);
         player.reorient();
 */
@@ -251,7 +251,7 @@ var GameManager = function (Context, Engine) {
     /*pie*/
     this.endIncantation = function (message) {
         var parser = message.split(' ').map(Number);
-
+        createjs.Sound.play("reward");
         window.console.log('Incantation on cell (' + parser[1] + ', ' + parser[2] + ') is done : ' + (parser[3] === 1 ? 'Success' : 'Failed') + ' !');
     };
     /*pfk*/
@@ -280,20 +280,25 @@ var GameManager = function (Context, Engine) {
         if ((player = self.getPlayerByID(playerID)) === null) { return false; }
         window.console.log('Player #' + playerID + ' is taking a ' + RessourceName[parseInt(parser[2], 10)] + ' !');
         if ((item = self.getParticularRessourceOnCell(player.position[0], player.position[1], parseInt(parser[2], 10))) !== null) {
-            anima = new Animation(item, {targetP: {x: player.model.position.x, y: 0.5, z: player.model.position.z}, rotate: false, modifyer: {x: 1, y: 1, z: 1}, delay: 1, frames: 50, callback: function () {self.remove(item); }});
+            anima = new Animation(item, {targetP: {x: player.model.position.x, y: 0.5, z: player.model.position.z}, rotate: false, modifyer: {x: 1, y: 1, z: 1}, delay: 0.001, frames: 50, callback: function () {self.remove(item); }, soundParams: 'atEnd', sound: (parseInt(parser[2], 10) === 0 ? "crunch" : null)});
             self.animations.push(anima);
         }
         return true;
     };
     /*pdi*/
     this.playerDeath = function (message) {
-        var playerID, player, parser = message.split(' ').map(String);
+        var playerID, player, parser = message.split(' ').map(String), parameters, anima;
 
         playerID = parseInt(parser[1], 10);/*.split('#').map(Number)[1];*/
         if ((player = self.getPlayerByID(playerID)) === null) { return false; }
-        self.removePlayer(playerID);
+        player.team.nbDead += 1;
+        player.team.updateNbPlayersOnBanner();
+        anima = new Animation(player, {targetP: {x: player.model.position.x, y: 100, z: player.model.position.z}, rotate: false, modifyer: {x: 0, y: 0, z: 0}, delay: 0.001, frames: 1000, callback: function () {self.removePlayer(playerID); }, sound: "expulse", soundParams: 'atStart'});
+        self.animations.push(anima);
+/*
         self.remove(player);
         window.console.log('Player #' + playerID + ' has died !');
+*/
         return true;
     };
     /*enw*/
@@ -382,10 +387,7 @@ var GameManager = function (Context, Engine) {
             '^[p][n][w] [0-9]*( [0-9]*){2} [1-4] [1-8] [a-zA-Z0-9]+\n$',
             '^[p][p][o] [0-9]*( [0-9]*){2} [1-4]\n$',
             '^[p][l][v] [0-9]* [1-8]\n$',
-/*
-            '^[p][i][n] [0-9].*\n$',
-*/
-            '^[p][i][n] [0-9]*( [0-9]*){9}\n$',
+            '^[p][i][n]( [0-9]*){10}\n$',
             '^[p][e][x] [0-9]*\n$',
             '^[p][b][c] [0-9]*.*\n$',
             '^[p][i][c]( [0-9]*){2} [1-4]( [0-9]*){}\n$',
@@ -620,7 +622,7 @@ var GameManager = function (Context, Engine) {
         for (i = 0; i < self.players.length; i += 1) {
             if (self.players[i].ID === playerID) {
                 self.players[i].alive = false;
-                self.players[i].team.nbDead += 1;
+                if (self.players[i].model) { self.context.scene.remove(self.players[i].model); }
                 self.players.splice(i, 1);
             }
         }
@@ -679,6 +681,7 @@ var GameManager = function (Context, Engine) {
         for (i = 0; i < self.eggs.length; i += 1) {
             if (self.eggs[i].ID === eggID) {
                 self.eggs[i].alive = false;
+                self.eggs[i].teeam.removeEgg(eggID);
                 self.eggs.splice(i, 1);
             }
         }

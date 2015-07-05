@@ -65,6 +65,18 @@ var Team = function (parameters) {
         return false;
     };
 
+    this.removeEgg = function (number) {
+        var i;
+        for (i = 0; i < self.eggs; i += 1) {
+            if (self.eggs.ID === number) {
+                self.eggs.splice(i, 1);
+                self.updateNbPlayersOnBanner();
+                return true;
+            }
+        }
+        return true;
+    };
+
     this.addTeamBanner = function () {
         var teamDisplayer = document.getElementById("GUI-TeamContainer"),
             teamBanner,
