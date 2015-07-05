@@ -5,12 +5,12 @@
 ** Login   <milox_t@epitech.eu>
 **
 ** Started on  Sat Jun 27 20:56:34 2015 TommyStarK
-** Last update Sun Jul  5 03:05:26 2015 Emmanuel Chambon
+** Last update Sun Jul  5 21:09:43 2015 Emmanuel Chambon
 */
 
 #include "client.h"
 
-void		error(char *error)
+_Noreturn void		error(char *error)
 {
   perror(error);
   exit(EXIT_FAILURE);

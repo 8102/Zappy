@@ -1,6 +1,6 @@
 /*global createjs*/
 
-var soundArray = ["broadcast", "click", "expulse", "chain", "page"];
+var soundArray = ["broadcast", "click", "expulse", "chain", "page", "crunch", "reward"];
 
 var SoundManager = function () {
     'use strict';

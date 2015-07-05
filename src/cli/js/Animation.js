@@ -1,3 +1,4 @@
+/*global createjs*/
 var getTargetPosition = function (target) {
     'use strict';
     var position = {x: 0, y: 0, z: 0},
@@ -100,16 +101,15 @@ var Animation = function (target, parameters) {
         self.vector = self.computeVector(self.startPosition, self.targetPosition, parameters);
         self.sandClock = parameters.delay;
         self.isInit = true;
+        if (typeof parameters.sound === 'string' && parameters.soundParams === 'atStart') { createjs.Sound.play(parameters.sound); }
     };
     /*jslint bitwise: true*/
     this.update = function (deltaTime) {
         if (self.isInit === false) {
             self.initAnimation();
         } else {
-/*
             self.sandClock -= deltaTime;
             if (self.sandClock <= 0) {
-*/
                 self.counter -= 1;
                 self.sandClock = parameters.delay;
                 self.modify.x *= self.trend.x;
@@ -127,6 +127,7 @@ var Animation = function (target, parameters) {
                 }
                 if (self.counter <= 0) {
                     self.isDone = true;
+                    if (typeof parameters.sound === 'string' && parameters.soundParams === 'atEnd') { createjs.Sound.play(parameters.sound); }
                     if (parameters.callback !== undefined) {parameters.callback(parameters.targetP.x, parameters.targetP.y, parameters.targetP.z); }
 /*
                     if (target.hasOwnProperty('move')) {
@@ -143,7 +144,7 @@ var Animation = function (target, parameters) {
                                                                    self.trend.y = 1.02;
                                                                    self.trend.z = 1.02;
                                                                   }
-            /*}*/
+            }
         }
     };
 };

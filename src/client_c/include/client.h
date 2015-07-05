@@ -5,7 +5,7 @@
 ** Login   <milox_t@epitech.eu>
 **
 ** Started on  Sat Jun 27 20:42:45 2015 TommyStarK
-** Last update Sun Jul  5 03:05:41 2015 Emmanuel Chambon
+** Last update Sun Jul  5 21:11:38 2015 Emmanuel Chambon
 */
 
 #ifndef _CLIENT_H_
@@ -27,12 +27,14 @@
 # include <sys/types.h>
 # include <sys/socket.h>
 # include <netinet/in.h>
+# include <getopt.h>
+# include <stdbool.h>
 
 # define BUFF_SIZE 		512
 # define LOCALHOST		"127.0.0.1"
-# define USAGE			"[USAGE] ./client -n teamName -p port -h machine (set by default to localhost)."
+# define USAGE			"[USAGE] ./client -n team -p port [-h hostname]."
 # define ERR_CONNECT		"00PS: Cannot connect specified IP/PORT."
-# define BYEBYE			"You have been disconnected from specified server. Goodbye :)"
+# define BYEBYE			"You have been disconnected from server."
 
 typedef struct addrinfo		addinf;
 typedef struct sockaddr_storage	stor;
@@ -46,6 +48,8 @@ typedef struct			s_socket
 
 typedef struct			s_client
 {
+  char				*port;
+  char				*host;
   int				size;
   int				status;
   int				*fdmax;
@@ -58,7 +62,7 @@ typedef struct			s_client
 /*
 ** init.c
 */
-t_socket			*init_client(t_client *, char **);
+t_socket			*init_client(t_client *);
 char				**init_ia();
 void				init_time_handler();
 
@@ -84,4 +88,4 @@ void				snd(char *, int *, int);
 void 				ssend(int, char *, ...);
 int				get_array_size(char **);
 
-#endif /* end of include guard: _CLIENT_H_ */
+#endif /* !_CLIENT_H_ */
