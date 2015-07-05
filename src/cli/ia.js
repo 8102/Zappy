@@ -102,7 +102,6 @@ module.exports = function (Actions, Ia, Queue) {
 		if (!syncFov) {
 			return (false);
 		}
-		// console.log(brain.fov);
 		for (var i = 0; i < brain.fov.length; i++) {
 			if (brain.fov[i].indexOf(resource) > -1) {
 				brain.pos.x = brain.pos.y = 0;
@@ -120,8 +119,6 @@ module.exports = function (Actions, Ia, Queue) {
 		if (cmdQueue.length > 0) {
 			return (false);
 		}
-		console.log('je suis en ' + brain.pos.x + ' ' + brain.pos.y);
-		console.log('je dois aller en ' + brain.to.x + ' ' + brain.to.y);
 		if (brain.pos.y != brain.to.y) {
 			action.forward();
 			brain.pos.y += 1;				
@@ -151,9 +148,9 @@ module.exports = function (Actions, Ia, Queue) {
 			syncFov = false;
 		} else if (brain.state == 'join') {
 			brain.objective = goal.NONE;
-			console.log('jy suis ! ' + brain.pos.x + ' ' + brain.pos.y);
 			brain.pos.x = brain.pos.y = brain.to.x = brain.to.y = 0;
 			brain.state = 'joined';
+			syncFov = false;
 		}
 	}
 
@@ -171,7 +168,6 @@ module.exports = function (Actions, Ia, Queue) {
 			brain.direction = 0;
 		}
 		if (findRessource(resource)) {
-			// object trouvé plus qu'à aller le chercher
 			move();
 		} else {
 			brain.direction = (brain.direction + 1) % 4;
@@ -232,7 +228,6 @@ module.exports = function (Actions, Ia, Queue) {
 			return (false);
 		}
 		if (onCase('joueur') > compos.nbPlayer) {
-			console.log('----> ' + onCase('joueur') + ' ' + compos.nbPlayer);
 			if (cmdQueue.length == 10) {
 				return (false);
 			}
@@ -293,7 +288,6 @@ module.exports = function (Actions, Ia, Queue) {
 		if (nbPlayer == 0) {
 			return (false);
 		}
-		console.log(nbPlayer + '/' + playersRequired + ' players');
 		if (nbPlayer >= playersRequired) {
 			brain.objective = goal.CAST;
 		} else {
@@ -316,7 +310,7 @@ module.exports = function (Actions, Ia, Queue) {
 		if (!syncInv) {
 			updateInventory();
 		}
-		if (brain.objective == goal.NONE && brain.hp < 10) {
+		if ((brain.objective == goal.NONE || brain.objective == goal.WAIT) && brain.hp < 10) {
 			brain.objective = goal.EAT;
 		}
 		switch (brain.objective) {
@@ -347,7 +341,7 @@ module.exports = function (Actions, Ia, Queue) {
 			case goal.WAIT:
 				break;
 			default:
-				console.log('pas d\'objectif... ' + brain.objective);
+				break;
 		}
 	}
 
@@ -370,7 +364,6 @@ module.exports = function (Actions, Ia, Queue) {
 		}
 		if (brain.objective == goal.COLLECT || brain.objective == goal.EAT) {
 			if (findRessource(brain.resource)) {
-				// objet trouvé plus qu'à aller le chercher !
 				move();
 			}
 		}
@@ -410,7 +403,6 @@ module.exports = function (Actions, Ia, Queue) {
 			}
 			if (brain.to.y < 0) {
 				if (cmdQueue.length > 8) {
-					console.log('je quitte la biatch !!');
 					return (false);
 				}
 				action.right();
@@ -418,16 +410,17 @@ module.exports = function (Actions, Ia, Queue) {
 				brain.to.x *= -1;
 				brain.to.y *= -1;
 			}
-			console.log('le son vient de ' + direction + ' je dois donc me rendre en ' + brain.to.x + ' ' + brain.to.y);
 			brain.message.content = msg;
 			brain.message.direction = direction;
 			brain.objective = goal.MOVE;
 			brain.state = 'join';
+			if (brain.to.x == 0 && brain.to.y == 0) {
+				brain.objective = goal.WAIT;
+			}
 		}
 	});
 
 	IA.on('levelUp', function() {
-		console.log('I level ' + (brain.level + 1) + ' now madafaka !');
 		brain.level += 1;
 		brain.objective = goal.NONE;
 	});
@@ -441,7 +434,6 @@ module.exports = function (Actions, Ia, Queue) {
 	});
 
 	function run() {
-		if (debug) console.log('Here we gooo !');
 		var intervall = setInterval(brainManagement, 50)
 	}
 
