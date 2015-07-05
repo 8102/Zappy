@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Thu Jun 18 14:42:29 2015 Emmanuel Chambon
-** Last update Sat Jul  4 00:00:41 2015 Emmanuel Chambon
+** Last update Sun Jul  5 03:15:53 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
@@ -27,7 +27,7 @@ void		input_interpret(t_client *client, t_master *content)
   printf("[%s]\n", input);
   for (i = 0; i < MAX_CMD - 1; i++)
     {
-      if (!client->trigger[AUTH])
+      if (!client->trigger[AUTH] && strncmp(input, "GRAPHIC", 7))
   	continue ;
       if (!(strncmp(content->server.cmd[i],
 		    input, strlen(content->server.cmd[i]))))
