@@ -10,7 +10,7 @@ then
     exit 1
 fi
 
-if [ $# < 4 -o $# > 7 ]
+if [ $# -lt 4 -o $# -gt 7 ]
 then
     echo "Usage: ${0} -n team_name -p port [-h hostname] [-g='ia|only' | --gui='ia|only']"
 else
