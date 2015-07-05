@@ -113,6 +113,7 @@ var GameManager = function (Context, Engine) {
                     } else { logBook.style.display = 'none'; }
             }
         }, false);
+        self.testEffect(EFFECT.decors);
         return true;
     };
 
@@ -191,7 +192,7 @@ var GameManager = function (Context, Engine) {
         var i, playerID, player, parser = message.split(' ').map(String);
 
         playerID = parseInt(parser[1], 10);/*.split('#').map(Number)[1];*/
-        if ((player = self.getPlayerByID(playerID)) === null) { return false; }
+        if ((player = self.getPlayerByID(playerID)) === null) {return false; }
 
         for (i = 4; i < 11; i += 1) {
             player.inventory[i - 4] = parseInt(parser[i], 10);
@@ -228,7 +229,7 @@ var GameManager = function (Context, Engine) {
 /*
         window.console.log('Player #' + playerID + 'says : \"' + parser[2] + '\" !');
 */
-        parameters = {targetP: {x: player.position[0], y: 0.0, z: player.position[1]}, delay: 1, modifyer: {x: 0, y: 0.5, z: 0}, frames: 100, rotate: true, callback: self.move};
+        parameters = {targetP: {x: player.position[0], y: 0.0, z: player.position[1]}, delay: 1, modifyer: {x: 0, y: 0.5, z: 0}, frames: 25, rotate: true, callback: self.move};
         anima = new Animation(player, parameters);
         self.animations.push(anima);
 
@@ -280,7 +281,6 @@ var GameManager = function (Context, Engine) {
         window.console.log('Player #' + playerID + ' is taking a ' + RessourceName[parseInt(parser[2], 10)] + ' !');
         if ((item = self.getParticularRessourceOnCell(player.position[0], player.position[1], parseInt(parser[2], 10))) !== null) {
             anima = new Animation(item, {targetP: {x: player.model.position.x, y: 0.5, z: player.model.position.z}, rotate: false, modifyer: {x: 1, y: 1, z: 1}, delay: 1, frames: 50, callback: function () {self.remove(item); }});
-            window.alert("Item found");
             self.animations.push(anima);
         }
         return true;
@@ -382,6 +382,9 @@ var GameManager = function (Context, Engine) {
             '^[p][n][w] [0-9]*( [0-9]*){2} [1-4] [1-8] [a-zA-Z0-9]+\n$',
             '^[p][p][o] [0-9]*( [0-9]*){2} [1-4]\n$',
             '^[p][l][v] [0-9]* [1-8]\n$',
+/*
+            '^[p][i][n] [0-9].*\n$',
+*/
             '^[p][i][n] [0-9]*( [0-9]*){9}\n$',
             '^[p][e][x] [0-9]*\n$',
             '^[p][b][c] [0-9]*.*\n$',
@@ -711,6 +714,21 @@ var GameManager = function (Context, Engine) {
     };
 
     this.testEffect = function (type) {
+        var effect2;
+
+
+        effect2 = new Effect(Effects.create(EFFECT.decors), self.context, {position: {x: -1, y: 10, z: -1}}, {load: 500});
+        self.effects.push(effect2);
+        self.test2 = new Effects.TextureAnimator(EFFECT.decors);
+        effect2 = new Effect(Effects.create(EFFECT.decors), self.context, {position: {x: self.mapWidth + 1, y: 10, z: -1}}, {load: 500});
+        self.effects.push(effect2);
+        effect2 = new Effect(Effects.create(EFFECT.decors), self.context, {position: {x: -1, y: 10, z: self.mapHeight + 1}}, {load: 500});
+        self.effects.push(effect2);
+        effect2 = new Effect(Effects.create(EFFECT.decors), self.context, {position: {x: self.mapWidth + 1, y: 10, z: self.mapHeight + 1}}, {load: 500});
+        self.effects.push(effect2);
+        self.test2 = new Effects.TextureAnimator(EFFECT.decors);
+        document.addEventListener('mousedown', function (event) { self.GUI.displayInventory(); return true; });
+
         self.test = new Effects.TextureAnimator(type);
         targetANim = self.getPlayerByID(1);
         testAnim = new Animation(targetANim, {targetP: {x: 16, y: 0, z: 17}, delay: 0.10, modifyer: {x: 0, y: 3, z: 0}, frames: 150, rotate: true});

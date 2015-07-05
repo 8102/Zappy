@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-    <html>
+<html>
     <head>
         <meta charset="utf-8">
         <link href="ressources/images/diamonIcon.png" rel="icon" type="images/png"/>
@@ -16,9 +16,6 @@
         <script src="ThreeJs/examples/js/wip/IndexedTypedGeometry.js"></script>
         <script src="ThreeJs/examples/js/wip/PlaneTypedGeometry.js"></script>
         <script src="ThreeJs/examples/js/ImprovedNoise.js"></script>
-        <script src="ThreeJs/buzz.js"></script>
-        <script src="buzz.js"></script>
-        <script src="buzz.min.js"></script>
         <script src="ThreeJs/soundjs-0.6.1.min.js"></script>
 
         <script src="js/Network.js"></script>
@@ -35,140 +32,199 @@
         <script src="js/Egg.js"></script>
         <script src="js/GameManager.js"></script>
         <script src="js/Animation.js"></script>
-
-        <audio id="audio-background" src="ressources/audio/AdhesiveWombat%20-%208%20Bit%20Adventure.mp3" autoplay=false></audio>
-
+        <div id="Audio Elements">
+            <audio id="audio-background" src="ressources/audio/AdhesiveWombat%20-%208%20Bit%20Adventure.mp3"></audio>
+            <audio id="GateOpening-Sound" src="ressources/audio/assets/gateOpening.mp3"></audio>
+            <audio id="chainSound" src="ressources/audio/assets/chain.mp3"></audio>
+            <audio id="clickSound" src="ressources/audio/assets/click.mp3"></audio>
+        </div>
     </head>
     <body>
-    <div id="victory">
-        <div id="victory-content">
-            RogerRoger
+        <div id="victory">
+            <div id="victory-team-banner">
+            </div>
+            <div id="victory-team-name">
+                RogerRoger
+            </div>
         </div>
-    </div>
-    <div class="Displayer", id="GuiDisplayer">
-            <div id="magnifying-glass"></div>
-            <div id="describer-Content">
-                <div id="describer-Title">
+        <div class="Displayer", id="GuiDisplayer">
+                <div id="magnifying-glass"></div>
+                <div id="describer-Content">
+                    <div id="describer-Title">
+                    </div>
+                    <div id="describer-RessourcesIconContainer">
+                        <div id="describer-Food-Icon">
+                            <div id="describer-Icon-0" class="describer-Icon-Text">564</div>
+                        </div>
+                        <div id="describer-Linemate-Icon">
+                            <div id="describer-Icon-1" class="describer-Icon-Text">1</div>
+                        </div>
+                        <div id="describer-Deraumere-Icon">
+                            <div id="describer-Icon-2" class="describer-Icon-Text">1</div>
+                        </div>
+                        <div id="describer-Sibur-Icon">
+                            <div id="describer-Icon-3" class="describer-Icon-Text">1</div>
+                        </div>
+                        <div id="describer-Mendiane-Icon">
+                            <div id="describer-Icon-4" class="describer-Icon-Text">1</div>
+                        </div>
+                        <div id="describer-Phiras-Icon">
+                            <div id="describer-Icon-5" class="describer-Icon-Text">1</div>
+                        </div>
+                        <div id="describer-Thystame-Icon">
+                            <div id="describer-Icon-6" class="describer-Icon-Text">1</div>
+                        </div>
+                    </div>
+                    <div id="describer-Players">
+                    </div>
                 </div>
-                <div id="describer-RessourcesIconContainer">
-                    <div id="describer-Food-Icon">
-                        <div id="describer-Icon-0" class="describer-Icon-Text">564</div>
-                    </div>
-                    <div id="describer-Linemate-Icon">
-                        <div id="describer-Icon-1" class="describer-Icon-Text">1</div>
-                    </div>
-                    <div id="describer-Deraumere-Icon">
-                        <div id="describer-Icon-2" class="describer-Icon-Text">1</div>
-                    </div>
-                    <div id="describer-Sibur-Icon">
-                        <div id="describer-Icon-3" class="describer-Icon-Text">1</div>
-                    </div>
-                    <div id="describer-Mendiane-Icon">
-                        <div id="describer-Icon-4" class="describer-Icon-Text">1</div>
-                    </div>
-                    <div id="describer-Phiras-Icon">
-                        <div id="describer-Icon-5" class="describer-Icon-Text">1</div>
-                    </div>
-                    <div id="describer-Thystame-Icon">
-                        <div id="describer-Icon-6" class="describer-Icon-Text">1</div>
-                    </div>
+            </div>
+        <div id="GUI-TeamContainer"></div>
+        <div id="logBook">
+            <div id="logBook-leftPage">
+                <div id=left-page-title>
+                    Commands Log
                 </div>
-                <div id="describer-Players">
+                <div id="left-page-content"></div>
+            </div>
+            <div id="logBook-rightPage">
+                <div id=right-page-title>
+                    Mapemonde Informations
+                </div>
+                <div id="right-page-content">
+                    <div id="right-page-size">Width : 31   Height : 31</div>
+                    <div id="logBook-r-Icon-Food" class="logBook-rIcon"></div>
+                    <div id="logBook-r-Icon-Linemate" class="logBook-rIcon"></div>
+                    <div id="logBook-r-Icon-Deraumere" class="logBook-rIcon"></div>
+                    <div id="logBook-r-Icon-Sibur" class="logBook-rIcon"></div>
+                    <div id="logBook-r-Icon-Mendiane" class="logBook-rIcon"></div>
+                    <div id="logBook-r-Icon-Phiras" class="logBook-rIcon"></div>
+                    <div id="logBook-r-Icon-Thystame" class="logBook-rIcon"></div>
                 </div>
             </div>
         </div>
-    <div id="GUI-TeamContainer"></div>
-    <div id="logBook">
-        <div id="logBook-leftPage">
-            <div id=left-page-title>
-                Commands Log
+        <div id="GUI-connection-back">
+            <div id="GUI-connection-left"></div>
+            <div id="GUI-connection-right"></div>
+            <div id="GUI-connection-container">
+                <div id="GUI-connection-Title"></div>
+                <div id="GUI-connection-login-container">
+                    <input id="GUI-connection-login-typing" type="text" placeholder="Team Name">
+                    </input>
+                </div>
+                <div id="GUI-connection-port-container">
+                    <input id="GUI-connection-port-typing" type="text" placeholder="Port">
+<!--
+                        Port
+-->
+                    </input>
+                </div>
+                <script>
+                function onGUIRemove (event) {
+                        'use strict';
+                        var openingSound = document.getElementById("GateOpening-Sound");
+
+                        window.setTimeout(function() {openingSound.play(); }, 2000);
+                        window.setTimeout(function() {document.getElementById("chainSound").play(); }, 2000);
+                        MainActivity();
+                    };
+
+                function launchConnectionAnimation (event) {
+                        'use strict';
+                        var door = document.querySelector("#GUI-connection-left");
+
+                        document.getElementById("GUI-connection-left").className = "Opening-left";
+                        document.getElementById("GUI-connection-right").className = "Opening-right";
+                        document.getElementById("GUI-connection-container").style.display = "none";
+                        onGUIRemove();
+                        door.addEventListener("webkitAnimationEnd", function (e) {
+                            var audiobck = document.getElementById("audio-background");
+                            document.getElementById("GUI-connection-back").style.display = "none";
+                            audiobck.volume = 0.1;
+                            audiobck.currentTime = 6;
+                            window.setTimeout(function () {audiobck.play();}, 1500);
+                        }, false);
+                    };
+
+                function connectAsSpectator (event) {
+                    'use strict';
+                    var communicationDiv;
+
+                    event.preventDefault();
+                    if (event.which === 1) {
+                        document.getElementById("clickSound").play();
+                        launchConnectionAnimation(event);
+                        communicationDiv = document.createElement("div");
+                        communicationDiv.id = "transfer-div";
+                        communicationDiv.innerHTML = "1"; /*0-[teamName]-[port] || 1*/
+                    }
+                };
+
+                function connectWithAI (event) {
+                    'use strict';
+                    var communicationDiv;
+
+                    event.preventDefault();
+                    if (event.which === 1) {
+                            document.getElementById("clickSound").volume = 0.4;
+                            document.getElementById("clickSound").play();
+                            launchConnectionAnimation(event);
+                            communicationDiv = document.createElement("div");
+                            communicationDiv.id = "transfer-div";
+                            document.getElementById("GUI-connection-back").appendChild(communicationDiv);
+                            communicationDiv.innerHTML = "0-" + document.getElementById("GUI-connection-login-typing").value + "-" + document.getElementById("GUI-connection-port-typing").value;
+                        }
+                    };
+                </script>
+                <div id="GUI-connection-Spectator-button" onclick="connectAsSpectator(event)">
+                <div id="GUI-connection-Spectator-button-text">
+                    Connect as Spectator
+                </div>
             </div>
-            <div id="left-page-content"></div>
+                <div id="GUI-connection-connect-button" onclick="connectWithAI(event)">
+                <div id="GUI-connection-connect-button-text">
+                    Connect !
+                </div>
+            </div>
+            </div>
         </div>
-        <div id="logBook-rightPage">
-            <div id=right-page-title>
-                Mapemonde Informations
-            </div>
-            <div id="right-page-content">
-                <div id="right-page-size">Width : 31   Height : 31</div>
-                <div id="logBook-r-Icon-Food" class="logBook-rIcon"></div>
-                <div id="logBook-r-Icon-Linemate" class="logBook-rIcon"></div>
-                <div id="logBook-r-Icon-Deraumere" class="logBook-rIcon"></div>
-                <div id="logBook-r-Icon-Sibur" class="logBook-rIcon"></div>
-                <div id="logBook-r-Icon-Mendiane" class="logBook-rIcon"></div>
-                <div id="logBook-r-Icon-Phiras" class="logBook-rIcon"></div>
-                <div id="logBook-r-Icon-Thystame" class="logBook-rIcon"></div>
-            </div>
-        </div>
-    </div>
+
 
     <script src="http://127.0.0.1:1081/socket.io/socket.io.js"></script>
 
-    <script>
-            /*global VideoContext, GameEngine, GameManager, dat, animate, Effects, requestAnimationFrame, buzz*/
-            var network;
-            var manager;
-/*
-            var test = new buzz.sound("ressources/audio/assets/click",  {formats: ["mp3"]});
-*/
+        <script>
+                var manager, socket;
+                function MainActivity () {
+                    'use strict';
+
+
+                    manager = new GameManager();
+                    manager.init();
+
+                    socket  = io('http://localhost:1081');
+                    socket.emit('answer', 'GRAPHIC\n');
+                    socket.on('message', function(data) {
+                        manager.treatMessage(data);
+                    });
+
+
+                    manager.context.scene.fog = new THREE.Fog(0xffffffff, 10, 50);
+                    animate();
+                };
+
+
+                function animate() {
+                    'use strict';
+                    if (manager.context.scene.fog.far < 15000) { manager.context.scene.fog.far *= 1.03; }
+                    requestAnimationFrame(animate);
+                    manager.update();
+                    manager.engine.render();
+                }
+        </script>
+        <script>
             window.onload = function () {
                 'use strict';
-
-                var audiobck = document.getElementById("audio-background");
-                audiobck.volume = 0.1;
-                audiobck.currentTime = 6;
-/*
-                audiobck.pause();
-*/
-
-                manager = new GameManager();
-                manager.init();
-                var socket  = io('http://localhost:1081');
-                socket.emit('answer', 'GRAPHIC\n');
-                socket.on('message', function(data) {
-                    manager.treatMessage(data);
-                });
-
-/*
-                manager.treatMessage('msz 31 31\n');
-                manager.treatMessage('enw 1 1 20 20\n');
-                manager.treatMessage('enw 2 2 10 10\n');
-                manager.treatMessage('enw 3 3 30 30\n');
-                manager.treatMessage('enw 4 4 10 30\n');
-
-                for (var x = 0; x < manager.mapWidth; x += 1) {
-                    for (var y =0; y < manager.mapHeight; y += 1) {
-                        if (x * y % 2 === 0) {
-                        manager.treatMessage('bct ' + x + ' ' + y + ' ' + (((Math.random() * 10) / 5) | 0) + ' ' + (((Math.random() * 10) / 5) | 0)
-                                              + ' ' + (((Math.random() * 10) / 5) | 0)  + ' ' + (((Math.random() * 10) / 5) | 0) + ' ' + (((Math.random() * 10) / 5) | 0) + ' ' + (((Math.random() * 10) / 5) | 0) + ' ' + (((Math.random() * 10) / 5) | 0) + '\n');
-                        }
-                    }
-                }
-                for (var k = 0; k < 5; k += 1) {
-                    manager.treatMessage("tna team" + k + "\n");
-                    manager.treatMessage("pnw " + k + " " + k * 2 + " " + k * 3 + " 1 2 team" +k +"\n");
-                }
-                manager.treatMessage("pnw 5 2 3 1 1 team4\n");
-                manager.treatMessage("bct 2 3 1 1 1 1 1 1 1\n");
-                manager.debugTeam();
-                manager.debugPlayer();
-                manager.testEffect(EFFECT.decors);
-                network = new NetworkDevice(manager, {address: 'localhost', port: 1081});
-*/
-                manager.context.scene.fog = new THREE.Fog(0xffffffff, 10, 50);
-
-                animate();
             };
-
-
-            function animate() {
-                'use strict';
-                if (manager.context.scene.fog.far < 15000) { manager.context.scene.fog.far *= 1.05; }
-                requestAnimationFrame(animate);
-                manager.update();
-                manager.engine.render();
-            }
         </script>
-
     </body>
-    </html>
+</html>

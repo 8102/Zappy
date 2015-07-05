@@ -15,35 +15,230 @@
     }
 }
 
+
+@-webkit-keyframes doorOpening-left {
+    from {
+        left: 0%;
+    }
+    to {
+        left: -50%;
+    }
+}
+
+@-webkit-keyframes doorOpening-right {
+    from {
+        left: 50%;
+    }
+    to {
+        left: 100%;
+    }
+}
+
 @font-face {
     font-family: 'medieval';
     src: url("ressources/fonts/OldLondon.ttf");
 }
 
-#victory {
-    height: 60%;
-    width: 35%;
-    left: 32%;
-    top: 20%;
-    text-align: center;
-    position: absolute;
-    z-index: 5000;
-    background-image: url(ressources/images/Victory.png);
-    background-size: 100% 100%;
-    display: none;
+body {
+    cursor: url(ressources/images/cursor.png), pointer;
 }
 
-#victory-content {
+input:focus {
+    outline: none;
+}
+
+/******************************************************************/
+/******************** - GUI - Connection Page - *******************/
+/******************************************************************/
+
+#GUI-connection-back {
     position: absolute;
-    text-align: center;
-    width: 40%;
-    height: 8%;
-    left: 30%;
-    top: 55%;
+    height: 102%;
+    width: 102%;
+    z-index: 3;
+    display: flex;
+}
+
+.Opening-left {
+    -webkit-animation: doorOpening-left;
+    -webkit-animation-duration: 5s;
+    -webkit-animation-iteration-count: 1;
+    -webkit-animation-fill-mode: forward;
+    -webkit-animation-delay: 2s;
+}
+
+.Opening-right {
+    -webkit-animation: doorOpening-right;
+    -webkit-animation-duration: 5s;
+    -webkit-animation-iteration-count: 1;
+    -webkit-animation-fill-mode: forward;
+    -webkit-animation-delay: 2s;
+}
+
+
+#GUI-connection-Title {
+    position: absolute;
+    height: 20%;
+    width: 50%;
+    left: 25%;
+    top: 5%;
+    background-size: 100% 100%;
+    background-image: url(ressources/images/Title.png);
+}
+
+#GUI-connection-Subtitle {
+    position: absolute;
+    height: 20%;
+    width: 50%;
+    left: 25%;
+    top: 5%;
+    background-size: 100% 100%;
+    background-image: url(ressources/images/Title.png);
+}
+
+#GUI-connection-left {
+    position: absolute;
+    height: 100%;
+    width: 50%;
+    background-size: 100% 120%;
+    background-image: url(ressources/images/left-door.jpg);
+}
+
+#GUI-connection-right {
+    position: absolute;
+    left: 50%;
+    height: 100%;
+    width: 50%;
+    background-size: 100% 120%;
+    background-image: url(ressources/images/right-door.jpg)
+}
+
+#GUI-connection-login-container {
+    position: absolute;
+    width: 20%;
+    height: 10%;
+    background-size: 100% 100%;
+    background-image: url(ressources/images/writeField.png);
+    left: 3%;
+    top: 35%;
+    transition: backrgound-image;
+}
+
+#GUI-connection-login-container:hover {
+    background-image: url(ressources/images/writeField-selected.png);
+}
+
+#GUI-connection-login-typing {
+    width: 85%;
+    height: 70%;
+    margin-left: 8%;
+    margin-top: 0%;
+    color: white;
+    background-color: transparent;
+    line-height: 1.3;
+    text-shadow: 0 0 5px gold;
+    font-size: 40px;
     font-family: medieval;
-    font-size: 200%;
+    text-align: center;
+    border: 0px;
+}
+
+#GUI-connection-port-container {
+    position: absolute;
+    width: 20%;
+    height: 10%;
+    background-size: 100% 100%;
+    background-image: url(ressources/images/writeField.png);
+    left: 25%;
+    top: 35%;
+    transition: background-image;
+}
+
+
+#GUI-connection-port-container:hover {
+    background-image: url(ressources/images/writeField-selected.png);
+}
+
+#GUI-connection-port-typing {
+    width: 80%;
+    height: 70%;
+    margin-left: 10%;
+    color: white;
+    margin-top: 0%;
+    background-color: transparent;
+    text-shadow: 0 0 5px gold;
+    font-size: 40px;
+    font-family: medieval;
+    text-align: center;
+    line-height: 1.3;
+    border: 0px;
+}
+
+
+#GUI-connection-connect-button {
+    position: absolute;
+    width: 20%;
+    height: 15%;
+    background-size: 100% 100%;
+    background-image: url(ressources/images/spectator-button.png);
+    left: 13%;
+    bottom: 35%;
+    text-shadow: 0 0 10px #ffffff;
+}
+
+#GUI-connection-connect-button:hover {
+    background-image: url(ressources/images/spectator-button-selected.png);
+    text-shadow: 0 0 10px red;
     color: black;
 }
+
+#GUI-connection-connect-button-text {
+    height: 20%;
+    width: 88%;
+    margin-left: 6%;
+    margin-top: 5%;
+    display: inline-block;
+    text-align: center;
+    font-family: fantasy;
+    font-size: 40px;
+    line-height: 2;
+}
+
+#GUI-connection-Spectator-button {
+    position: absolute;
+    width: 20%;
+    height: 15%;
+    background-size: 100% 100%;
+    background-image: url(ressources/images/spectator-button.png);
+    left: 63%;
+    bottom: 35%;
+    transition: background-image;
+    color: black;
+    text-shadow: 0 0 5px #ffffff;
+}
+
+#GUI-connection-Spectator-button:hover {
+    background-image: url(ressources/images/spectator-button-selected.png);
+    text-shadow: 0 0 10px red;
+    color: black;
+}
+
+#GUI-connection-Spectator-button-text {
+    height: 20%;
+    width: 88%;
+    margin-left: 6%;
+    margin-top: 5%;
+    display: inline-block;
+    text-align: center;
+    font-family: fantasy;
+    font-size: 35px;
+/*
+    text-shadow: 0 0 5px #ffffff;
+*/
+}
+/******************************************************************/
+/********************* - GUI - Team Banners - *********************/
+/******************************************************************/
 
 #GUI-TeamContainer {
     height: 40%;
@@ -72,7 +267,7 @@
 
 .teamBanner:hover {
     height: 120%;
-}   
+}
 
 .bannerShaft {
     width: 100%;
@@ -117,6 +312,11 @@
     margin-top: -2%;
     color: yellow;
 }
+
+/******************************************************************/
+/******************** - GUI - Cell Inventory - ********************/
+/******************************************************************/
+
 .Displayer {
     position: fixed;
     transform: rotate(5deg);
@@ -125,17 +325,13 @@
     height: 40%;
     bottom: 1%;
     right: 1%;
-    z-index: 1000;
+    z-index: 2;
     background-image: url(ressources/images/parchment.png);
     background-size: 100% 100%;
     text-align: center;
     outline: 0;
     display: none;
-/*
-    perspective: 6000px;
-    perspective-origin: 100% 50%;
-    transform: rotateY(25deg);
-*/
+
     -webkit-animation: guiShowerArrival;
     -webkit-animation-duration: 1s;
     -webkit-animation-iteration-count: infinite;
@@ -252,6 +448,47 @@
     width: 15%;
     height: 80%;
 }
+
+/******************************************************************/
+/******************** - GUI - Victory Display - *******************/
+/******************************************************************/
+
+#victory {
+    height: 100%;
+    width: 35%;
+    left: 32%;
+    top: 0%;
+    text-align: center;
+    position: absolute;
+    z-index: 5000;
+    background-image: url(ressources/images/GUIBanners/red.png);
+    background-size: 100% 100%;
+    display: none;
+}
+
+#victory-team-banner {
+    position: absolute;
+    top: 20%;
+    height: 60%;
+    width: 100%;
+    background-size: 100% 100%;
+    background-image: url(ressources/images/Victory.png);
+}
+#victory-team-name {
+    position: absolute;
+    text-align: center;
+    width: 40%;
+    height: 8%;
+    left: 30%;
+    top: 53%;
+    font-family: medieval;
+    font-size: 200%;
+    color: black;
+}
+
+/******************************************************************/
+/*********************** - GUI - Log Book - ***********************/
+/******************************************************************/
 
 #logBook {
     position: absolute;
