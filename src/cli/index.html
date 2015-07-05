@@ -125,7 +125,7 @@
                 function onGUIRemove (event) {
                         'use strict';
                         var openingSound = document.getElementById("GateOpening-Sound");
-
+                        MainActivity();
                         window.setTimeout(function() {openingSound.play(); }, 2000);
                         window.setTimeout(function() {document.getElementById("chainSound").play(); }, 2000);
                     };
@@ -157,8 +157,10 @@
                         communicationDiv = document.createElement("div");
                         communicationDiv.id = "transfer-div";
                         communicationDiv.innerHTML = "1"; /*0-[teamName]-[port] || 1*/
+/*
                         socket.emit('answer', "MONITOR:NO-AI");
                         MainActivity();
+*/
 
                     }
                 };
@@ -176,8 +178,9 @@
                             communicationDiv.id = "transfer-div";
                             document.getElementById("GUI-connection-back").appendChild(communicationDiv);
                             communicationDiv.innerHTML = "0-" + document.getElementById("GUI-connection-login-typing").value + "-" + document.getElementById("GUI-connection-port-typing").value;
+/*
                             socket.emit('answer', "G:" + document.getElementById("GUI-connection-login-typing").value + ":" + document.getElementById("GUI-connection-port-typing").value + "\n");
-                            MainActivity();
+*/
                         }
                     };
                 </script>
