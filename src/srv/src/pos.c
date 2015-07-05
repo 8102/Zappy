@@ -5,7 +5,7 @@
 ** Login   <prenat_h@epitech.eu>
 **
 ** Started on  Mon Jun 29 17:29:07 2015 Hugo Prenat
-** Last update Fri Jul  3 17:53:46 2015 Hugo Prenat
+** Last update Sat Jul  4 20:36:46 2015 Hugo Prenat
 */
 
 #include "zappy.h"
@@ -23,7 +23,7 @@ void		reset_previous(t_client *client, t_master *content)
 	    break ;
 	  tmp = tmp->next;
 	}
-      tmp->nbr_player--;
+      tmp->content[0]--;
     }
 }
 
@@ -41,7 +41,7 @@ void		set_pos(t_master *content, t_client *client, size_t x, size_t y)
 	break ;
       tmp = tmp->next;
     }
-  tmp->nbr_player++;
+  tmp->content[0]++;
   client->pos[X] = x;
   client->pos[Y] = y;
 }

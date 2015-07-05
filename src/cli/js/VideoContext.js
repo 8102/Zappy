@@ -21,7 +21,7 @@ var VideoContext = function (width, height) {
     this.scene = null;
     this.camera = null;
     this.clock = null;
-    this.statDisplayer = true; /*wether or not displaying Stats */
+    this.statDisplayer = false; /*wether or not displaying Stats */
 
                         /* Frame Functions */
 

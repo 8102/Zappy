@@ -5,7 +5,7 @@
 ** Login   <prenat_h@epitech.eu>
 **
 ** Started on  Tue Jun 30 21:06:34 2015 Hugo Prenat
-** Last update Sat Jul  4 01:48:10 2015 Hugo Prenat
+** Last update Sat Jul  4 05:56:38 2015 Hugo Prenat
 */
 
 #include "zappy.h"
@@ -14,6 +14,7 @@ void	_fork(char UNUSED*params,
 	      t_client *client,
 	      t_master *content)
 {
+  timespec_add(client->clock, content->time.delays[FORK], true);
   ssend(client->socket, "ok\n");
   ssend_graphics(content, "pfk %d\n", client->id);
   add_egg(client->team, content, client->pos, client->id);

@@ -43,6 +43,8 @@
 # define BOLDCYAN	"\033[1m\033[36m"
 # define BOLDWHITE	"\033[1m\033[37m"
 
+typedef long long int		lli;
+
 void		error(char *);
 char		*epur_str(char *);
 char		*str_replace(char *, char, char);

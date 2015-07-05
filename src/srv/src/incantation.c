@@ -5,7 +5,7 @@
 ** tran_0  <david.tran@epitech.eu>
 **
 ** Started on  Wed Jun 17 08:31:10 2015 David Tran
-** Last update Wed Jun 24 15:26:13 2015 David Tran
+** Last update Sat Jul  4 20:49:45 2015 Hugo Prenat
 */
 
 #include "zappy.h"
@@ -33,8 +33,8 @@ char		*check_level(t_client *client, t_client *clients)
   str[0] = 0;
   while (clients)
     {
-      if (client->id != clients->id && clients->pos[0] == client->pos[0] &&
-	  clients->pos[1] == client->pos[1] && client->level == clients->level)
+      if (client->id != clients->id && clients->pos[X] == client->pos[X] &&
+	  clients->pos[Y] == client->pos[Y] && client->level == clients->level)
 	{
 	  if (!(nbr = transform_int(clients->id)))
 	    return (NULL);
@@ -57,9 +57,9 @@ void	do_incantation(t_client *client, t_master *content)
   players = check_level(client, content->clients);
   ssend(client->socket, "elevation en cours\n");
   if (client->trigger[GRAPHIC])
-    players ? ssend(client->socket, "pic %u %u %d %s\n",
-		    client->pos[0], client->pos[1], client->level, players) :
-      ssend(client->socket, "pic %u %u %d\n", client->pos[0], client->pos[1],
+    players ? ssend(client->socket, "pic %lu %lu %d %s\n",
+		    client->pos[X], client->pos[Y], client->level, players) :
+      ssend(client->socket, "pic %lu %lu %d\n", client->pos[X], client->pos[Y],
 	    client->level);
   client->level += (!players) ? 0 : 1;
   ssend(client->socket, "niveau actuel : %d\n", client->level);

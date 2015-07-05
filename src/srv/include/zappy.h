@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Tue Jun 16 11:35:49 2015 Emmanuel Chambon
-** Last update Sat Jul  4 05:20:29 2015 Emmanuel Chambon
+** Last update Sun Jul  5 02:31:46 2015 Emmanuel Chambon
 */
 
 #ifndef _ZAPPY_H_
@@ -41,14 +41,7 @@ struct		s_case
 {
   size_t	x;
   size_t	y;
-  int		meal;
-  int		linemate;
-  int		deraumere;
-  int		sibur;
-  int		mendiane;
-  int		phiras;
-  int		thystame;
-  int		nbr_player;
+  int		content[8];
   t_case	*prev;
   t_case	*next;
 };
@@ -98,7 +91,6 @@ int		init_zappy(t_master *, int, char **);
 void		release_zappy(t_master *);
 bool		check_param(t_master *);
 bool		get_param(int, char **, t_master *);
-int		create_map(t_master *);
 /*
 **	init.c
 */
@@ -122,6 +114,14 @@ void		pop_egg(t_egg **, t_egg *);
 **	creation.c
 */
 void		print_creation(t_master *);
+/*
+**	case.c
+*/
+void		push_case(t_case **, t_case *, t_case **);
+void		set_mineral(int, ull, t_master *);
+void		minerals_gen(t_master *);
+int		add_one_case(t_master *, size_t, size_t);
+int		create_map(t_master *);
 /*
 **	win.c
 */

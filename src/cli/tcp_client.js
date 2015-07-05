@@ -9,7 +9,7 @@ var EventEmitter = require('events').EventEmitter;
 /*
 ** debug
 */
-var debug = false;
+var debug = true;
 
 /*
 ** variable scope
@@ -131,7 +131,7 @@ module.exports = function(addr, port, team_name, gui) {
 				}
 			} else if (graphicCmd.indexOf(res[i].slice(0, 3)) > -1) {
 				if (res[i].length > 0) {
-					graphicSocket.emit('message', res[i] + '\n');
+				    graphicSocket.emit('message', res[i] + '\n');
 				}
 			} else {
 				// command from server to IA

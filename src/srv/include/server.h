@@ -128,6 +128,12 @@ char		*fillStringCase(t_case *, char *);
 char		*fillFirstTime();
 t_case		*getNextCase(t_case *, t_master *, int);
 /*
+**	voir_misc.c
+*/
+int		countHowMany(t_case *);
+char	*first_case(t_master *, t_client *);
+char	*add_content_case(t_case *, char *);
+/*
 **	prend.c
 */
 int		checkPossibleTake(t_case *, char *, t_client *);
