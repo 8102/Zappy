@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Tue Jun 16 11:27:54 2015 Emmanuel Chambon
-** Last update Sun Jul  5 18:27:48 2015 Hugo Prenat
+** Last update Sun Jul  5 21:33:37 2015 Hugo Prenat
 */
 
 #ifndef _SERVER_H_
@@ -139,6 +139,9 @@ char		*add_content_case(t_case *, char *);
 char		*add_coma(char *);
 char		*voir_ligne(t_master *, t_client *,
 			    int, char *);
+/*
+**	voir_get_pos.c
+*/
 size_t		get_real_pos(t_master *, size_t ,
 			     int , size_t (*)(t_master *, size_t));
 /*
