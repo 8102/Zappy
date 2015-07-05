@@ -5,7 +5,7 @@
 ** tran_0  <david.tran@epitech.eu>
 **
 ** Started on  Wed Jun 17 08:31:10 2015 David Tran
-** Last update Sun Jul  5 03:45:22 2015 Hugo Prenat
+** Last update Sun Jul  5 20:56:39 2015 Hugo Prenat
 */
 
 #include "zappy.h"
@@ -65,9 +65,18 @@ void	do_incantation(t_client *client, t_master *content)
     free(players);
 }
 
-void	incantation(char UNUSED*params,
-		    t_client *client,
-		    t_master *content)
+void		incantation(char UNUSED*params,
+			    t_client *client,
+			    t_master *content)
 {
+  static int	need[7][7] = {{1, 1, 0, 0, 0, 0, 0},
+			      {2, 1, 1, 1, 0, 0, 0},
+			      {2, 2, 0, 1, 0, 2, 0},
+			      {4, 1, 1, 2, 0, 1, 0},
+			      {4, 1, 2, 1, 3, 0, 0},
+			      {6, 1, 2, 3, 0, 1, 0},
+			      {6, 2, 2, 2, 2, 2, 0}};
+
+
   do_incantation(client, content);
 }

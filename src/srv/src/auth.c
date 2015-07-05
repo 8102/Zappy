@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Thu Jun 18 15:01:28 2015 Emmanuel Chambon
-** Last update Sun Jul  5 04:05:24 2015 Hugo Prenat
+** Last update Sun Jul  5 19:58:45 2015 Hugo Prenat
 */
 
 #include "zappy.h"
@@ -68,15 +68,15 @@ void		select_team(char *team, t_client *client, t_master *content)
     ssend(client->socket, "0\n");
   else
     {
-      if (tm->slot == 0)
-	ssend(client->socket, "0\n");
-      else
+      if (tm->slot > 0 || has_egg_eclos(tm))
 	{
 	  ssend(client->socket, "%d\n", tm->slot);
 	  client->team = tm;
 	  place_player(content, client);
 	  client->team->slot--;
 	}
+      else
+	ssend(client->socket, "0\n");
     }
   ssend(client->socket, "%d %d\n", content->width, content->height);
 }

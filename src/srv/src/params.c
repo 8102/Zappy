@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Sat Jul  4 05:18:34 2015 Emmanuel Chambon
-** Last update Sun Jul  5 00:50:17 2015 Emmanuel Chambon
+** Last update Sun Jul  5 18:48:57 2015 Emmanuel Chambon
 */
 
 #include "zappy.h"
@@ -21,7 +21,7 @@ void		update_team_max(t_master *content)
 bool	check_param(t_master *content)
 {
   if (!content->port)
-    content->port = strdup("4242");
+    content->port = "4242";
   if (!content->width)
     content->width = 20;
   if (!content->height)

@@ -5,18 +5,36 @@
 ** Login   <prenat_h@epitech.eu>
 **
 ** Started on  Mon Jun 22 22:25:56 2015 Hugo Prenat
-** Last update Sun Jul  5 03:40:48 2015 Hugo Prenat
+** Last update Sun Jul  5 19:58:35 2015 Hugo Prenat
 */
 
 #include "zappy.h"
+
+void		get_egg_pos(t_team *team, size_t *x, size_t *y,
+			    t_master *content)
+{
+  t_egg         *tmp;
+
+  for (tmp = team->eggs; tmp; tmp = tmp->next)
+    {
+      if (tmp->eclos)
+	{
+	  *x = tmp->pos[X];
+	  *y = tmp->pos[Y];
+	  pop_egg(&team->eggs, tmp);
+	  break ;
+	}
+    }
+  *x = rand() % content->width;
+  *y = rand() % content->height;
+}
 
 void		place_player(t_master *content, t_client *client)
 {
   size_t	x;
   size_t	y;
 
-  x = rand() % content->width;
-  y = rand() % content->height;
+  get_egg_pos(client->team, &x, &y, content);
   set_pos(content, client, x, y);
   client->placed = true;
   client->resources[MEAL] = 10;
@@ -31,12 +49,12 @@ void		place_player(t_master *content, t_client *client)
   ssend_graphics(content, "pnw %d %lu %lu %d %d %s\n", client->id,
   		 client->pos[X], client->pos[Y], client->orient,
   		 client->level, client->team->name);
-  ssend_graphics(content, "pin %d %lu %lu %d %d %d %d %d %d\n",
+  ssend_graphics(content, "pin %d %lu %lu %d %d %d %d %d %d %d\n",
   		 client->id, client->pos[X], client->pos[Y],
   		 client->resources[MEAL], client->resources[LINEMATE],
   		 client->resources[DERAUMERE], client->resources[SIBUR],
-  		 client->resources[MENDIANE], client->resources[MENDIANE],
-  		 client->resources[PHIRAS], client->resources[THYSTAME]);
+  		 client->resources[MENDIANE], client->resources[PHIRAS],
+		 client->resources[THYSTAME]);
 }
 
 void	init_client(t_client *client, t_master *content)

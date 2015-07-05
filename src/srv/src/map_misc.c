@@ -5,7 +5,7 @@
 ** Login   <prenat_h@epitech.eu>
 **
 ** Started on  Thu Jul  2 15:40:37 2015 Hugo Prenat
-** Last update Sat Jul  4 20:48:29 2015 Hugo Prenat
+** Last update Sun Jul  5 18:20:29 2015 Hugo Prenat
 */
 
 #include "zappy.h"
@@ -53,50 +53,4 @@ void	mct(char UNUSED*params,
 	    t_master *content)
 {
   send_map(client, content);
-}
-
-void		prend(char *params,
-		      t_client *client,
-		      t_master *content)
-{
-  t_case	*position;
-  int		resource;
-
-  timespec_add(client->clock, content->time.delays[PREND], true);
-  if (!(position = getCaseFromCoord(client->pos[0], client->pos[1],
-				    content->cases)))
-    ssend(client->socket, "ko\n");
-  else
-    {
-      if ((resource = checkPossibleTake(position, params, client)) == -1)
-	ssend(client->socket, "ko\n");
-      else
-	{
-	  ssend(client->socket, "ok\n");
-	  prend_graphic(client, content, resource);
-	}
-    }
-}
-
-void		pose(char *params,
-		     t_client *client,
-		     t_master *content)
-{
-  t_case	*position;
-  int		resource;
-
-  timespec_add(client->clock, content->time.delays[POSE], true);
-  if (!(position = getCaseFromCoord(client->pos[0], client->pos[1],
-				    content->cases)))
-    ssend(client->socket, "ko\n");
-  else
-    {
-      if ((resource = checkPossibleSend(position, params, client)) == 0)
-	ssend(client->socket, "ko\n");
-      else
-	{
-	  ssend(client->socket, "ok\n");
-	  pose_graphic(client, content, resource);
-	}
-    }
 }
