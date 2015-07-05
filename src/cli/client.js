@@ -42,12 +42,16 @@ for (var opt in options) {
 if (options.GUI.length > 0) {
     console.log('launch http server');
     require('./http_server.js')(1081);
+    console.log('launch interface');
+    graphicalInterface();
 }
 require('./tcp_client.js')(options.hostname, options.port, options.team_name, options.GUI);
 
 if (options.GUI.length > 0) {
+/*
     console.log('launch interface');
     graphicalInterface();
+*/
 }
 
 function graphicalInterface() {

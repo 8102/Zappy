@@ -182,8 +182,8 @@ var GameManager = function (Context, Engine) {
         playerID = parseInt(parser[1], 10);/*.split('#').map(Number)[1];*/
         if ((player = self.getPlayerByID(playerID)) === null) { return false; }
         player.level = parseInt(parser[2], 10);
-
-        /*  /!!\ CHECK VICTORY HERE /!!\ */
+        createjs.Sound.play("broadcast");
+        player.team.updateNbPlayersOnBanner();
 
         return true;
     };
