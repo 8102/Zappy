@@ -5,7 +5,7 @@
 ** Login   <prenat_h@epitech.eu>
 **
 ** Started on  Wed Jun 24 17:11:21 2015 Hugo Prenat
-** Last update Sat Jul  4 20:36:08 2015 Hugo Prenat
+** Last update Sun Jul  5 03:20:02 2015 Hugo Prenat
 */
 
 #include "zappy.h"
@@ -44,9 +44,10 @@ void		send_player(t_client *client, t_master *content)
   client_tmp = content->clients;
   while (client_tmp)
     {
-      ssend(client->socket, "pnw %d %lu %lu %d %d %s\n", client_tmp->id,
-	    client_tmp->pos[X], client_tmp->pos[Y], client_tmp->orient,
-	    client_tmp->level, client_tmp->team->name);
+      if (client_tmp->trigger[AUTH])
+	ssend(client->socket, "pnw %d %lu %lu %d %d %s\n", client_tmp->id,
+	      client_tmp->pos[X], client_tmp->pos[Y], client_tmp->orient,
+	      client_tmp->level, client_tmp->team->name);
       client_tmp = client_tmp->next;
     }
 }
@@ -62,8 +63,8 @@ void		send_egg(t_client *client, t_master *content)
       egg_tmp = team_tmp->eggs;
       while (egg_tmp)
 	{
-	  ssend(client->socket, "enw %d %d %lu %lu\n", egg_tmp->nbr, egg_tmp->id,
-		egg_tmp->pos[X], egg_tmp->pos[Y]);
+	  ssend(client->socket, "enw %d %d %lu %lu\n", egg_tmp->nbr,
+		egg_tmp->id, egg_tmp->pos[X], egg_tmp->pos[Y]);
 	  egg_tmp = egg_tmp->next;
 	}
       team_tmp = team_tmp->next;

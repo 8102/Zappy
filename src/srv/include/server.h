@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Tue Jun 16 11:27:54 2015 Emmanuel Chambon
-** Last update Sun Jul  5 02:51:22 2015 Hugo Prenat
+** Last update Sun Jul  5 03:28:38 2015 Hugo Prenat
 */
 
 #ifndef _SERVER_H_
@@ -102,6 +102,9 @@ void		sst(char *, t_client *, t_master *);
 */
 void		graphic(char *, t_client *, t_master *);
 void		send_map(t_client *, t_master *);
+void		send_egg(t_client *, t_master *);
+void		send_player(t_client *, t_master *);
+void		send_team(t_client *, t_master *);
 /*
 **	direction.c
 */

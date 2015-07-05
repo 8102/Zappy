@@ -5,7 +5,7 @@
 ** chambo_e  <chambon.emmanuel@gmail.com>
 **
 ** Started on  Thu Jun 18 14:42:29 2015 Emmanuel Chambon
-** Last update Sun Jul  5 03:15:53 2015 Emmanuel Chambon
+** Last update Sun Jul  5 04:02:30 2015 Hugo Prenat
 */
 
 #include "zappy.h"
@@ -44,7 +44,8 @@ void		input_interpret(t_client *client, t_master *content)
   free(input);
 }
 
-void			handle_io(char *tmp, t_client *client, t_master *content)
+void			handle_io(char *tmp, t_client *client,
+				  t_master *content)
 {
   timespec_update(content->time.io_now);
   rb_write(client->recv, tmp);
